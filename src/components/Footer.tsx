@@ -2,99 +2,46 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-white">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8 py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-white font-bold text-sm">
-                H
-              </span>
-              <span className="font-semibold tracking-tight text-[15px]">
-                Hirehired
-              </span>
-            </Link>
-            <p className="mt-4 text-[13px] leading-relaxed text-muted max-w-xs">
-              Jobs sourced directly from company career pages. Less noise.
-              Higher signal.
+    <footer className="border-t border-neutral-200 bg-neutral-50">
+      <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-[13px]">
+          <div className="col-span-2 sm:col-span-1">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="flex h-5 w-5 items-center justify-center rounded bg-blue-700 text-white text-[10px] font-bold">H</span>
+              <span className="font-semibold text-[13px]">Hirehired</span>
+            </div>
+            <p className="text-neutral-500 leading-relaxed max-w-[220px]">
+              Jobs from company career pages. APAC-first tech, compliance, KYC & KYB.
             </p>
           </div>
-
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
-              Product
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-[14px]">
-              <li>
-                <Link href="/jobs/" className="text-muted hover:text-foreground transition-colors">
-                  Browse jobs
-                </Link>
-              </li>
-              <li>
-                <Link href="/#how" className="text-muted hover:text-foreground transition-colors">
-                  How it works
-                </Link>
-              </li>
-              <li>
-                <Link href="/signup/" className="text-muted hover:text-foreground transition-colors">
-                  Create account
-                </Link>
-              </li>
-              <li>
-                <Link href="/about/" className="text-muted hover:text-foreground transition-colors">
-                  About
-                </Link>
-              </li>
+            <p className="font-semibold text-neutral-900 mb-3">Product</p>
+            <ul className="space-y-2 text-neutral-500">
+              <li><Link href="/jobs/" className="hover:text-neutral-900">Browse jobs</Link></li>
+              <li><Link href="/#how" className="hover:text-neutral-900">How it works</Link></li>
+              <li><Link href="/about/" className="hover:text-neutral-900">About</Link></li>
             </ul>
           </div>
-
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
-              For employers
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-[14px]">
-              <li>
-                <Link href="/about/" className="text-muted hover:text-foreground transition-colors">
-                  Post a role
-                </Link>
-              </li>
-              <li>
-                <span className="text-slate-400">Talent pipeline (soon)</span>
-              </li>
+            <p className="font-semibold text-neutral-900 mb-3">Legal</p>
+            <ul className="space-y-2 text-neutral-500">
+              <li><Link href="/privacy/" className="hover:text-neutral-900">Privacy</Link></li>
+              <li><Link href="/terms/" className="hover:text-neutral-900">Terms</Link></li>
+              <li><Link href="/cookies/" className="hover:text-neutral-900">Cookies</Link></li>
             </ul>
           </div>
-
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
-              Legal
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-[14px]">
-              <li>
-                <Link href="/privacy/" className="text-muted hover:text-foreground transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms/" className="text-muted hover:text-foreground transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/cookies/" className="text-muted hover:text-foreground transition-colors">
-                  Cookie Policy
-                </Link>
-              </li>
+            <p className="font-semibold text-neutral-900 mb-3">Focus</p>
+            <ul className="space-y-2 text-neutral-500">
+              <li>KYC / KYB</li>
+              <li>Compliance</li>
+              <li>Senior tech · APAC</li>
             </ul>
           </div>
         </div>
-
-        <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-[13px] text-muted">
-            © {new Date().getFullYear()} Hirehired. All rights reserved.
-          </p>
-          <p className="text-[13px] text-slate-400">
-            Not affiliated with LinkedIn or Indeed.
-          </p>
+        <div className="mt-8 pt-6 border-t border-neutral-200 flex flex-col sm:flex-row justify-between gap-2 text-[12px] text-neutral-400">
+          <p>© {new Date().getFullYear()} Hirehired</p>
+          <p>Not affiliated with LinkedIn or Indeed</p>
         </div>
       </div>
     </footer>

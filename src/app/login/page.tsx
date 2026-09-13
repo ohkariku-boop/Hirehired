@@ -24,77 +24,30 @@ export default function LoginPage() {
       }
       window.location.href = "/dashboard/";
     } catch {
-      setError("Auth is not configured in this static preview.");
+      setError("Auth not available in static preview.");
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-5 hero-mesh">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white font-bold text-sm shadow-sm shadow-indigo-500/25">
-              H
-            </span>
-            <span className="font-semibold text-[16px]">Hirehired</span>
+    <div className="min-h-screen flex flex-col bg-white">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-sm">
+          <Link href="/" className="inline-flex items-center gap-2 mb-8">
+            <span className="flex h-6 w-6 items-center justify-center rounded bg-blue-700 text-white text-[11px] font-bold">H</span>
+            <span className="text-[14px] font-semibold">Hirehired</span>
           </Link>
-        </div>
-
-        <div className="rounded-3xl border border-border bg-white p-8 shadow-lg shadow-slate-200/50">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Sign in
-          </h1>
-          <p className="mt-1.5 text-[14px] text-muted">
-            Welcome back. Enter your details below.
-          </p>
-
-          <form onSubmit={handleLogin} className="mt-7 space-y-4">
-            {error && (
-              <div className="rounded-xl bg-red-50 text-red-600 text-[13px] px-4 py-3">
-                {error}
-              </div>
-            )}
-            <div>
-              <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-border bg-white px-4 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                placeholder="you@example.com"
-              />
-            </div>
-            <div>
-              <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-border bg-white px-4 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                placeholder="••••••••"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 rounded-xl bg-accent text-[14px] font-semibold text-white hover:bg-accent-hover disabled:opacity-50 transition-colors shadow-sm shadow-indigo-500/20"
-            >
+          <h1 className="text-[20px] font-bold">Sign in</h1>
+          <form onSubmit={handleLogin} className="mt-5 space-y-3">
+            {error && <p className="text-[13px] text-red-600 bg-red-50 px-3 py-2 rounded">{error}</p>}
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full h-10 rounded border border-neutral-300 px-3 text-[14px] focus:outline-none focus:border-blue-600" />
+            <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full h-10 rounded border border-neutral-300 px-3 text-[14px] focus:outline-none focus:border-blue-600" />
+            <button type="submit" disabled={loading} className="w-full h-10 rounded bg-blue-700 text-[13px] font-semibold text-white hover:bg-blue-800 disabled:opacity-50">
               {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
-
-          <p className="mt-6 text-center text-[14px] text-muted">
-            No account?{" "}
-            <Link href="/signup/" className="font-semibold text-accent hover:text-accent-hover">
-              Sign up
-            </Link>
+          <p className="mt-4 text-[13px] text-neutral-500">
+            No account? <Link href="/signup/" className="text-blue-700 font-medium">Sign up</Link>
           </p>
         </div>
       </div>
