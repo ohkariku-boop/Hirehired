@@ -31,10 +31,10 @@ export default function JobsPage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
             <div>
-              <h1 className="text-[22px] sm:text-[26px] font-bold tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 Open roles
               </h1>
-              <p className="mt-1 text-[13px] text-neutral-500">
+              <p className="mt-1 text-base text-neutral-500">
                 {jobs.length} roles · {apac} APAC · {remote} remote
               </p>
             </div>
@@ -43,7 +43,7 @@ export default function JobsPage() {
                 type="search"
                 name="q"
                 placeholder="Filter…"
-                className="h-9 flex-1 sm:w-48 rounded border border-neutral-300 px-3 text-[13px] focus:outline-none focus:border-blue-600"
+                className="h-11 flex-1 sm:w-48 rounded border border-neutral-300 px-3 text-base focus:outline-none focus:border-blue-600"
               />
             </form>
           </div>
@@ -59,7 +59,7 @@ export default function JobsPage() {
             ].map((f, i) => (
               <button
                 key={f}
-                className={`shrink-0 rounded px-2.5 py-1.5 text-[12px] font-medium whitespace-nowrap ${
+                className={`shrink-0 rounded px-2.5 py-1.5 text-lg font-medium whitespace-nowrap ${
                   i === 0
                     ? "bg-neutral-900 text-white"
                     : "border border-neutral-200 text-neutral-600 hover:border-neutral-400"
@@ -78,24 +78,24 @@ export default function JobsPage() {
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <h2 className="text-[14px] font-medium">{job.title}</h2>
+                    <h2 className="text-[17px] font-medium">{job.title}</h2>
                     {job.region === "APAC" && (
-                      <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded">
+                      <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded">
                         APAC
                       </span>
                     )}
                   </div>
-                  <p className="text-[12px] text-neutral-500 mt-0.5">
+                  <p className="text-lg text-neutral-500 mt-0.5">
                     {job.company} · {job.location}
                   </p>
                   <div className="mt-1.5 flex flex-wrap gap-1">
-                    <span className="text-[11px] text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5">
+                    <span className="text-sm text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5">
                       {job.level}
                     </span>
                     {job.tags.slice(0, 3).map((t) => (
                       <span
                         key={t}
-                        className="text-[11px] text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5"
+                        className="text-sm text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5"
                       >
                         {t}
                       </span>
@@ -103,14 +103,14 @@ export default function JobsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-[12px] text-neutral-400">
+                  <span className="text-lg text-neutral-400">
                     {formatPosted(job.posted)}
                   </span>
                   <a
                     href={job.applyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-8 items-center rounded bg-blue-700 px-3 text-[12px] font-semibold text-white hover:bg-blue-800"
+                    className="inline-flex h-11 items-center rounded bg-blue-700 px-3 text-lg font-semibold text-white hover:bg-blue-800"
                   >
                     Apply
                   </a>
@@ -119,7 +119,7 @@ export default function JobsPage() {
             ))}
           </div>
 
-          <p className="mt-4 text-[12px] text-neutral-400 text-center">
+          <p className="mt-4 text-lg text-neutral-400 text-center">
             Updated daily · Always confirm on the employer site
           </p>
         </div>

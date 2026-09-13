@@ -7,7 +7,7 @@ export default function PrivacyPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <main className="mx-auto max-w-3xl px-5 sm:px-8 pt-24 pb-20">
-        <p className="text-[12px] text-muted">
+        <p className="text-sm text-muted">
           <Link href="/" className="hover:text-foreground">
             Home
           </Link>{" "}
@@ -16,11 +16,11 @@ export default function PrivacyPage() {
         <h1 className="mt-4 text-3xl font-semibold tracking-tight">
           Privacy Policy
         </h1>
-        <p className="mt-2 text-[13px] text-muted">Last updated: September 13, 2026</p>
+        <p className="mt-2 text-base text-muted">Last updated: September 13, 2026</p>
 
-        <div className="mt-10 space-y-8 text-[14px] leading-relaxed text-muted prose-headings:text-foreground">
+        <div className="mt-10 space-y-8 text-[17px] leading-relaxed text-muted prose-headings:text-foreground">
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               1. Who we are
             </h2>
             <p className="mt-2">
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               2. Information we collect
             </h2>
             <p className="mt-2">We may collect:</p>
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               3. How we use your information
             </h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               4. Sharing of information
             </h2>
             <p className="mt-2">
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               5. Data retention
             </h2>
             <p className="mt-2">
@@ -101,7 +101,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               6. Security
             </h2>
             <p className="mt-2">
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               7. Your rights
             </h2>
             <p className="mt-2">
@@ -123,7 +123,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               8. Cookies
             </h2>
             <p className="mt-2">
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               9. Changes
             </h2>
             <p className="mt-2">
@@ -147,7 +147,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               10. Contact
             </h2>
             <p className="mt-2">

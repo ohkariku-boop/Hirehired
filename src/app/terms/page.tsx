@@ -7,7 +7,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <main className="mx-auto max-w-3xl px-5 sm:px-8 pt-24 pb-20">
-        <p className="text-[12px] text-muted">
+        <p className="text-sm text-muted">
           <Link href="/" className="hover:text-foreground">
             Home
           </Link>{" "}
@@ -16,11 +16,11 @@ export default function TermsPage() {
         <h1 className="mt-4 text-3xl font-semibold tracking-tight">
           Terms of Service
         </h1>
-        <p className="mt-2 text-[13px] text-muted">Last updated: September 13, 2026</p>
+        <p className="mt-2 text-base text-muted">Last updated: September 13, 2026</p>
 
-        <div className="mt-10 space-y-8 text-[14px] leading-relaxed text-muted">
+        <div className="mt-10 space-y-8 text-[17px] leading-relaxed text-muted">
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               1. Acceptance of terms
             </h2>
             <p className="mt-2">
@@ -31,7 +31,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               2. Description of service
             </h2>
             <p className="mt-2">
@@ -45,7 +45,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               3. Accounts
             </h2>
             <p className="mt-2">
@@ -58,7 +58,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               4. Acceptable use
             </h2>
             <p className="mt-2">You agree not to:</p>
@@ -72,7 +72,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               5. Job listings and applications
             </h2>
             <p className="mt-2">
@@ -85,7 +85,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               6. Intellectual property
             </h2>
             <p className="mt-2">
@@ -97,7 +97,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               7. Disclaimers
             </h2>
             <p className="mt-2">
@@ -109,7 +109,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               8. Limitation of liability
             </h2>
             <p className="mt-2">
@@ -122,7 +122,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               9. Indemnification
             </h2>
             <p className="mt-2">
@@ -133,7 +133,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               10. Changes and termination
             </h2>
             <p className="mt-2">
@@ -145,7 +145,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               11. Governing law
             </h2>
             <p className="mt-2">
@@ -158,7 +158,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-[16px] font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">
               12. Contact
             </h2>
             <p className="mt-2">

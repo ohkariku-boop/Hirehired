@@ -4,11 +4,11 @@ export function Footer() {
   return (
     <footer className="border-t border-neutral-200 bg-neutral-50">
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-[13px]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-lg">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <span className="flex h-5 w-5 items-center justify-center rounded bg-blue-700 text-white text-[10px] font-bold">H</span>
-              <span className="font-semibold text-[13px]">Hirehired</span>
+              <span className="flex h-5 w-5 items-center justify-center rounded bg-blue-700 text-white text-xs font-bold">H</span>
+              <span className="font-semibold text-lg">Hirehired</span>
             </div>
             <p className="text-neutral-500 leading-relaxed max-w-[220px]">
               Jobs sourced from company career pages. Earlier signal, less noise.
@@ -38,7 +38,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-neutral-200 flex flex-col sm:flex-row justify-between gap-2 text-[12px] text-neutral-400">
+        <div className="mt-8 pt-6 border-t border-neutral-200 flex flex-col sm:flex-row justify-between gap-2 text-sm text-neutral-400">
           <p>© {new Date().getFullYear()} Hirehired</p>
           <p>Not affiliated with LinkedIn or Indeed</p>
         </div>
