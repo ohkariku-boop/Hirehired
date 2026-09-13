@@ -11,7 +11,7 @@ export function Footer() {
               <span className="font-semibold text-[13px]">Hirehired</span>
             </div>
             <p className="text-neutral-500 leading-relaxed max-w-[220px]">
-              Jobs from company career pages. APAC-first tech, compliance, KYC & KYB.
+              Jobs sourced from company career pages. Earlier signal, less noise.
             </p>
           </div>
           <div>
@@ -31,11 +31,10 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-neutral-900 mb-3">Focus</p>
+            <p className="font-semibold text-neutral-900 mb-3">For employers</p>
             <ul className="space-y-2 text-neutral-500">
-              <li>KYC / KYB</li>
-              <li>Compliance</li>
-              <li>Senior tech · APAC</li>
+              <li><Link href="/about/" className="hover:text-neutral-900">Post a role</Link></li>
+              <li><span className="text-neutral-400">Coming soon</span></li>
             </ul>
           </div>
         </div>

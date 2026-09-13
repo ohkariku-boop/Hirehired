@@ -21,7 +21,7 @@ export default function JobsPage() {
     (a, b) => new Date(b.posted).getTime() - new Date(a.posted).getTime()
   );
   const apac = jobs.filter((j) => j.region === "APAC").length;
-  const compliance = jobs.filter((j) => j.category === "Compliance").length;
+  const remote = jobs.filter((j) => /remote/i.test(j.location)).length;
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-neutral-900">
@@ -35,7 +35,7 @@ export default function JobsPage() {
                 Open roles
               </h1>
               <p className="mt-1 text-[13px] text-neutral-500">
-                {jobs.length} roles · {apac} APAC · {compliance} compliance/KYC
+                {jobs.length} roles · {apac} APAC · {remote} remote
               </p>
             </div>
             <form action="/jobs/" className="flex gap-2 w-full sm:w-auto">
@@ -52,10 +52,10 @@ export default function JobsPage() {
             {[
               `All ${jobs.length}`,
               `APAC ${apac}`,
-              `Compliance ${compliance}`,
+              `Remote ${remote}`,
               "Engineering",
-              "KYC/KYB",
-              "Remote",
+              "Product",
+              "Full-time",
             ].map((f, i) => (
               <button
                 key={f}
@@ -70,7 +70,6 @@ export default function JobsPage() {
             ))}
           </div>
 
-          {/* Dense list */}
           <div className="border border-neutral-200 rounded overflow-hidden divide-y divide-neutral-200">
             {sorted.map((job) => (
               <div

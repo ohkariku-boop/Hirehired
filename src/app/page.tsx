@@ -26,29 +26,28 @@ export default function Home() {
       <Header />
 
       <main className="flex-1 w-full">
-        {/* Hero — full width, tight */}
         <section className="w-full border-b border-neutral-200">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-14 lg:py-16">
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               <div className="lg:col-span-7">
                 <p className="text-[12px] font-medium text-blue-700 mb-3 tracking-wide uppercase">
-                  Career pages · APAC + global
+                  Direct from company career pages
                 </p>
                 <h1 className="text-[2rem] sm:text-[2.75rem] lg:text-[3.25rem] font-bold tracking-tight leading-[1.1]">
-                  Mid–senior roles in tech,
+                  Find roles before
                   <br className="hidden sm:block" />{" "}
-                  compliance, KYC & KYB.
+                  they hit the big boards.
                 </h1>
                 <p className="mt-4 text-[15px] sm:text-[16px] text-neutral-600 leading-relaxed max-w-xl">
-                  Listings pulled from employer career sites—often before they
-                  flood LinkedIn. Focused on APAC, with selected global remote roles.
+                  Openings sourced from employer career sites—often earlier than
+                  LinkedIn or Indeed. Apply with less noise and fewer applicants.
                 </p>
 
                 <form action="/jobs/" className="mt-6 flex gap-2 max-w-lg">
                   <input
                     type="search"
                     name="q"
-                    placeholder="Search KYC, engineer, Singapore…"
+                    placeholder="Role, skill, or company"
                     className="min-w-0 flex-1 h-10 rounded border border-neutral-300 bg-white px-3 text-[14px] placeholder:text-neutral-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                   <button
@@ -60,7 +59,7 @@ export default function Home() {
                 </form>
 
                 <div className="mt-4 flex flex-wrap gap-1.5">
-                  {["KYC", "KYB", "AML", "Senior Engineer", "Singapore", "Remote"].map(
+                  {["Remote", "Singapore", "Engineering", "Product", "Senior", "Full-time"].map(
                     (t) => (
                       <Link
                         key={t}
@@ -74,13 +73,12 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Side stats — dense */}
               <div className="lg:col-span-5 grid grid-cols-2 gap-3">
                 {[
-                  { k: "Focus", v: "Tech + Compliance" },
-                  { k: "Level", v: "Mid → Staff" },
-                  { k: "Regions", v: "APAC first" },
-                  { k: "Source", v: "Employer sites" },
+                  { k: "Source", v: "Career pages" },
+                  { k: "Timing", v: "Earlier signal" },
+                  { k: "Apply", v: "Employer direct" },
+                  { k: "Noise", v: "Less crowded" },
                 ].map((s) => (
                   <div
                     key={s.k}
@@ -97,7 +95,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Live roles strip — full width table-like */}
         <section className="w-full border-b border-neutral-200">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-10">
             <div className="flex items-center justify-between mb-4">
@@ -145,7 +142,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How — tight 3 col */}
         <section id="how" className="w-full border-b border-neutral-200 bg-neutral-50">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
             <h2 className="text-[15px] font-semibold mb-6">How it works</h2>
@@ -154,7 +150,7 @@ export default function Home() {
                 {
                   n: "1",
                   t: "Source monitoring",
-                  d: "We track employer career pages and ATS feeds for new mid–senior roles.",
+                  d: "We track employer career pages and ATS feeds for new openings as they go live.",
                 },
                 {
                   n: "2",
@@ -163,8 +159,8 @@ export default function Home() {
                 },
                 {
                   n: "3",
-                  t: "APAC + global",
-                  d: "Priority on Singapore, HK, and Asia remote, plus selected worldwide roles.",
+                  t: "Less noise",
+                  d: "See roles earlier, often before they attract hundreds of applicants on big boards.",
                 },
               ].map((s) => (
                 <div key={s.n} className="bg-white border border-neutral-200 rounded p-4">
@@ -177,18 +173,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Categories — dense links */}
         <section className="w-full border-b border-neutral-200">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
             <h2 className="text-[15px] font-semibold mb-4">Browse by focus</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
               {[
-                "KYC / KYB",
-                "AML / Compliance",
-                "Backend / Infra",
-                "Fintech eng",
-                "Singapore",
-                "Remote APAC",
+                "Engineering",
+                "Product",
+                "Design",
+                "Data",
+                "Operations",
+                "Remote",
               ].map((c) => (
                 <Link
                   key={c}
@@ -202,7 +197,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA strip */}
         <section className="w-full bg-neutral-900 text-white">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -210,7 +204,7 @@ export default function Home() {
                 {jobs.length}+ roles tracked
               </h2>
               <p className="mt-1 text-[13px] text-neutral-400">
-                Refreshed daily from public boards and career pages.
+                Refreshed daily from career pages and public boards.
               </p>
             </div>
             <Link
