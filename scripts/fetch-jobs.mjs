@@ -453,11 +453,16 @@ async function fetchLever(companySlug, companyName) {
 
 
 const WORKDAY_SITES = [
-  // host, tenant, site, company display name
+  // host, tenant, site, company
   ["dbs.wd3.myworkdayjobs.com", "dbs", "DBS_Careers", "DBS"],
   ["uobgroup.wd3.myworkdayjobs.com", "uobgroup", "UOBExternal", "UOB"],
   ["ocbc.wd102.myworkdayjobs.com", "ocbc", "External", "OCBC"],
   ["citi.wd5.myworkdayjobs.com", "citi", "2", "Citi"],
+  ["hlb.wd3.myworkdayjobs.com", "hlb", "HLBCareers", "Hong Leong Bank"],
+  ["santander.wd3.myworkdayjobs.com", "santander", "SantanderCareers", "Santander"],
+  ["blackrock.wd1.myworkdayjobs.com", "blackrock", "BlackRock_Professional", "BlackRock"],
+  ["bbh.wd5.myworkdayjobs.com", "bbh", "BBH", "Brown Brothers Harriman"],
+  ["sggovterp.wd102.myworkdayjobs.com", "sggovterp", "PublicServiceCareers", "Singapore Public Service"],
   ["adobe.wd5.myworkdayjobs.com", "adobe", "external_experienced", "Adobe"],
   ["salesforce.wd12.myworkdayjobs.com", "salesforce", "External_Career_Site", "Salesforce"],
   ["nvidia.wd5.myworkdayjobs.com", "nvidia", "NVIDIAExternalCareerSite", "NVIDIA"],
@@ -634,13 +639,231 @@ async function fetchAdzuna() {
   return out;
 }
 
+
+const ASHBY_BOARDS = [
+  ["openai", "OpenAI"],
+  ["notion", "Notion"],
+  ["linear", "Linear"],
+  ["ramp", "Ramp"],
+  ["plaid", "Plaid"],
+  ["snowflake", "Snowflake"],
+  ["sardine", "Sardine"],
+  ["sentry", "Sentry"],
+  ["supabase", "Supabase"],
+  ["alchemy", "Alchemy"],
+  ["persona", "Persona"],
+  ["column", "Column"],
+  ["posthog", "PostHog"],
+  ["render", "Render"],
+  ["resend", "Resend"],
+];
+
+async function fetchAshby(slug, company) {
+  try {
+    const r = await fetch(
+      `https://api.ashbyhq.com/posting-api/job-board/${slug}`,
+      { headers: { "User-Agent": "HirehiredBot/1.0" } }
+    );
+    if (!r.ok) return [];
+    const data = await r.json();
+    return (data.jobs || [])
+      .filter((j) => j.isListed !== false)
+      .filter((j) => isTargetLevel(j.title || ""))
+      .filter((j) => isComplianceTitle(j.title || "") || isTechTitle(j.title || ""))
+      .filter((j) => !isNonItSupport(j.title || ""))
+      .map((j) => {
+        const title = (j.title || "").trim();
+        const loc =
+          j.location ||
+          (j.isRemote ? "Remote" : "") ||
+          (Array.isArray(j.secondaryLocations) && j.secondaryLocations[0]) ||
+          "Remote";
+        const applyUrl = j.jobUrl || j.applyUrl || "";
+        if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) return null;
+        const compliance = isComplianceTitle(title);
+        return {
+          id: `ashby-${slug}-${j.id}`,
+          title,
+          company,
+          location: String(loc),
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: /contract|temporary/i.test(j.employmentType || "") ? "Contract" : "Permanent",
+          level: levelFromTitle(title),
+          salary: "Competitive",
+          posted: j.publishedAt
+            ? new Date(j.publishedAt).toISOString().slice(0, 10)
+            : new Date().toISOString().slice(0, 10),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl,
+          source: "ashby",
+          description: (j.descriptionPlain || title)
+            .replace(/\s+/g, " ")
+            .trim()
+            .slice(0, 280),
+        };
+      })
+      .filter(Boolean);
+  } catch (e) {
+    console.warn(`Ashby ${slug}:`, e.message);
+    return [];
+  }
+}
+
+/** Reed.co.uk — set REED_API_KEY (free at reed.co.uk/developers) */
+async function fetchReed() {
+  const key = process.env.REED_API_KEY;
+  if (!key) {
+    console.log("Reed: skipped (no REED_API_KEY)");
+    return [];
+  }
+  const queries = [
+    { keywords: "compliance AML KYC", locationName: "London" },
+    { keywords: "compliance", locationName: "Singapore" },
+    { keywords: "senior software engineer", locationName: "London" },
+    { keywords: "product manager", locationName: "London" },
+  ];
+  const out = [];
+  const auth = Buffer.from(`${key}:`).toString("base64");
+  for (const q of queries) {
+    try {
+      const params = new URLSearchParams({
+        keywords: q.keywords,
+        locationName: q.locationName,
+        resultsToTake: "100",
+      });
+      const r = await fetch(
+        `https://www.reed.co.uk/api/1.0/search?${params}`,
+        {
+          headers: {
+            Authorization: `Basic ${auth}`,
+            "User-Agent": "HirehiredBot/1.0",
+          },
+        }
+      );
+      if (!r.ok) {
+        console.warn("Reed HTTP", r.status);
+        continue;
+      }
+      const data = await r.json();
+      for (const j of data.results || []) {
+        const title = j.jobTitle || "";
+        if (!isTargetLevel(title)) continue;
+        if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
+        if (isNonItSupport(title)) continue;
+        const applyUrl = j.jobUrl || "";
+        if (!applyUrl) continue;
+        const loc = j.locationName || q.locationName;
+        const compliance = isComplianceTitle(title);
+        out.push({
+          id: `reed-${j.jobId}`,
+          title: title.trim(),
+          company: j.employerName || "Company",
+          location: loc,
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: j.contractType
+            ? /contract|temp/i.test(j.contractType)
+              ? "Contract"
+              : "Permanent"
+            : "Permanent",
+          level: levelFromTitle(title),
+          salary:
+            j.minimumSalary && j.maximumSalary
+              ? `£${Math.round(j.minimumSalary / 1000)}k – £${Math.round(j.maximumSalary / 1000)}k`
+              : "Competitive",
+          posted: (j.date || "").slice(0, 10) || new Date().toISOString().slice(0, 10),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl,
+          source: "reed",
+          description: (j.jobDescription || "")
+            .replace(/<[^>]+>/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+            .slice(0, 280),
+        });
+      }
+    } catch (e) {
+      console.warn("Reed:", e.message);
+    }
+  }
+  return out;
+}
+
+/** JobsPipe — set JOBSPIPE_API_KEY (free tier ~1k jobs/mo at jobspipe.dev) */
+async function fetchJobsPipe() {
+  const key = process.env.JOBSPIPE_API_KEY;
+  if (!key) {
+    console.log("JobsPipe: skipped (no JOBSPIPE_API_KEY) — evaluate free tier at jobspipe.dev");
+    return [];
+  }
+  const queries = [
+    { job_title_or: ["compliance", "KYC", "AML"], limit: 50 },
+    { job_title_or: ["senior software engineer", "staff engineer"], limit: 50 },
+    { job_title_or: ["product manager"], limit: 25 },
+  ];
+  const out = [];
+  for (const body of queries) {
+    try {
+      const r = await fetch("https://api.jobspipe.dev/v1/jobs/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${key}`,
+          "User-Agent": "HirehiredBot/1.0",
+        },
+        body: JSON.stringify(body),
+      });
+      if (!r.ok) {
+        console.warn("JobsPipe HTTP", r.status, (await r.text()).slice(0, 120));
+        continue;
+      }
+      const data = await r.json();
+      const rows = data.data || data.jobs || data.results || [];
+      for (const j of rows) {
+        const title = j.job_title || j.title || "";
+        if (!isTargetLevel(title)) continue;
+        if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
+        if (isNonItSupport(title)) continue;
+        const applyUrl = j.url || j.apply_url || j.job_url || "";
+        if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) continue;
+        const loc = j.location || j.locations_text || "Remote";
+        const company = j.company || j.company_name || "Company";
+        const compliance = isComplianceTitle(title);
+        out.push({
+          id: `jobspipe-${j.id || applyUrl}`,
+          title: title.trim(),
+          company,
+          location: String(loc),
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: "Permanent",
+          level: levelFromTitle(title),
+          salary:
+            j.min_annual_salary_usd && j.max_annual_salary_usd
+              ? `$${Math.round(j.min_annual_salary_usd / 1000)}k – $${Math.round(j.max_annual_salary_usd / 1000)}k`
+              : "Competitive",
+          posted: (j.date_posted || j.discovered_at || "").slice(0, 10) || new Date().toISOString().slice(0, 10),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl,
+          source: "jobspipe",
+          description: `${title} at ${company}`,
+        });
+      }
+    } catch (e) {
+      console.warn("JobsPipe:", e.message);
+    }
+  }
+  return out;
+}
+
 function isDirectJobUrl(url) {
   if (!url) return false;
   return (
     /greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /boards\.greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
-    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url)
+    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url)
   );
 }
 
@@ -664,22 +887,42 @@ async function main() {
   const fromLever = leverResults.flat();
   console.log(`Lever: ${fromLever.length}`);
 
+  console.log("Fetching Ashby boards...");
+  const ashbyResults = await Promise.all(
+    ASHBY_BOARDS.map(([slug, name]) => fetchAshby(slug, name))
+  );
+  const fromAshby = ashbyResults.flat();
+  console.log(`Ashby: ${fromAshby.length}`);
+
   console.log("Fetching Workday banks / enterprises...");
   const fromWd = await fetchAllWorkday();
   console.log(`Workday: ${fromWd.length}`);
 
-  console.log("Fetching public APIs + optional Adzuna...");
-  const [remote, remotive, arbeit, adzuna] = await Promise.all([
+  console.log("Fetching public APIs + optional Adzuna / Reed / JobsPipe...");
+  const [remote, remotive, arbeit, adzuna, reed, jobspipe] = await Promise.all([
     fetchRemoteOK(),
     fetchRemotive(),
     fetchArbeitnow(),
     fetchAdzuna(),
+    fetchReed(),
+    fetchJobsPipe(),
   ]);
   console.log(
-    `RemoteOK: ${remote.length}, Remotive: ${remotive.length}, Arbeitnow: ${arbeit.length}, Adzuna: ${adzuna.length}`
+    `RemoteOK: ${remote.length}, Remotive: ${remotive.length}, Arbeitnow: ${arbeit.length}, Adzuna: ${adzuna.length}, Reed: ${reed.length}, JobsPipe: ${jobspipe.length}`
   );
 
-  const all = [...fromGh, ...fromLever, ...fromWd, ...remote, ...remotive, ...arbeit, ...adzuna];
+  const all = [
+    ...fromGh,
+    ...fromLever,
+    ...fromAshby,
+    ...fromWd,
+    ...remote,
+    ...remotive,
+    ...arbeit,
+    ...adzuna,
+    ...reed,
+    ...jobspipe,
+  ];
 
   const seen = new Set();
   const merged = [];
@@ -727,7 +970,7 @@ async function main() {
   add(tech, 25);
 
   // Cap overall
-  const capped = final.slice(0, 900);
+  const capped = final.slice(0, 1000);
 
   capped.sort((a, b) => {
     if (a.region === "APAC" && b.region !== "APAC") return -1;
