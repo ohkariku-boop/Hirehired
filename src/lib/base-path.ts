@@ -9,7 +9,11 @@ export const BASE_PATH =
 
 export function withBase(path: string): string {
   if (!path.startsWith("/")) return path;
-  // Already prefixed
   if (BASE_PATH && path.startsWith(BASE_PATH + "/")) return path;
   return `${BASE_PATH}${path}`;
+}
+
+/** Alias for static assets (logo, favicon, etc.) */
+export function asset(path: string): string {
+  return withBase(path);
 }

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import jobs from "@/data/jobs.json";
-import { withBase } from "@/lib/base-path";
 
 function formatPosted(dateStr: string) {
   try {
