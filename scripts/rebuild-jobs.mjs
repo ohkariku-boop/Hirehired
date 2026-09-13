@@ -451,13 +451,196 @@ async function fetchLever(companySlug, companyName) {
   }
 }
 
+
+const WORKDAY_SITES = [
+  // host, tenant, site, company display name
+  ["dbs.wd3.myworkdayjobs.com", "dbs", "DBS_Careers", "DBS"],
+  ["uobgroup.wd3.myworkdayjobs.com", "uobgroup", "UOBExternal", "UOB"],
+  ["ocbc.wd102.myworkdayjobs.com", "ocbc", "External", "OCBC"],
+  ["citi.wd5.myworkdayjobs.com", "citi", "2", "Citi"],
+  ["adobe.wd5.myworkdayjobs.com", "adobe", "external_experienced", "Adobe"],
+  ["salesforce.wd12.myworkdayjobs.com", "salesforce", "External_Career_Site", "Salesforce"],
+  ["nvidia.wd5.myworkdayjobs.com", "nvidia", "NVIDIAExternalCareerSite", "NVIDIA"],
+];
+
+const WORKDAY_SEARCHES = [
+  "compliance",
+  "KYC",
+  "AML",
+  "KYB",
+  "CDD",
+  "fraud",
+  "sanctions",
+  "software engineer",
+  "product manager",
+  "technical program manager",
+  "IT manager",
+];
+
+function parseWorkdayPosted(postedOn) {
+  if (!postedOn) return new Date().toISOString().slice(0, 10);
+  const m = String(postedOn).match(/Posted (\d+) Day/i);
+  if (m) {
+    const d = new Date();
+    d.setDate(d.getDate() - parseInt(m[1], 10));
+    return d.toISOString().slice(0, 10);
+  }
+  if (/today/i.test(postedOn)) return new Date().toISOString().slice(0, 10);
+  if (/yesterday/i.test(postedOn)) {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.toISOString().slice(0, 10);
+  }
+  return new Date().toISOString().slice(0, 10);
+}
+
+async function fetchWorkdaySite(host, tenant, site, company, searchText) {
+  try {
+    const endpoint = `https://${host}/wday/cxs/${tenant}/${site}/jobs`;
+    const jobs = [];
+    let offset = 0;
+    const limit = 20;
+    for (let page = 0; page < 15; page++) {
+      const r = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "User-Agent": "Mozilla/5.0 (compatible; HirehiredBot/1.0)",
+        },
+        body: JSON.stringify({
+          appliedFacets: {},
+          limit,
+          offset,
+          searchText: searchText || "",
+        }),
+      });
+      if (!r.ok) break;
+      const data = await r.json();
+      const postings = data.jobPostings || [];
+      if (!postings.length) break;
+      for (const j of postings) {
+        const title = j.title || "";
+        try {
+          if (!isTargetLevel(title)) continue;
+          if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
+          if (typeof isNonItSupport === "function" && isNonItSupport(title)) continue;
+        } catch (err) {
+          console.warn("filter error", title, err.message);
+          continue;
+        }
+        const path = j.externalPath || "";
+        if (!path) continue;
+        const loc = j.locationsText || "Remote";
+        const applyUrl = `https://${host}/${site}${path}`;
+        const compliance = isComplianceTitle(title);
+        jobs.push({
+          id: `wd-${tenant}-${path.replace(/[^a-zA-Z0-9]/g, "-").slice(0, 80)}`,
+          title: title.trim(),
+          company,
+          location: loc,
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: /contract|temporary/i.test(j.timeType || "") ? "Contract" : "Permanent",
+          level: levelFromTitle(title),
+          salary: "Competitive",
+          posted: parseWorkdayPosted(j.postedOn),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl,
+          source: "workday",
+          description: `${title.trim()} at ${company}. Apply on the employer Workday careers page.`,
+        });
+      }
+      offset += limit;
+      if (offset >= (data.total || 0)) break;
+    }
+    return jobs;
+  } catch (e) {
+    console.warn(`Workday ${company}:`, e.message);
+    return [];
+  }
+}
+
+async function fetchAllWorkday() {
+  const all = [];
+  for (const [host, tenant, site, company] of WORKDAY_SITES) {
+    // One broad pull + compliance-focused pull
+    const batches = await Promise.all([
+      fetchWorkdaySite(host, tenant, site, company, "compliance KYC AML"),
+      fetchWorkdaySite(host, tenant, site, company, "engineer software product manager"),
+    ]);
+    all.push(...batches.flat());
+    console.log(`  Workday ${company}: ${batches.flat().length} matched`);
+  }
+  return all;
+}
+
+/** Optional Adzuna (set ADZUNA_APP_ID + ADZUNA_APP_KEY in env / GitHub secrets) */
+async function fetchAdzuna() {
+  const appId = process.env.ADZUNA_APP_ID;
+  const appKey = process.env.ADZUNA_APP_KEY;
+  if (!appId || !appKey) {
+    console.log("Adzuna: skipped (no ADZUNA_APP_ID/KEY)");
+    return [];
+  }
+  const countries = ["sg", "gb", "us", "au"];
+  const queries = [
+    "compliance KYC AML",
+    "software engineer senior",
+    "product manager",
+  ];
+  const out = [];
+  for (const country of countries) {
+    for (const what of queries) {
+      try {
+        const url = `https://api.adzuna.com/v1/api/jobs/${country}/search/1?app_id=${appId}&app_key=${appKey}&results_per_page=50&what=${encodeURIComponent(what)}&content-type=application/json`;
+        const r = await fetch(url, { headers: { "User-Agent": "HirehiredBot/1.0" } });
+        if (!r.ok) continue;
+        const data = await r.json();
+        for (const j of data.results || []) {
+          const title = j.title || "";
+          if (!isTargetLevel(title)) continue;
+          if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
+          if (isNonItSupport(title)) continue;
+          const applyUrl = j.redirect_url || j.adref || "";
+          if (!applyUrl) continue;
+          const loc = j.location?.display_name || country.toUpperCase();
+          const compliance = isComplianceTitle(title);
+          out.push({
+            id: `adzuna-${j.id}`,
+            title: title.trim(),
+            company: j.company?.display_name || "Company",
+            location: loc,
+            region: isApac(`${loc} ${title}`) || country === "sg" || country === "au" ? "APAC" : "Global",
+            type: /contract/i.test(j.contract_type || "") ? "Contract" : "Permanent",
+            level: levelFromTitle(title),
+            salary:
+              j.salary_min && j.salary_max
+                ? `$${Math.round(j.salary_min / 1000)}k – $${Math.round(j.salary_max / 1000)}k`
+                : "Competitive",
+            posted: (j.created || "").slice(0, 10) || new Date().toISOString().slice(0, 10),
+            tags: tagsFromTitle(title),
+            category: compliance ? "Compliance" : categoryFromTitle(title),
+            applyUrl,
+            source: "adzuna",
+            description: (j.description || "").replace(/\s+/g, " ").trim().slice(0, 280),
+          });
+        }
+      } catch (e) {
+        console.warn("Adzuna", country, e.message);
+      }
+    }
+  }
+  return out;
+}
+
 function isDirectJobUrl(url) {
   if (!url) return false;
   return (
     /greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /boards\.greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
-    /gh_jid=\d+/i.test(url)
+    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url)
   );
 }
 
@@ -481,17 +664,22 @@ async function main() {
   const fromLever = leverResults.flat();
   console.log(`Lever: ${fromLever.length}`);
 
-  console.log("Fetching public APIs...");
-  const [remote, remotive, arbeit] = await Promise.all([
+  console.log("Fetching Workday banks / enterprises...");
+  const fromWd = await fetchAllWorkday();
+  console.log(`Workday: ${fromWd.length}`);
+
+  console.log("Fetching public APIs + optional Adzuna...");
+  const [remote, remotive, arbeit, adzuna] = await Promise.all([
     fetchRemoteOK(),
     fetchRemotive(),
     fetchArbeitnow(),
+    fetchAdzuna(),
   ]);
   console.log(
-    `RemoteOK: ${remote.length}, Remotive: ${remotive.length}, Arbeitnow: ${arbeit.length}`
+    `RemoteOK: ${remote.length}, Remotive: ${remotive.length}, Arbeitnow: ${arbeit.length}, Adzuna: ${adzuna.length}`
   );
 
-  const all = [...fromGh, ...fromLever, ...remote, ...remotive, ...arbeit];
+  const all = [...fromGh, ...fromLever, ...fromWd, ...remote, ...remotive, ...arbeit, ...adzuna];
 
   const seen = new Set();
   const merged = [];
@@ -539,7 +727,7 @@ async function main() {
   add(tech, 25);
 
   // Cap overall
-  const capped = final.slice(0, 700);
+  const capped = final.slice(0, 900);
 
   capped.sort((a, b) => {
     if (a.region === "APAC" && b.region !== "APAC") return -1;
