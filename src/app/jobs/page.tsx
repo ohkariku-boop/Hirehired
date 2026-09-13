@@ -52,10 +52,10 @@ export default function JobsPage() {
             {[
               `All ${jobs.length}`,
               `APAC ${apac}`,
+              "Mid",
+              "Senior",
+              "Director",
               `Remote ${remote}`,
-              "Engineering",
-              "Product",
-              "Full-time",
             ].map((f, i) => (
               <button
                 key={f}

@@ -1,12 +1,7 @@
 /**
- * Daily job discovery for Hirehired
- * Focus: mid–senior tech + compliance / KYC / KYB
- * Priority: APAC, then global remote
- *
- * Uses public RemoteOK API for tech roles, then merges with curated
- * compliance listings already in jobs.json (preserves hand-picked KYC/KYB).
+ * Daily job discovery — mid / senior / director only
+ * Prefer direct Greenhouse/Lever job URLs over generic career hubs
  */
-
 import { readFileSync, writeFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -14,58 +9,12 @@ import { dirname, join } from "path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const jobsPath = join(__dirname, "../src/data/jobs.json");
 
+const LEVEL_RE = /\b(mid[- ]?level|mid[- ]?senior|senior|staff|principal|lead|manager|director|head of|vp|vice president)\b/i;
+const JUNIOR_RE = /\b(intern|junior|graduate|entry[- ]?level|associate (?!director))\b/i;
+
 const APAC_KEYWORDS = [
-  "singapore",
-  "hong kong",
-  "tokyo",
-  "sydney",
-  "melbourne",
-  "seoul",
-  "jakarta",
-  "bangkok",
-  "manila",
-  "kuala lumpur",
-  "taipei",
-  "apac",
-  "asia",
-];
-
-const TECH_KEYWORDS = [
-  "engineer",
-  "developer",
-  "software",
-  "backend",
-  "frontend",
-  "full.?stack",
-  "devops",
-  "sre",
-  "platform",
-  "infrastructure",
-  "data engineer",
-  "machine learning",
-  "security engineer",
-];
-
-const COMPLIANCE_KEYWORDS = [
-  "kyc",
-  "kyb",
-  "aml",
-  "compliance",
-  "due diligence",
-  "financial crime",
-  "sanctions",
-  "cdd",
-  "edd",
-];
-
-const SENIOR_KEYWORDS = [
-  "senior",
-  "staff",
-  "principal",
-  "lead",
-  "manager",
-  "head of",
-  "director",
+  "singapore", "hong kong", "tokyo", "sydney", "melbourne", "seoul",
+  "jakarta", "bangkok", "manila", "kuala lumpur", "taipei", "apac", "asia",
 ];
 
 function isApac(text) {
@@ -73,24 +22,36 @@ function isApac(text) {
   return APAC_KEYWORDS.some((k) => t.includes(k));
 }
 
-function matchesFocus(title, tags = []) {
-  const blob = `${title} ${(tags || []).join(" ")}`.toLowerCase();
-  const tech = TECH_KEYWORDS.some((k) => new RegExp(k, "i").test(blob));
-  const compliance = COMPLIANCE_KEYWORDS.some((k) =>
-    new RegExp(k, "i").test(blob)
-  );
-  const senior = SENIOR_KEYWORDS.some((k) => new RegExp(k, "i").test(blob));
-  return (tech || compliance) && senior;
+function isTargetLevel(title) {
+  if (JUNIOR_RE.test(title || "")) return false;
+  return LEVEL_RE.test(title || "");
+}
+
+function levelFromTitle(title) {
+  const t = title || "";
+  if (/\b(director|head of|vp|vice president)\b/i.test(t)) return "Director";
+  if (/\b(staff|principal)\b/i.test(t)) return "Senior";
+  if (/\b(senior|lead|manager)\b/i.test(t)) return "Senior";
+  if (/\bmid\b/i.test(t)) return "Mid";
+  return "Senior";
+}
+
+function isDirectJobUrl(url) {
+  if (!url) return false;
+  // Greenhouse / Lever / Ashby individual job pages
+  return /greenhouse\.io\/.+\/jobs\/\d+/i.test(url)
+    || /lever\.co\/[^/]+\/[a-f0-9-]{8,}/i.test(url)
+    || /jobs\.ashbyhq\.com\/[^/]+\/[a-f0-9-]+/i.test(url)
+    || /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url);
 }
 
 async function fetchRemoteOK() {
   try {
     const res = await fetch("https://remoteok.com/api", {
-      headers: { "User-Agent": "HirehiredBot/1.0 (job aggregator)" },
+      headers: { "User-Agent": "HirehiredBot/1.0" },
     });
     if (!res.ok) throw new Error(`RemoteOK ${res.status}`);
     const data = await res.json();
-    // First item is metadata
     return Array.isArray(data) ? data.slice(1) : [];
   } catch (e) {
     console.warn("RemoteOK fetch failed:", e.message);
@@ -102,22 +63,15 @@ function mapRemoteOK(job) {
   const location = job.location || "Remote";
   const region = isApac(`${location} ${job.position || ""}`) ? "APAC" : "Global";
   const tags = Array.isArray(job.tags) ? job.tags.slice(0, 6) : [];
-  const isCompliance = COMPLIANCE_KEYWORDS.some((k) =>
-    new RegExp(k, "i").test(`${job.position} ${tags.join(" ")}`)
-  );
-
+  const applyUrl = job.apply_url || job.url || "";
   return {
     id: `remoteok-${job.id || job.slug || Date.now()}`,
     title: job.position || "Untitled role",
     company: job.company || "Company",
-    location: location || "Remote",
+    location,
     region,
     type: "Full-time",
-    level: SENIOR_KEYWORDS.some((k) =>
-      new RegExp(k, "i").test(job.position || "")
-    )
-      ? "Senior"
-      : "Mid–Senior",
+    level: levelFromTitle(job.position),
     salary:
       job.salary_min && job.salary_max
         ? `$${Math.round(job.salary_min / 1000)}k – $${Math.round(job.salary_max / 1000)}k`
@@ -126,8 +80,8 @@ function mapRemoteOK(job) {
       ? new Date(job.date).toISOString().slice(0, 10)
       : new Date().toISOString().slice(0, 10),
     tags,
-    category: isCompliance ? "Compliance" : "Engineering",
-    applyUrl: job.url || job.apply_url || "https://remoteok.com/",
+    category: "Engineering",
+    applyUrl,
     source: "remoteok",
     description: (job.description || "")
       .replace(/<[^>]+>/g, " ")
@@ -145,20 +99,19 @@ async function main() {
     existing = [];
   }
 
-  // Keep hand-curated (non-remoteok) listings
-  const curated = existing.filter((j) => j.source !== "remoteok");
+  // Keep curated with direct URLs preferred
+  const curated = existing
+    .filter((j) => j.source !== "remoteok")
+    .filter((j) => isTargetLevel(j.title) || ["Mid", "Senior", "Director"].includes(j.level));
 
   const remote = await fetchRemoteOK();
   const filtered = remote
-    .filter((j) => matchesFocus(j.position, j.tags))
+    .filter((j) => isTargetLevel(j.position))
     .map(mapRemoteOK)
-    // Prefer APAC in sort order later
-    .slice(0, 40);
+    .filter((j) => j.applyUrl) // must have some apply link
+    .slice(0, 30);
 
-  // Merge: curated first, then remote (dedupe by title+company)
-  const seen = new Set(
-    curated.map((j) => `${j.title}|${j.company}`.toLowerCase())
-  );
+  const seen = new Set(curated.map((j) => `${j.title}|${j.company}`.toLowerCase()));
   const merged = [...curated];
   for (const j of filtered) {
     const key = `${j.title}|${j.company}`.toLowerCase();
@@ -168,17 +121,19 @@ async function main() {
     }
   }
 
-  // Sort: APAC first, then by date desc
+  // Prefer listings with direct job URLs when sorting within same region
   merged.sort((a, b) => {
     if (a.region === "APAC" && b.region !== "APAC") return -1;
     if (b.region === "APAC" && a.region !== "APAC") return 1;
+    const ad = isDirectJobUrl(a.applyUrl) ? 0 : 1;
+    const bd = isDirectJobUrl(b.applyUrl) ? 0 : 1;
+    if (ad !== bd) return ad - bd;
     return new Date(b.posted) - new Date(a.posted);
   });
 
   writeFileSync(jobsPath, JSON.stringify(merged, null, 2) + "\n");
-  console.log(
-    `Wrote ${merged.length} jobs (${curated.length} curated + ${merged.length - curated.length} from RemoteOK)`
-  );
+  const direct = merged.filter((j) => isDirectJobUrl(j.applyUrl)).length;
+  console.log(`Wrote ${merged.length} jobs (${direct} with direct job URLs)`);
 }
 
 main().catch((e) => {
