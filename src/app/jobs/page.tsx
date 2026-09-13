@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const sampleJobs = [
   {
@@ -51,47 +53,48 @@ const sampleJobs = [
     posted: "2 days ago",
     tags: ["Infrastructure", "AWS", "Terraform"],
   },
+  {
+    id: "6",
+    title: "Growth Marketing Lead",
+    company: "Northstar Health",
+    location: "Remote",
+    type: "Full-time",
+    salary: "$120k – $150k",
+    posted: "2 days ago",
+    tags: ["Growth", "B2B", "Content"],
+  },
 ];
 
 export default function JobsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:px-8">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-background font-bold text-sm">
-              H
-            </span>
-            <span className="font-semibold tracking-tight text-[15px]">
-              Hirehired
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/login/"
-              className="text-[13px] text-muted hover:text-foreground transition-colors"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/signup/"
-              className="inline-flex h-8 items-center rounded-full bg-accent px-4 text-[13px] font-semibold text-background hover:bg-accent-dim transition-colors"
-            >
-              Get access
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header solid />
 
-      <main className="mx-auto max-w-6xl px-5 sm:px-8 py-12 sm:py-16">
+      <main className="mx-auto max-w-6xl px-5 sm:px-8 pt-24 pb-16">
         <div className="mb-10">
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
             Open roles
           </h1>
-          <p className="mt-2 text-[15px] text-muted">
-            Sample listings for the static preview. Live company-page jobs load
-            once the full app is connected.
+          <p className="mt-2 text-[15px] text-muted max-w-xl">
+            Roles sourced from company career pages. Apply direct. Sample
+            listings shown for this preview.
           </p>
+        </div>
+
+        {/* Simple filters strip */}
+        <div className="mb-8 flex flex-wrap gap-2">
+          {["All", "Remote", "Engineering", "Design", "Data"].map((f, i) => (
+            <button
+              key={f}
+              className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+                i === 0
+                  ? "bg-accent text-background"
+                  : "border border-border text-muted hover:text-foreground hover:border-border"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
         </div>
 
         <div className="space-y-3">
@@ -139,14 +142,7 @@ export default function JobsPage() {
         </div>
       </main>
 
-      <footer className="border-t border-border py-8">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 flex items-center justify-between">
-          <Link href="/" className="text-[13px] text-muted hover:text-foreground">
-            ← Back to home
-          </Link>
-          <p className="text-[12px] text-muted">Hirehired</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
