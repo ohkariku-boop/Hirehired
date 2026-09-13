@@ -112,11 +112,12 @@ body {
   }
 }
 
-/* Touch-friendly tap targets */
+/* Primary controls stay tappable; chips stay compact */
 @media (max-width: 640px) {
-  a, button {
+  .tap-target {
     min-height: 44px;
   }
+}
   /* Exception for small chips */
   .rounded-full.px-2,
   .rounded-full.px-2\.5,
