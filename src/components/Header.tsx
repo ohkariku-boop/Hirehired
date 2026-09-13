@@ -1,18 +1,18 @@
 import Link from "next/link";
-import Image from "next/image";
+import { asset } from "@/lib/base-path";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
       <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
         <Link href="/" className="flex items-center gap-2.5 min-w-0">
-          <Image
-            src="/logo.png"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={asset("/logo.png")}
             alt="Hirehired"
             width={120}
-            height={104}
-            className="h-9 sm:h-10 w-auto"
-            priority
+            height={48}
+            className="h-9 sm:h-10 w-auto object-contain"
           />
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[15px] text-neutral-600">

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { asset } from "@/lib/base-path";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SignupPage() {
@@ -46,7 +46,7 @@ export default function SignupPage() {
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm">
           <Link href="/" className="inline-block mb-8">
-            <Image src="/logo.png" alt="Hirehired" width={120} height={104} className="h-10 w-auto" priority />
+            <img src={asset("/logo.png")} alt="Hirehired" width={120} height={48} className="h-10 w-auto object-contain" />
           </Link>
           <h1 className="text-2xl font-bold">Create account</h1>
           <form onSubmit={handleSignup} className="mt-5 space-y-3">

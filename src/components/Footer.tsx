@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { asset } from "@/lib/base-path";
 
 export function Footer() {
   return (
@@ -8,12 +8,13 @@ export function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-[15px]">
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="inline-block mb-3">
-              <Image
-                src="/logo.png"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset("/logo.png")}
                 alt="Hirehired"
                 width={120}
-                height={104}
-                className="h-10 w-auto"
+                height={48}
+                className="h-10 w-auto object-contain"
               />
             </Link>
             <p className="text-neutral-500 leading-relaxed max-w-[240px] text-base">
