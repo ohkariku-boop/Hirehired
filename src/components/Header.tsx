@@ -1,24 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
-      <div className="flex h-14 sm:h-14 items-center justify-between px-4 sm:px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded bg-blue-700 text-white text-xs font-bold">
-            H
-          </span>
-          <span className="text-base font-semibold tracking-tight">Hirehired</span>
+      <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
+        <Link href="/" className="flex items-center gap-2.5 min-w-0">
+          <Image
+            src="/logo.png"
+            alt="Hirehired"
+            width={120}
+            height={104}
+            className="h-9 sm:h-10 w-auto"
+            priority
+          />
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-lg text-neutral-600">
+        <nav className="hidden md:flex items-center gap-6 text-[15px] text-neutral-600">
           <Link href="/jobs/" className="hover:text-neutral-900">Jobs</Link>
           <Link href="/#how" className="hover:text-neutral-900">How it works</Link>
           <Link href="/about/" className="hover:text-neutral-900">About</Link>
         </nav>
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Link href="/jobs/" className="md:hidden text-lg text-neutral-600 px-1">Jobs</Link>
-          <Link href="/login/" className="hidden sm:inline text-lg text-neutral-600 hover:text-neutral-900">Sign in</Link>
-          <Link href="/signup/" className="inline-flex h-11 items-center rounded bg-blue-700 px-3 text-sm font-semibold text-white hover:bg-blue-800">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <Link href="/jobs/" className="md:hidden text-[15px] text-neutral-600 px-1">Jobs</Link>
+          <Link href="/login/" className="hidden sm:inline text-[15px] text-neutral-600 hover:text-neutral-900">Sign in</Link>
+          <Link href="/signup/" className="inline-flex h-10 items-center rounded bg-blue-700 px-3.5 text-[15px] font-semibold text-white hover:bg-blue-800">
             Get started
           </Link>
         </div>

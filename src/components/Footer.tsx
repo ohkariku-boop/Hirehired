@@ -1,16 +1,22 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
     <footer className="border-t border-neutral-200 bg-neutral-50">
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-lg">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-[15px]">
           <div className="col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="flex h-5 w-5 items-center justify-center rounded bg-blue-700 text-white text-xs font-bold">H</span>
-              <span className="font-semibold text-lg">Hirehired</span>
-            </div>
-            <p className="text-neutral-500 leading-relaxed max-w-[220px]">
+            <Link href="/" className="inline-block mb-3">
+              <Image
+                src="/logo.png"
+                alt="Hirehired"
+                width={120}
+                height={104}
+                className="h-10 w-auto"
+              />
+            </Link>
+            <p className="text-neutral-500 leading-relaxed max-w-[240px] text-base">
               Jobs sourced from company career pages. Earlier signal, less noise.
             </p>
           </div>
