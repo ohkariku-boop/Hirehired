@@ -68,28 +68,26 @@ const sampleJobs = [
 export default function JobsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header solid />
+      <Header />
 
-      <main className="mx-auto max-w-6xl px-5 sm:px-8 pt-24 pb-16">
+      <main className="mx-auto max-w-6xl px-5 sm:px-8 pt-28 pb-20">
         <div className="mb-10">
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
             Open roles
           </h1>
-          <p className="mt-2 text-[15px] text-muted max-w-xl">
-            Roles sourced from company career pages. Apply direct. Sample
-            listings shown for this preview.
+          <p className="mt-2 text-[16px] text-muted max-w-xl">
+            Roles sourced from company career pages. Apply direct.
           </p>
         </div>
 
-        {/* Simple filters strip */}
         <div className="mb-8 flex flex-wrap gap-2">
           {["All", "Remote", "Engineering", "Design", "Data"].map((f, i) => (
             <button
               key={f}
-              className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+              className={`rounded-full px-4 py-2 text-[13px] font-semibold transition-colors ${
                 i === 0
-                  ? "bg-accent text-background"
-                  : "border border-border text-muted hover:text-foreground hover:border-border"
+                  ? "bg-accent text-white shadow-sm shadow-indigo-500/20"
+                  : "bg-white border border-border text-muted hover:text-foreground hover:border-slate-300"
               }`}
             >
               {f}
@@ -101,24 +99,24 @@ export default function JobsPage() {
           {sampleJobs.map((job) => (
             <article
               key={job.id}
-              className="group rounded-xl border border-border bg-card p-5 sm:p-6 hover:border-accent/30 transition-colors"
+              className="card-lift group rounded-2xl border border-border bg-white p-5 sm:p-6 shadow-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="min-w-0">
-                  <h2 className="text-[16px] font-semibold leading-snug group-hover:text-accent transition-colors">
+                  <h2 className="text-[17px] font-semibold leading-snug text-slate-900 group-hover:text-accent transition-colors">
                     {job.title}
                   </h2>
                   <p className="mt-1 text-[14px] text-muted">
                     {job.company} · {job.location}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="rounded-md bg-surface px-2 py-0.5 text-[11px] text-muted">
+                    <span className="rounded-full bg-surface px-2.5 py-0.5 text-[12px] font-medium text-slate-600">
                       {job.type}
                     </span>
-                    <span className="rounded-md bg-accent/10 px-2 py-0.5 text-[11px] text-accent">
+                    <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[12px] font-medium text-accent">
                       {job.salary}
                     </span>
-                    <span className="rounded-md bg-surface px-2 py-0.5 text-[11px] text-muted">
+                    <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[12px] font-medium text-emerald-700">
                       {job.posted}
                     </span>
                   </div>
@@ -126,14 +124,14 @@ export default function JobsPage() {
                     {job.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[11px] text-muted/80 border border-border/80 rounded px-1.5 py-0.5"
+                        className="text-[12px] text-slate-500 border border-border rounded-md px-2 py-0.5"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
                 </div>
-                <button className="shrink-0 inline-flex h-9 items-center justify-center rounded-full bg-accent px-5 text-[13px] font-semibold text-background hover:bg-accent-dim transition-colors">
+                <button className="shrink-0 inline-flex h-10 items-center justify-center rounded-full bg-accent px-5 text-[13px] font-semibold text-white hover:bg-accent-hover transition-colors shadow-sm shadow-indigo-500/20">
                   View role
                 </button>
               </div>

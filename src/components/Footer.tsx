@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-surface/30">
+    <footer className="border-t border-border bg-white">
       <div className="mx-auto max-w-6xl px-5 sm:px-8 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-background font-bold text-sm">
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-white font-bold text-sm">
                 H
               </span>
               <span className="font-semibold tracking-tight text-[15px]">
@@ -16,15 +16,15 @@ export function Footer() {
             </Link>
             <p className="mt-4 text-[13px] leading-relaxed text-muted max-w-xs">
               Jobs sourced directly from company career pages. Less noise.
-              Higher signal. Built for people who want the role.
+              Higher signal.
             </p>
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-muted">
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
               Product
             </h4>
-            <ul className="mt-4 space-y-2.5 text-[13px]">
+            <ul className="mt-4 space-y-2.5 text-[14px]">
               <li>
                 <Link href="/jobs/" className="text-muted hover:text-foreground transition-colors">
                   Browse jobs
@@ -49,26 +49,26 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-muted">
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
               For employers
             </h4>
-            <ul className="mt-4 space-y-2.5 text-[13px]">
+            <ul className="mt-4 space-y-2.5 text-[14px]">
               <li>
                 <Link href="/about/" className="text-muted hover:text-foreground transition-colors">
                   Post a role
                 </Link>
               </li>
               <li>
-                <span className="text-muted/60">Talent pipeline (soon)</span>
+                <span className="text-slate-400">Talent pipeline (soon)</span>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-muted">
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
               Legal
             </h4>
-            <ul className="mt-4 space-y-2.5 text-[13px]">
+            <ul className="mt-4 space-y-2.5 text-[14px]">
               <li>
                 <Link href="/privacy/" className="text-muted hover:text-foreground transition-colors">
                   Privacy Policy
@@ -89,11 +89,11 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-[12px] text-muted">
+          <p className="text-[13px] text-muted">
             © {new Date().getFullYear()} Hirehired. All rights reserved.
           </p>
-          <p className="text-[12px] text-muted">
-            Not affiliated with LinkedIn, Indeed, or any third-party job board.
+          <p className="text-[13px] text-slate-400">
+            Not affiliated with LinkedIn or Indeed.
           </p>
         </div>
       </div>

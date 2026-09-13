@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hirehired — Jobs that never hit LinkedIn",
+  title: "Hirehired — Find the job before everyone else",
   description:
-    "Direct from company career pages. Less noise. Higher signal. Built for people who actually want the role.",
+    "Jobs sourced directly from company career pages. Less noise. Higher signal. Apply earlier with fewer applicants.",
 };
 
 export default function RootLayout({

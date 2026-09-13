@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header solid />
+      <Header />
       <main className="mx-auto max-w-3xl px-5 sm:px-8 pt-24 pb-20">
         <p className="text-[12px] text-muted">
           <Link href="/" className="hover:text-foreground">
