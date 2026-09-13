@@ -100,7 +100,7 @@ function tagsFromTitle(title) {
 }
 
 const GREENHOUSE_BOARDS = [
-  // Fintech / compliance-heavy first
+  // Fintech / payments / crypto (compliance-heavy)
   ["okx", "OKX"],
   ["alpaca", "Alpaca"],
   ["stripe", "Stripe"],
@@ -126,6 +126,15 @@ const GREENHOUSE_BOARDS = [
   ["bitgo", "BitGo"],
   ["anchorage", "Anchorage Digital"],
   ["fireblocks", "Fireblocks"],
+  ["straitsx", "StraitsX"],
+  ["ebanx", "EBANX"],
+  ["thunes", "Thunes"],
+  ["mercury", "Mercury"],
+  ["blockchain", "Blockchain.com"],
+  ["govtech", "GovTech Singapore"],
+  ["trustbank", "Trust Bank"],
+  ["trmlabs", "TRM Labs"],
+  ["hyphenconnect", "Hyphen Connect"],
   // Tech
   ["openai", "OpenAI"],
   ["anthropic", "Anthropic"],
@@ -389,6 +398,59 @@ function isNonItSupport(title) {
   return false;
 }
 
+
+const LEVER_COMPANIES = [
+  ["nium", "NIUM"],
+  ["certik", "CertiK"],
+  ["spotify", "Spotify"],
+  ["palantir", "Palantir"],
+];
+
+async function fetchLever(companySlug, companyName) {
+  try {
+    const r = await fetch(`https://api.lever.co/v0/postings/${companySlug}?mode=json`, {
+      headers: { "User-Agent": "HirehiredBot/1.0" },
+    });
+    if (!r.ok) return [];
+    const jobs = await r.json();
+    return (jobs || [])
+      .filter((j) => isTargetLevel(j.text || ""))
+      .filter((j) => isComplianceTitle(j.text || "") || isTechTitle(j.text || ""))
+      .map((j) => {
+        const title = j.text || "Role";
+        const loc =
+          (j.categories && j.categories.location) ||
+          (Array.isArray(j.categories?.allLocations) && j.categories.allLocations[0]) ||
+          "Remote";
+        const applyUrl = j.hostedUrl || j.applyUrl || "";
+        if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) return null;
+        const compliance = isComplianceTitle(title);
+        return {
+          id: `lever-${companySlug}-${j.id}`,
+          title: title.trim(),
+          company: companyName,
+          location: loc,
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: "Permanent",
+          level: levelFromTitle(title),
+          salary: "Competitive",
+          posted: j.createdAt
+            ? new Date(j.createdAt).toISOString().slice(0, 10)
+            : new Date().toISOString().slice(0, 10),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl,
+          source: "lever",
+          description: `${title.trim()} at ${companyName}. Apply on the employer page.`,
+        };
+      })
+      .filter(Boolean);
+  } catch (e) {
+    console.warn(`Lever ${companySlug}:`, e.message);
+    return [];
+  }
+}
+
 function isDirectJobUrl(url) {
   if (!url) return false;
   return (
@@ -412,6 +474,13 @@ async function main() {
     `Greenhouse: ${fromGh.length} total, ${ghComp.length} compliance`
   );
 
+  console.log("Fetching Lever boards...");
+  const leverResults = await Promise.all(
+    LEVER_COMPANIES.map(([slug, name]) => fetchLever(slug, name))
+  );
+  const fromLever = leverResults.flat();
+  console.log(`Lever: ${fromLever.length}`);
+
   console.log("Fetching public APIs...");
   const [remote, remotive, arbeit] = await Promise.all([
     fetchRemoteOK(),
@@ -422,7 +491,7 @@ async function main() {
     `RemoteOK: ${remote.length}, Remotive: ${remotive.length}, Arbeitnow: ${arbeit.length}`
   );
 
-  const all = [...fromGh, ...remote, ...remotive, ...arbeit];
+  const all = [...fromGh, ...fromLever, ...remote, ...remotive, ...arbeit];
 
   const seen = new Set();
   const merged = [];
@@ -453,7 +522,7 @@ async function main() {
   sortPool(compliance);
   sortPool(tech);
 
-  // Take all compliance (aim 100+), then fill with tech up to ~450
+  // Take all compliance (aim 100+), then fill with tech up to ~700
   const companyCount = {};
   const final = [];
   const add = (list, maxPerCompany = 25) => {
@@ -467,10 +536,10 @@ async function main() {
 
   // No company cap for compliance — we need volume
   for (const j of compliance) final.push(j);
-  add(tech, 20);
+  add(tech, 25);
 
   // Cap overall
-  const capped = final.slice(0, 450);
+  const capped = final.slice(0, 700);
 
   capped.sort((a, b) => {
     if (a.region === "APAC" && b.region !== "APAC") return -1;
