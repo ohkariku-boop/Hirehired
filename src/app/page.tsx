@@ -60,10 +60,10 @@ export default function Home() {
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   {[
+                    { label: "Tech", href: "/jobs/?filter=tech" },
+                    { label: "Compliance", href: "/jobs/?filter=compliance" },
                     { label: "Remote", href: "/jobs/?filter=remote" },
                     { label: "Singapore", href: "/jobs/?filter=singapore" },
-                    { label: "Engineering", href: "/jobs/?q=Engineering" },
-                    { label: "Product", href: "/jobs/?q=Product" },
                     { label: "Senior", href: "/jobs/?filter=senior" },
                     { label: "Permanent", href: "/jobs/?filter=permanent" },
                     { label: "Contract", href: "/jobs/?filter=contract" },

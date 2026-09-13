@@ -20,6 +20,8 @@ export type Job = {
   description?: string;
 };
 
+const PAGE_SIZE = 20;
+
 function formatPosted(dateStr: string) {
   try {
     const d = new Date(dateStr);
@@ -33,8 +35,30 @@ function formatPosted(dateStr: string) {
   }
 }
 
+function isCompliance(j: Job) {
+  const blob = `${j.title} ${j.category} ${(j.tags || []).join(" ")}`.toLowerCase();
+  return (
+    j.category === "Compliance" ||
+    /compliance|aml|kyc|kyb|sanctions|fraud|regulatory|cdd|edd|financial crime/.test(blob)
+  );
+}
+
+function isTech(j: Job) {
+  if (isCompliance(j)) return false;
+  const blob = `${j.title} ${j.category}`.toLowerCase();
+  return (
+    j.category === "Engineering" ||
+    j.category === "Data" ||
+    /engineer|software|developer|devops|sre|platform|infra|backend|frontend|full[- ]?stack|machine learning|data scien|mlops|security engineer/.test(
+      blob
+    )
+  );
+}
+
 type FilterId =
   | "all"
+  | "tech"
+  | "compliance"
   | "apac"
   | "singapore"
   | "mid"
@@ -49,25 +73,43 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
   const initialQ = searchParams.get("q") || "";
   const initialFilter = (searchParams.get("filter") as FilterId) || "all";
 
+  const validFilters: FilterId[] = [
+    "all",
+    "tech",
+    "compliance",
+    "apac",
+    "singapore",
+    "mid",
+    "senior",
+    "director",
+    "remote",
+    "permanent",
+    "contract",
+  ];
+
   const [filter, setFilter] = useState<FilterId>(
-    ["all", "apac", "singapore", "mid", "senior", "director", "remote", "permanent", "contract"].includes(initialFilter)
-      ? initialFilter
-      : "all"
+    validFilters.includes(initialFilter) ? initialFilter : "all"
   );
   const [query, setQuery] = useState(initialQ);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const q = searchParams.get("q") || "";
     const f = (searchParams.get("filter") as FilterId) || "all";
     setQuery(q);
-    if (["all", "apac", "singapore", "mid", "senior", "director", "remote", "permanent", "contract"].includes(f)) {
-      setFilter(f);
-    }
+    if (validFilters.includes(f)) setFilter(f);
   }, [searchParams]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [filter, query]);
 
   const counts = useMemo(() => {
     return {
       all: jobs.length,
+      tech: jobs.filter(isTech).length,
+      compliance: jobs.filter(isCompliance).length,
       apac: jobs.filter((j) => j.region === "APAC").length,
       singapore: jobs.filter((j) => /singapore/i.test(j.location)).length,
       mid: jobs.filter((j) => /^mid$/i.test(j.level)).length,
@@ -82,6 +124,12 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
   const filtered = useMemo(() => {
     let list = [...jobs];
     switch (filter) {
+      case "tech":
+        list = list.filter(isTech);
+        break;
+      case "compliance":
+        list = list.filter(isCompliance);
+        break;
       case "apac":
         list = list.filter((j) => j.region === "APAC");
         break;
@@ -123,8 +171,17 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     );
   }, [jobs, filter, query]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageJobs = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
   const chips: { id: FilterId; label: string }[] = [
     { id: "all", label: `All ${counts.all}` },
+    { id: "tech", label: `Tech ${counts.tech}` },
+    { id: "compliance", label: `Compliance ${counts.compliance}` },
     { id: "apac", label: `APAC ${counts.apac}` },
     { id: "singapore", label: `Singapore ${counts.singapore}` },
     { id: "mid", label: `Mid ${counts.mid}` },
@@ -134,6 +191,31 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     { id: "permanent", label: `Permanent ${counts.permanent}` },
     { id: "contract", label: `Contract ${counts.contract}` },
   ];
+
+  function goToPage(p: number) {
+    const next = Math.max(1, Math.min(p, totalPages));
+    setPage(next);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  // Compact page numbers: 1 … 4 5 6 … N
+  const pageNumbers = useMemo(() => {
+    const pages: (number | "…")[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+      return pages;
+    }
+    pages.push(1);
+    if (currentPage > 3) pages.push("…");
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (currentPage < totalPages - 2) pages.push("…");
+    pages.push(totalPages);
+    return pages;
+  }, [currentPage, totalPages]);
 
   return (
     <div>
@@ -145,6 +227,9 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           <p className="mt-1 text-base text-neutral-500">
             {filtered.length} shown
             {filter !== "all" || query ? ` of ${jobs.length}` : ""}
+            {filtered.length > PAGE_SIZE
+              ? ` · page ${currentPage} of ${totalPages}`
+              : ""}
           </p>
         </div>
         <input
@@ -174,12 +259,12 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
       </div>
 
       <div className="border border-neutral-200 rounded overflow-hidden divide-y divide-neutral-200">
-        {filtered.length === 0 ? (
+        {pageJobs.length === 0 ? (
           <p className="px-4 py-8 text-center text-neutral-500 text-base">
             No roles match this filter.
           </p>
         ) : (
-          filtered.map((job) => (
+          pageJobs.map((job) => (
             <div
               key={job.id}
               className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-3 sm:px-4 py-3 hover:bg-neutral-50"
@@ -190,6 +275,11 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
                   {job.region === "APAC" && (
                     <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded">
                       APAC
+                    </span>
+                  )}
+                  {isCompliance(job) && (
+                    <span className="text-xs font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded">
+                      Compliance
                     </span>
                   )}
                 </div>
@@ -230,6 +320,47 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           ))
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className="h-10 px-3 rounded border border-neutral-200 text-sm font-medium text-neutral-700 hover:border-neutral-400 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          {pageNumbers.map((p, i) =>
+            p === "…" ? (
+              <span key={`e-${i}`} className="px-2 text-neutral-400">
+                …
+              </span>
+            ) : (
+              <button
+                key={p}
+                type="button"
+                onClick={() => goToPage(p)}
+                className={`h-10 min-w-10 px-2 rounded text-sm font-medium ${
+                  p === currentPage
+                    ? "bg-neutral-900 text-white"
+                    : "border border-neutral-200 text-neutral-700 hover:border-neutral-400"
+                }`}
+              >
+                {p}
+              </button>
+            )
+          )}
+          <button
+            type="button"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className="h-10 px-3 rounded border border-neutral-200 text-sm font-medium text-neutral-700 hover:border-neutral-400 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       <p className="mt-4 text-sm text-neutral-400 text-center">
         Updated daily · Always confirm on the employer site
