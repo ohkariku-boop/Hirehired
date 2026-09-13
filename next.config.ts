@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  basePath: process.env.NODE_ENV === "production" ? "/Hirehired" : "",
+  assetPrefix: process.env.NODE_ENV === "production" ? "/Hirehired" : "",
 };
 
 export default nextConfig;
