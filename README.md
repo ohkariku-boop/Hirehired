@@ -2,53 +2,61 @@
 
 The smarter platform to **hire** and **get hired**.
 
-Discover jobs posted directly on company career pages — often before they appear on LinkedIn or Indeed. Higher signal, less competition, better outcomes.
+Discover jobs posted directly on company career pages — often before they appear on LinkedIn or Indeed.
 
-## Tech Stack (MVP)
+## Tech Stack
 
-- **Next.js 15** (App Router) + TypeScript + Tailwind
-- **Supabase** (Auth + Postgres + RLS)
-- AI features (OpenRouter) — next
+- Next.js 15 (App Router) + TypeScript + Tailwind
+- Supabase (Auth + Postgres + RLS)
 
-## Getting Started
+## Setup
 
-1. Clone the repo
-2. Copy `.env.example` → `.env.local` and fill in your Supabase keys
-3. Install dependencies:
+1. Clone & install:
+   ```bash
+   git clone https://github.com/ohkariku-boop/Hirehired.git
+   cd Hirehired
+   npm install
+   ```
 
-```bash
-npm install
-```
+2. Create `.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   SUPABASE_SECRET_KEY=sb_secret_...
+   ```
 
-4. Run the schema in Supabase Dashboard → SQL Editor (paste contents of `supabase/schema.sql`)
-5. Start the dev server:
+3. Run schema + seed in Supabase SQL Editor:
+   - Paste & run `supabase/schema.sql`
+   - Paste & run `supabase/seed.sql`
 
-```bash
-npm run dev
-```
+4. Start:
+   ```bash
+   npm run dev
+   ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-## Current Status
+## Features (current)
 
 - ✅ Landing page
-- ✅ Basic jobs listing (mock data)
-- ✅ Supabase client setup (browser + server + admin)
-- ✅ Database schema (profiles, companies, jobs, applications, watchlists)
-- ⏳ Auth UI (login / signup)
-- ⏳ Real job ingestion from company career pages
-- ⏳ Application tracker
+- ✅ Auth (signup / login / signout)
+- ✅ Dashboard
+- ✅ Jobs listing (connected to Supabase + fallback mock)
+- ✅ Save job → Applications tracker
+- ✅ Sample seed data
+- ⏳ Real career-page job ingestion
 - ⏳ AI matching & resume tools
 - ⏳ Employer posting flow
 
-## Environment Variables
+## Project structure
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
-SUPABASE_SECRET_KEY=          # server-only, never expose
+src/
+  app/
+    page.tsx              # Landing
+    login/ signup/        # Auth
+    jobs/                 # Job board
+    dashboard/            # User home + applications
+  lib/supabase/           # Clients
+supabase/
+  schema.sql
+  seed.sql
 ```
-
-## License
-
-Private / All rights reserved for now.
