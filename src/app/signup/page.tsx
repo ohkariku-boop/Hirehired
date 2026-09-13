@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SignupPage() {
@@ -10,10 +9,8 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const router = useRouter();
-  const supabase = createClient();
+  const [loading, setLoading] = useState(false);
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -21,67 +18,61 @@ export default function SignupPage() {
     setError(null);
     setMessage(null);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-        },
-      },
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
-    if (data.session) {
-      router.push("/dashboard");
-      router.refresh();
-    } else {
-      setMessage("Check your email for a confirmation link.");
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: fullName } },
+      });
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+        return;
+      }
+      if (data.session) {
+        window.location.href = "/dashboard/";
+      } else {
+        setMessage("Check your email for a confirmation link.");
+        setLoading(false);
+      }
+    } catch {
+      setError("Auth is not configured in this static preview.");
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-background px-5">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">H</span>
-            </div>
-            <span className="font-semibold text-lg text-slate-900 dark:text-white">
-              Hirehired
+            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-background font-bold text-sm">
+              H
             </span>
+            <span className="font-semibold text-[15px]">Hirehired</span>
           </Link>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Create account
-          </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            Start finding better jobs today.
+        <div className="rounded-2xl border border-border bg-card p-7">
+          <h1 className="text-xl font-semibold tracking-tight">Create account</h1>
+          <p className="mt-1.5 text-[13px] text-muted">
+            Start finding quieter, higher-signal roles.
           </p>
 
           <form onSubmit={handleSignup} className="mt-6 space-y-4">
             {error && (
-              <div className="rounded-lg bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300 text-sm px-4 py-3">
+              <div className="rounded-lg bg-red-500/10 text-red-400 text-[13px] px-3 py-2.5">
                 {error}
               </div>
             )}
             {message && (
-              <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 text-sm px-4 py-3">
+              <div className="rounded-lg bg-emerald-500/10 text-emerald-400 text-[13px] px-3 py-2.5">
                 {message}
               </div>
             )}
-
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-[12px] font-medium text-muted mb-1.5">
                 Full name
               </label>
               <input
@@ -89,13 +80,12 @@ export default function SignupPage() {
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-accent"
                 placeholder="Jane Doe"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-[12px] font-medium text-muted mb-1.5">
                 Email
               </label>
               <input
@@ -103,13 +93,12 @@ export default function SignupPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-accent"
                 placeholder="you@example.com"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-[12px] font-medium text-muted mb-1.5">
                 Password
               </label>
               <input
@@ -118,23 +107,22 @@ export default function SignupPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-accent"
                 placeholder="••••••••"
               />
             </div>
-
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 transition"
+              className="w-full h-10 rounded-full bg-accent text-[13px] font-semibold text-background hover:bg-accent-dim disabled:opacity-50 transition-colors"
             >
-              {loading ? "Creating account..." : "Create account"}
+              {loading ? "Creating…" : "Create account"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+          <p className="mt-5 text-center text-[13px] text-muted">
             Already have an account?{" "}
-            <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link href="/login/" className="text-accent hover:underline">
               Sign in
             </Link>
           </p>

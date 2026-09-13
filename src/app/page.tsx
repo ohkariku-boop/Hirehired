@@ -2,138 +2,176 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
-      {/* Navigation */}
-      <nav className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">H</span>
-              </div>
-              <span className="font-semibold text-lg tracking-tight text-slate-900 dark:text-white">
-                Hirehired
-              </span>
-            </div>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/jobs"
-                className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition"
-              >
-                Browse Jobs
-              </Link>
-              <Link
-                href="/login"
-                className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition shadow-sm"
-              >
-                Get Started
-              </Link>
-            </div>
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Nav */}
+      <header className="fixed top-0 inset-x-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:px-8">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-background font-bold text-sm tracking-tight">
+              H
+            </span>
+            <span className="font-semibold tracking-tight text-[15px]">
+              Hirehired
+            </span>
+          </Link>
+          <nav className="hidden sm:flex items-center gap-8 text-[13px] text-muted">
+            <Link href="/jobs/" className="hover:text-foreground transition-colors">
+              Jobs
+            </Link>
+            <Link href="#how" className="hover:text-foreground transition-colors">
+              How it works
+            </Link>
+            <Link href="#why" className="hover:text-foreground transition-colors">
+              Why
+            </Link>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/login/"
+              className="hidden sm:inline text-[13px] text-muted hover:text-foreground transition-colors"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/signup/"
+              className="inline-flex h-8 items-center rounded-full bg-accent px-4 text-[13px] font-semibold text-background hover:bg-accent-dim transition-colors"
+            >
+              Get access
+            </Link>
           </div>
         </div>
-      </nav>
+      </header>
 
-      {/* Hero */}
       <main>
-        <section className="relative overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32">
-            <div className="text-center max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 dark:bg-indigo-950/50 px-3 py-1 text-sm font-medium text-indigo-700 dark:text-indigo-300 mb-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                </span>
-                Find jobs not on LinkedIn & Indeed
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
-                The smarter way to{" "}
-                <span className="text-indigo-600 dark:text-indigo-400">
-                  hire & get hired
-                </span>
-              </h1>
-              <p className="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
-                Discover hidden jobs directly from company career pages.
-                Apply with higher signal, less competition, and better results.
+        {/* Hero */}
+        <section className="relative pt-28 pb-20 sm:pt-36 sm:pb-28 overflow-hidden">
+          <div className="absolute inset-0 bg-grid opacity-60 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="max-w-2xl">
+              <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-[12px] text-muted">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+                Direct from company career pages
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+
+              <h1 className="text-[2.75rem] sm:text-5xl lg:text-[3.5rem] font-semibold tracking-tight leading-[1.08] text-balance">
+                Jobs that never
+                <br />
+                <span className="text-muted">make it to LinkedIn.</span>
+              </h1>
+
+              <p className="mt-6 max-w-lg text-[16px] sm:text-[17px] leading-relaxed text-muted">
+                Most roles are filled before they hit the big boards. We surface
+                openings straight from employer career sites — earlier, quieter,
+                higher signal.
+              </p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link
-                  href="/jobs"
-                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/25"
+                  href="/jobs/"
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-[14px] font-semibold text-background hover:bg-accent-dim transition-colors glow-accent"
                 >
-                  Browse Hidden Jobs
+                  Browse open roles
                 </Link>
                 <Link
-                  href="/for-employers"
-                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-8 py-3.5 text-base font-semibold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                  href="#how"
+                  className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-transparent px-6 text-[14px] font-medium text-foreground hover:bg-surface transition-colors"
                 >
-                  I&apos;m Hiring
+                  See how it works
                 </Link>
               </div>
             </div>
 
-            <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+            {/* Floating job cards preview */}
+            <div className="mt-16 sm:mt-20 grid gap-3 sm:grid-cols-3 max-w-4xl">
               {[
-                { label: "Direct company jobs", value: "Coming soon" },
-                { label: "Less competition", value: "Higher reply rates" },
-                { label: "Real-time alerts", value: "Be first" },
-                { label: "AI matching", value: "Smarter fits" },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
-                    {stat.value}
+                {
+                  role: "Senior Backend Engineer",
+                  company: "Lattice Systems",
+                  meta: "Remote · $165–195k",
+                  tag: "2h ago",
+                },
+                {
+                  role: "Product Designer",
+                  company: "Northstar Health",
+                  meta: "NYC · $130–155k",
+                  tag: "5h ago",
+                },
+                {
+                  role: "ML Engineer",
+                  company: "Axiom Robotics",
+                  meta: "Remote · $155–190k",
+                  tag: "1d ago",
+                },
+              ].map((job) => (
+                <div
+                  key={job.role}
+                  className="group rounded-xl border border-border bg-card/80 p-4 hover:border-accent/40 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="text-[14px] font-medium leading-snug">
+                        {job.role}
+                      </p>
+                      <p className="mt-1 text-[13px] text-muted">{job.company}</p>
+                    </div>
+                    <span className="shrink-0 rounded-md bg-surface px-2 py-0.5 text-[11px] text-muted">
+                      {job.tag}
+                    </span>
                   </div>
-                  <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    {stat.label}
-                  </div>
+                  <p className="mt-3 text-[12px] text-muted">{job.meta}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-20">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Why Hirehired?
+        {/* How it works */}
+        <section id="how" className="border-t border-border py-20 sm:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="max-w-xl">
+              <p className="text-[12px] font-medium uppercase tracking-wider text-accent">
+                How it works
+              </p>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">
+                Less noise. More signal.
               </h2>
-              <p className="mt-3 text-lg text-slate-600 dark:text-slate-300">
-                Built for candidates tired of black-hole applications and employers who want better signal.
+              <p className="mt-4 text-[15px] leading-relaxed text-muted">
+                We monitor company career pages and ATS boards continuously.
+                You see roles when they appear — not after hundreds of applicants
+                have already flooded in.
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+
+            <div className="mt-14 grid gap-6 sm:grid-cols-3">
               {[
                 {
-                  title: "Jobs from company sites",
-                  description:
-                    "We surface roles posted directly on employer career pages — often before they hit the big boards and attract hundreds of applicants.",
+                  step: "01",
+                  title: "We watch the source",
+                  body: "Career pages and ATS systems are checked in near real-time. New postings surface here first.",
                 },
                 {
-                  title: "Higher conversion focus",
-                  description:
-                    "Tools designed to improve your interview rate: smarter matching, tailored materials, and application tracking that actually helps.",
+                  step: "02",
+                  title: "You apply direct",
+                  body: "Every listing links to the employer’s own form. No middleman, no Easy Apply black hole.",
                 },
                 {
-                  title: "Two-sided platform",
-                  description:
-                    "Candidates find better opportunities. Employers get higher-quality applicants with less noise. One platform for both sides.",
+                  step: "03",
+                  title: "Track what matters",
+                  body: "Save roles, mark applications, and keep a clean pipeline instead of a scattered spreadsheet.",
                 },
               ].map((item) => (
                 <div
-                  key={item.title}
-                  className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 bg-slate-50/50 dark:bg-slate-900/50"
+                  key={item.step}
+                  className="rounded-2xl border border-border bg-card p-6"
                 >
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {item.description}
+                  <span className="font-mono text-[12px] text-accent">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-3 text-[16px] font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-[14px] leading-relaxed text-muted">
+                    {item.body}
                   </p>
                 </div>
               ))}
@@ -141,38 +179,106 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="max-w-3xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Ready to try a better job search?
+        {/* Why */}
+        <section id="why" className="border-t border-border py-20 sm:py-28 bg-surface/40">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              <div>
+                <p className="text-[12px] font-medium uppercase tracking-wider text-accent">
+                  The problem
+                </p>
+                <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-balance">
+                  The boards are saturated.
+                  <br />
+                  The best roles aren’t.
+                </h2>
+                <p className="mt-5 text-[15px] leading-relaxed text-muted">
+                  LinkedIn and Indeed are where everyone applies. Company career
+                  pages are where many of the stronger, less-contested roles
+                  live — often for days before they get aggregated. Hirehired
+                  closes that gap.
+                </p>
+                <ul className="mt-8 space-y-3">
+                  {[
+                    "Fewer applicants per role",
+                    "Direct path to the hiring team",
+                    "Fresher postings, higher reply rates",
+                  ].map((point) => (
+                    <li key={point} className="flex items-center gap-3 text-[14px]">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/15 text-accent text-[11px]">
+                        ✓
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between text-[13px]">
+                    <span className="text-muted">Typical LinkedIn Easy Apply</span>
+                    <span className="font-mono text-muted">~200+ applicants</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-border overflow-hidden">
+                    <div className="h-full w-[92%] rounded-full bg-zinc-600" />
+                  </div>
+                  <div className="flex items-center justify-between text-[13px] pt-2">
+                    <span className="text-muted">Direct career page role</span>
+                    <span className="font-mono text-accent">Often &lt; 40</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-border overflow-hidden">
+                    <div className="h-full w-[28%] rounded-full bg-accent" />
+                  </div>
+                  <p className="pt-4 text-[13px] leading-relaxed text-muted border-t border-border">
+                    Volume is not the goal. Getting in front of the right person
+                    is.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="border-t border-border py-20 sm:py-28">
+          <div className="mx-auto max-w-3xl px-5 sm:px-8 text-center">
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+              Ready for a quieter pipeline?
             </h2>
-            <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-              Early access is opening soon. Join the waitlist or start exploring.
+            <p className="mt-4 text-[15px] text-muted max-w-md mx-auto">
+              Browse roles that most candidates never see, or create an account
+              to start tracking applications.
             </p>
-            <div className="mt-8">
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <Link
-                href="/jobs"
-                className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/25"
+                href="/jobs/"
+                className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-[14px] font-semibold text-background hover:bg-accent-dim transition-colors"
               >
-                Explore Jobs
+                Explore jobs
+              </Link>
+              <Link
+                href="/signup/"
+                className="inline-flex h-11 items-center justify-center rounded-full border border-border px-6 text-[14px] font-medium hover:bg-surface transition-colors"
+              >
+                Create account
               </Link>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-slate-200 dark:border-slate-800 py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Footer */}
+      <footer className="border-t border-border py-10">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-indigo-600 flex items-center justify-center">
-              <span className="text-white font-bold text-xs">H</span>
-            </div>
-            <span className="text-sm font-medium text-slate-900 dark:text-white">
-              Hirehired
+            <span className="flex h-6 w-6 items-center justify-center rounded bg-accent text-background font-bold text-[11px]">
+              H
             </span>
+            <span className="text-[13px] font-medium">Hirehired</span>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            © {new Date().getFullYear()} Hirehired. Built for better hiring.
+          <p className="text-[12px] text-muted">
+            © {new Date().getFullYear()} · Built for people who want the role, not the noise.
           </p>
         </div>
       </footer>

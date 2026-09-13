@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -10,60 +9,53 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const supabase = createClient();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+        return;
+      }
+      window.location.href = "/dashboard/";
+    } catch {
+      setError("Auth is not configured in this static preview.");
       setLoading(false);
-      return;
     }
-
-    router.push("/dashboard");
-    router.refresh();
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-background px-5">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">H</span>
-            </div>
-            <span className="font-semibold text-lg text-slate-900 dark:text-white">
-              Hirehired
+            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-background font-bold text-sm">
+              H
             </span>
+            <span className="font-semibold text-[15px]">Hirehired</span>
           </Link>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Sign in
-          </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            Welcome back. Enter your details below.
+        <div className="rounded-2xl border border-border bg-card p-7">
+          <h1 className="text-xl font-semibold tracking-tight">Sign in</h1>
+          <p className="mt-1.5 text-[13px] text-muted">
+            Enter your credentials to continue.
           </p>
 
           <form onSubmit={handleLogin} className="mt-6 space-y-4">
             {error && (
-              <div className="rounded-lg bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300 text-sm px-4 py-3">
+              <div className="rounded-lg bg-red-500/10 text-red-400 text-[13px] px-3 py-2.5">
                 {error}
               </div>
             )}
-
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-[12px] font-medium text-muted mb-1.5">
                 Email
               </label>
               <input
@@ -71,13 +63,12 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-accent"
                 placeholder="you@example.com"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-[12px] font-medium text-muted mb-1.5">
                 Password
               </label>
               <input
@@ -85,23 +76,22 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-accent"
                 placeholder="••••••••"
               />
             </div>
-
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 transition"
+              className="w-full h-10 rounded-full bg-accent text-[13px] font-semibold text-background hover:bg-accent-dim disabled:opacity-50 transition-colors"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <p className="mt-5 text-center text-[13px] text-muted">
+            No account?{" "}
+            <Link href="/signup/" className="text-accent hover:underline">
               Sign up
             </Link>
           </p>

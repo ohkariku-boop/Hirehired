@@ -1,62 +1,32 @@
 # Hirehired
 
-The smarter platform to **hire** and **get hired**.
+Jobs that never make it to LinkedIn.
 
-Discover jobs posted directly on company career pages — often before they appear on LinkedIn or Indeed.
+Direct from company career pages. Less noise. Higher signal.
 
-## Tech Stack
+## Live preview (GitHub Pages)
 
-- Next.js 15 (App Router) + TypeScript + Tailwind
-- Supabase (Auth + Postgres + RLS)
+Once Pages is enabled, the site will be at:
 
-## Setup
+`https://ohkariku-boop.github.io/Hirehired/`
 
-1. Clone & install:
-   ```bash
-   git clone https://github.com/ohkariku-boop/Hirehired.git
-   cd Hirehired
-   npm install
-   ```
+## Local development
 
-2. Create `.env.local`:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
-   SUPABASE_SECRET_KEY=sb_secret_...
-   ```
-
-3. Run schema + seed in Supabase SQL Editor:
-   - Paste & run `supabase/schema.sql`
-   - Paste & run `supabase/seed.sql`
-
-4. Start:
-   ```bash
-   npm run dev
-   ```
-
-## Features (current)
-
-- ✅ Landing page
-- ✅ Auth (signup / login / signout)
-- ✅ Dashboard
-- ✅ Jobs listing (connected to Supabase + fallback mock)
-- ✅ Save job → Applications tracker
-- ✅ Sample seed data
-- ⏳ Real career-page job ingestion
-- ⏳ AI matching & resume tools
-- ⏳ Employer posting flow
-
-## Project structure
-
+```bash
+npm install
+npm run dev
 ```
-src/
-  app/
-    page.tsx              # Landing
-    login/ signup/        # Auth
-    jobs/                 # Job board
-    dashboard/            # User home + applications
-  lib/supabase/           # Clients
-supabase/
-  schema.sql
-  seed.sql
-```
+
+## Stack
+
+- Next.js 15 (static export for GitHub Pages)
+- Tailwind CSS
+- Supabase (auth + data — full features on Vercel/server deploy)
+
+## Design
+
+Dark, high-contrast, restrained. Accent: sharp lime. Built to feel intentional, not generic.
+
+## Full app features
+
+Auth, application tracking, and live job ingestion work when deployed with Supabase env vars on a Node host (Vercel recommended). The GitHub Pages build is a polished static marketing + jobs preview.

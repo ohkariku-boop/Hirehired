@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hirehired — Find jobs not on LinkedIn & Indeed",
+  title: "Hirehired — Jobs that never hit LinkedIn",
   description:
-    "Discover hidden jobs directly from company career pages. Higher signal, less competition, better results for candidates and employers.",
+    "Direct from company career pages. Less noise. Higher signal. Built for people who actually want the role.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        {children}
+      </body>
     </html>
   );
 }
