@@ -39,17 +39,22 @@ function isCompliance(j: Job) {
   const blob = `${j.title} ${j.category} ${(j.tags || []).join(" ")}`.toLowerCase();
   return (
     j.category === "Compliance" ||
-    /compliance|aml|kyc|kyb|sanctions|fraud|regulatory|cdd|edd|financial crime/.test(blob)
+    /compliance|aml|kyc|kyb|sanctions|fraud|regulatory|cdd|edd|financial.?crime|fincrime|bsa|ofac|transaction.?monitoring|anti-?money|money.?laundering|mlro|due.?diligence|credit.?risk|conduct.?risk|operational.?risk|enterprise.?risk|grc|governance.?risk|investigations/.test(
+      blob
+    )
   );
 }
 
 function isTech(j: Job) {
   if (isCompliance(j)) return false;
-  const blob = `${j.title} ${j.category}`.toLowerCase();
+  const blob = `${j.title} ${j.category} ${(j.tags || []).join(" ")}`.toLowerCase();
   return (
     j.category === "Engineering" ||
     j.category === "Data" ||
-    /engineer|software|developer|devops|sre|platform|infra|backend|frontend|full[- ]?stack|machine learning|data scien|mlops|security engineer/.test(
+    j.category === "Product" ||
+    j.category === "Program" ||
+    j.category === "IT" ||
+    /engineer|engineering|software|developer|devops|sre|platform|infra|infrastructure|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|mlops|security.?engineer|architect|product.?manager|product.?owner|product.?lead|product.?director|head of product|project.?manager|program.?manager|portfolio.?manager|technical.?program|\btpm\b|it.?manager|it.?director|head of it|cio\b|cto\b|it.?governance|it.?strategy|it.?operations|solutions.?architect|enterprise.?architect|scrum.?master|delivery.?manager|qa.?engineer|quality.?assurance|test.?engineer|site.?reliability|platform.?engineer|cyber.?security|info.?sec|information.?security|devsecops|agile.?coach/.test(
       blob
     )
   );

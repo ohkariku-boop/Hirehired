@@ -13,10 +13,11 @@ const JUNIOR_RE =
   /\b(intern|internship|junior|graduate|entry[- ]?level|apprentice|trainee|student)\b/i;
 
 const COMP_RE =
-  /\b(compliance|aml|kyc|kyb|sanctions|fraud|regulatory|cdd|edd|financial.?crime|fincrime|bsa|ofac|transaction.?monitoring|anti-?money|credit.?risk|risk.?analyst|risk.?manager|risk.?officer|risk.?director|risk.?lead)\b/i;
+  /\b(compliance|aml|kyc|kyb|sanctions|fraud|regulatory|cdd|edd|financial.?crime|fincrime|bsa|ofac|transaction.?monitoring|anti-?money|credit.?risk|risk.?analyst|risk.?manager|risk.?officer|risk.?director|risk.?lead|money.?laundering|mlro|sar|suspicious.?activit|due.?diligence|onboarding.?compliance|policy.?compliance|ethics.?and.?compliance|grc|governance.?risk|conduct.?risk|operational.?risk|enterprise.?risk|financial.?crime|fc.?analyst|fc.?manager|investigations?\b.*\b(aml|fraud|crime)|compliance.?officer|compliance.?analyst|compliance.?manager|compliance.?director|compliance.?lead|head of compliance|vp.?compliance|chief.?compliance)\b/i;
 
+// End-to-end IT: eng, product, project/program/portfolio PM, IT gov/strategy/infra/software, Head of IT
 const TECH_RE =
-  /\b(engineer|software|developer|devops|sre|platform|infra|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|mlops|security.?engineer|architect|engineering.?manager|technical.?lead|staff|principal)\b/i;
+  /\b(engineer|engineering|software|developer|devops|sre|platform|infra|infrastructure|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|data.?engineer|mlops|security.?engineer|architect|engineering.?manager|technical.?lead|staff|principal|product.?manager|product.?owner|product.?lead|product.?director|head of product|vp.?product|chief.?product|project.?manager|program.?manager|portfolio.?manager|technical.?program|tpm\b|it.?manager|it.?director|head of it|vp.?it|chief.?information|cio\b|cto\b|it.?governance|it.?strategy|it.?operations|it.?service|it.?support|systems.?admin|system.?administrator|network.?engineer|cloud.?engineer|solutions.?architect|enterprise.?architect|scrum.?master|delivery.?manager|release.?manager|qa.?engineer|quality.?assurance|test.?engineer|site.?reliability|platform.?engineer|security.?architect|info.?sec|information.?security|cyber.?security|application.?security|devsecops|agile.?coach)\b/i;
 
 const LEVEL_RE =
   /\b(mid[- ]?level|mid[- ]?senior|senior|staff|principal|lead|manager|director|head of|vp|vice president|head,|analyst|specialist|officer)\b/i;
@@ -68,6 +69,12 @@ function categoryFromTitle(title) {
   if (isComplianceTitle(title)) return "Compliance";
   if (/data scien|machine learning|ml engineer|analytics|data engineer/i.test(title))
     return "Data";
+  if (/product.?manager|product.?owner|product.?lead|product.?director|head of product|vp.?product/i.test(title))
+    return "Product";
+  if (/project.?manager|program.?manager|portfolio.?manager|technical.?program|\btpm\b|delivery.?manager|scrum.?master/i.test(title))
+    return "Program";
+  if (/it.?governance|it.?strategy|head of it|cio\b|it.?director|it.?manager/i.test(title))
+    return "IT";
   return "Engineering";
 }
 
@@ -161,6 +168,16 @@ async function fetchGreenhouseBoard(board, company) {
     return jobs
       .filter((j) => isTargetLevel(j.title))
       .filter((j) => isComplianceTitle(j.title) || isTechTitle(j.title))
+      .filter((j) => {
+        // Keep IT-side PMs; drop pure sales/marketing/HR program roles without tech signal
+        const title = j.title || "";
+        if (isComplianceTitle(title)) return true;
+        if (/\b(sales|marketing|account executive|recruiter|people partner|hr generalist|customer success)\b/i.test(title)
+            && !/\b(engineer|software|product manager|technical|it |data|platform|infra|security|compliance)\b/i.test(title)) {
+          return false;
+        }
+        return true;
+      })
       .map((j) => {
         const loc =
           (j.location && j.location.name) ||
@@ -256,6 +273,16 @@ async function fetchRemotive() {
     return (data.jobs || [])
       .filter((j) => isTargetLevel(j.title))
       .filter((j) => isComplianceTitle(j.title) || isTechTitle(j.title))
+      .filter((j) => {
+        // Keep IT-side PMs; drop pure sales/marketing/HR program roles without tech signal
+        const title = j.title || "";
+        if (isComplianceTitle(title)) return true;
+        if (/\b(sales|marketing|account executive|recruiter|people partner|hr generalist|customer success)\b/i.test(title)
+            && !/\b(engineer|software|product manager|technical|it |data|platform|infra|security|compliance)\b/i.test(title)) {
+          return false;
+        }
+        return true;
+      })
       .map((j) => {
         const applyUrl = j.url || "";
         if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) return null;
@@ -303,6 +330,16 @@ async function fetchArbeitnow() {
     return (data.data || [])
       .filter((j) => isTargetLevel(j.title))
       .filter((j) => isComplianceTitle(j.title) || isTechTitle(j.title))
+      .filter((j) => {
+        // Keep IT-side PMs; drop pure sales/marketing/HR program roles without tech signal
+        const title = j.title || "";
+        if (isComplianceTitle(title)) return true;
+        if (/\b(sales|marketing|account executive|recruiter|people partner|hr generalist|customer success)\b/i.test(title)
+            && !/\b(engineer|software|product manager|technical|it |data|platform|infra|security|compliance)\b/i.test(title)) {
+          return false;
+        }
+        return true;
+      })
       .map((j) => {
         const applyUrl = j.url || "";
         if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) return null;
@@ -338,6 +375,18 @@ async function fetchArbeitnow() {
     console.warn("Arbeitnow:", e.message);
     return [];
   }
+}
+
+
+function isNonItSupport(title) {
+  const t = title || "";
+  if (isComplianceTitle(t)) return false;
+  // Pure commercial/HR without tech signal
+  if (/\b(sales program|marketing services program|marketing program|account executive|recruiter|people partner|hr generalist|customer success manager|brand manager)\b/i.test(t))
+    return true;
+  if (/\b(sales|marketing)\b/i.test(t) && !/\b(engineer|software|product manager|technical|data|platform|security|engineer)\b/i.test(t))
+    return true;
+  return false;
 }
 
 function isDirectJobUrl(url) {
@@ -382,6 +431,7 @@ async function main() {
     if (seen.has(key)) continue;
     if (/google\.com\/search/i.test(j.applyUrl)) continue;
     if (!j.applyUrl || !/^https?:\/\//i.test(j.applyUrl)) continue;
+    if (isNonItSupport(j.title)) continue;
     seen.add(key);
     merged.push(j);
   }
