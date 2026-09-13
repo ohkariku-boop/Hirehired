@@ -1,0 +1,41 @@
+name: Daily job refresh
+
+on:
+  schedule:
+    # 00:00 UTC daily ≈ 08:00 SGT
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run job discovery script
+        run: node scripts/fetch-jobs.mjs
+        env:
+          # Optional: add API keys as repo secrets later
+          REMOTEOK_ENABLED: "true"
+
+      - name: Commit updated jobs if changed
+        run: |
+          git config user.name "hirehired-bot"
+          git config user.email "bot@hirehired.local"
+          git add src/data/jobs.json
+          if git diff --staged --quiet; then
+            echo "No job data changes"
+          else
+            git commit -m "chore: daily job refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi

@@ -50,7 +50,7 @@ export default function Home() {
 
               <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-[13px] text-muted">
                 <span className="text-slate-400">Popular:</span>
-                {["Software Engineer", "Product Designer", "Remote", "Data"].map(
+                {["KYC", "KYB", "Senior Engineer", "Singapore", "Remote"].map(
                   (t) => (
                     <Link
                       key={t}
