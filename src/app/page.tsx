@@ -60,8 +60,8 @@ export default function Home() {
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   {[
-                    { label: "Tech", href: "/jobs/?filter=tech" },
-                    { label: "Compliance", href: "/jobs/?filter=compliance" },
+                    { label: "Tech", href: "/jobs/?track=tech" },
+                    { label: "Compliance", href: "/jobs/?track=compliance" },
                     { label: "Remote", href: "/jobs/?filter=remote" },
                     { label: "Singapore", href: "/jobs/?filter=singapore" },
                     { label: "Senior", href: "/jobs/?filter=senior" },

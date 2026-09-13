@@ -60,10 +60,9 @@ function isTech(j: Job) {
   );
 }
 
-type FilterId =
+type TrackId = "all" | "tech" | "compliance";
+type SubFilterId =
   | "all"
-  | "tech"
-  | "compliance"
   | "apac"
   | "singapore"
   | "mid"
@@ -73,68 +72,105 @@ type FilterId =
   | "permanent"
   | "contract";
 
+const TRACKS: TrackId[] = ["all", "tech", "compliance"];
+const SUBS: SubFilterId[] = [
+  "all",
+  "apac",
+  "singapore",
+  "mid",
+  "senior",
+  "director",
+  "remote",
+  "permanent",
+  "contract",
+];
+
 export function JobsBoard({ jobs }: { jobs: Job[] }) {
   const searchParams = useSearchParams();
+
+  const initialTrack = (searchParams.get("track") as TrackId) ||
+    (searchParams.get("filter") === "tech" || searchParams.get("filter") === "compliance"
+      ? (searchParams.get("filter") as TrackId)
+      : "all");
+  const initialSub = ((): SubFilterId => {
+    const f = searchParams.get("filter") as SubFilterId | "tech" | "compliance" | null;
+    if (f && SUBS.includes(f as SubFilterId)) return f as SubFilterId;
+    const s = searchParams.get("sub") as SubFilterId | null;
+    if (s && SUBS.includes(s)) return s;
+    return "all";
+  })();
   const initialQ = searchParams.get("q") || "";
-  const initialFilter = (searchParams.get("filter") as FilterId) || "all";
 
-  const validFilters: FilterId[] = [
-    "all",
-    "tech",
-    "compliance",
-    "apac",
-    "singapore",
-    "mid",
-    "senior",
-    "director",
-    "remote",
-    "permanent",
-    "contract",
-  ];
-
-  const [filter, setFilter] = useState<FilterId>(
-    validFilters.includes(initialFilter) ? initialFilter : "all"
+  const [track, setTrack] = useState<TrackId>(
+    TRACKS.includes(initialTrack) ? initialTrack : "all"
+  );
+  const [sub, setSub] = useState<SubFilterId>(
+    SUBS.includes(initialSub) ? initialSub : "all"
   );
   const [query, setQuery] = useState(initialQ);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const q = searchParams.get("q") || "";
-    const f = (searchParams.get("filter") as FilterId) || "all";
-    setQuery(q);
-    if (validFilters.includes(f)) setFilter(f);
+    const t = (searchParams.get("track") as TrackId) ||
+      (["tech", "compliance"].includes(searchParams.get("filter") || "")
+        ? (searchParams.get("filter") as TrackId)
+        : "all");
+    const f = searchParams.get("filter");
+    const sParam = searchParams.get("sub") as SubFilterId | null;
+    let s: SubFilterId = "all";
+    if (sParam && SUBS.includes(sParam)) s = sParam;
+    else if (f && SUBS.includes(f as SubFilterId)) s = f as SubFilterId;
+
+    if (TRACKS.includes(t)) setTrack(t);
+    setSub(s);
+    setQuery(searchParams.get("q") || "");
   }, [searchParams]);
 
-  // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
-  }, [filter, query]);
+  }, [track, sub, query]);
 
-  const counts = useMemo(() => {
-    return {
+  // Base pool by main track
+  const byTrack = useMemo(() => {
+    if (track === "tech") return jobs.filter(isTech);
+    if (track === "compliance") return jobs.filter(isCompliance);
+    return jobs;
+  }, [jobs, track]);
+
+  const trackCounts = useMemo(
+    () => ({
       all: jobs.length,
       tech: jobs.filter(isTech).length,
       compliance: jobs.filter(isCompliance).length,
-      apac: jobs.filter((j) => j.region === "APAC").length,
-      singapore: jobs.filter((j) => /singapore/i.test(j.location)).length,
-      mid: jobs.filter((j) => /^mid$/i.test(j.level)).length,
-      senior: jobs.filter((j) => /senior|staff|principal|lead/i.test(j.level)).length,
-      director: jobs.filter((j) => /director|vp|head/i.test(j.level)).length,
-      remote: jobs.filter((j) => /remote/i.test(j.location)).length,
-      permanent: jobs.filter((j) => /permanent|full[- ]?time/i.test(j.type)).length,
-      contract: jobs.filter((j) => /contract|freelance|temp/i.test(j.type)).length,
+    }),
+    [jobs]
+  );
+
+  // Counts for sub-filters within current track
+  const subCounts = useMemo(() => {
+    const pool = byTrack;
+    return {
+      all: pool.length,
+      apac: pool.filter((j) => j.region === "APAC").length,
+      singapore: pool.filter((j) => /singapore/i.test(j.location)).length,
+      mid: pool.filter((j) => /^mid$/i.test(j.level)).length,
+      senior: pool.filter((j) =>
+        /senior|staff|principal|lead/i.test(j.level)
+      ).length,
+      director: pool.filter((j) => /director|vp|head/i.test(j.level)).length,
+      remote: pool.filter((j) => /remote/i.test(j.location)).length,
+      permanent: pool.filter((j) =>
+        /permanent|full[- ]?time/i.test(j.type)
+      ).length,
+      contract: pool.filter((j) =>
+        /contract|freelance|temp/i.test(j.type)
+      ).length,
     };
-  }, [jobs]);
+  }, [byTrack]);
 
   const filtered = useMemo(() => {
-    let list = [...jobs];
-    switch (filter) {
-      case "tech":
-        list = list.filter(isTech);
-        break;
-      case "compliance":
-        list = list.filter(isCompliance);
-        break;
+    let list = [...byTrack];
+    switch (sub) {
       case "apac":
         list = list.filter((j) => j.region === "APAC");
         break;
@@ -145,7 +181,9 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
         list = list.filter((j) => /^mid$/i.test(j.level));
         break;
       case "senior":
-        list = list.filter((j) => /senior|staff|principal|lead/i.test(j.level));
+        list = list.filter((j) =>
+          /senior|staff|principal|lead/i.test(j.level)
+        );
         break;
       case "director":
         list = list.filter((j) => /director|vp|head/i.test(j.level));
@@ -174,7 +212,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     return list.sort(
       (a, b) => new Date(b.posted).getTime() - new Date(a.posted).getTime()
     );
-  }, [jobs, filter, query]);
+  }, [byTrack, sub, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -183,18 +221,22 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     currentPage * PAGE_SIZE
   );
 
-  const chips: { id: FilterId; label: string }[] = [
-    { id: "all", label: `All ${counts.all}` },
-    { id: "tech", label: `Tech ${counts.tech}` },
-    { id: "compliance", label: `Compliance ${counts.compliance}` },
-    { id: "apac", label: `APAC ${counts.apac}` },
-    { id: "singapore", label: `Singapore ${counts.singapore}` },
-    { id: "mid", label: `Mid ${counts.mid}` },
-    { id: "senior", label: `Senior ${counts.senior}` },
-    { id: "director", label: `Director ${counts.director}` },
-    { id: "remote", label: `Remote ${counts.remote}` },
-    { id: "permanent", label: `Permanent ${counts.permanent}` },
-    { id: "contract", label: `Contract ${counts.contract}` },
+  const trackChips: { id: TrackId; label: string }[] = [
+    { id: "all", label: `All ${trackCounts.all}` },
+    { id: "tech", label: `Tech ${trackCounts.tech}` },
+    { id: "compliance", label: `Compliance ${trackCounts.compliance}` },
+  ];
+
+  const subChips: { id: SubFilterId; label: string }[] = [
+    { id: "all", label: `All ${subCounts.all}` },
+    { id: "apac", label: `APAC ${subCounts.apac}` },
+    { id: "singapore", label: `Singapore ${subCounts.singapore}` },
+    { id: "mid", label: `Mid ${subCounts.mid}` },
+    { id: "senior", label: `Senior ${subCounts.senior}` },
+    { id: "director", label: `Director ${subCounts.director}` },
+    { id: "remote", label: `Remote ${subCounts.remote}` },
+    { id: "permanent", label: `Permanent ${subCounts.permanent}` },
+    { id: "contract", label: `Contract ${subCounts.contract}` },
   ];
 
   function goToPage(p: number) {
@@ -205,7 +247,6 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     }
   }
 
-  // Compact page numbers: 1 … 4 5 6 … N
   const pageNumbers = useMemo(() => {
     const pages: (number | "…")[] = [];
     if (totalPages <= 7) {
@@ -222,6 +263,9 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     return pages;
   }, [currentPage, totalPages]);
 
+  const trackLabel =
+    track === "tech" ? "Tech" : track === "compliance" ? "Compliance" : "All";
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
@@ -231,7 +275,9 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           </h1>
           <p className="mt-1 text-base text-neutral-500">
             {filtered.length} shown
-            {filter !== "all" || query ? ` of ${jobs.length}` : ""}
+            {track !== "all" || sub !== "all" || query
+              ? ` · ${trackLabel}${sub !== "all" ? ` · ${sub}` : ""}`
+              : ""}
             {filtered.length > PAGE_SIZE
               ? ` · page ${currentPage} of ${totalPages}`
               : ""}
@@ -246,21 +292,53 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
         />
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none mb-2">
-        {chips.map((c) => (
-          <button
-            key={c.id}
-            type="button"
-            onClick={() => setFilter(c.id)}
-            className={`shrink-0 rounded px-3 py-2 text-sm sm:text-base font-medium whitespace-nowrap transition-colors ${
-              filter === c.id
-                ? "bg-neutral-900 text-white"
-                : "border border-neutral-200 text-neutral-600 hover:border-neutral-400"
-            }`}
-          >
-            {c.label}
-          </button>
-        ))}
+      {/* Primary: Tech / Compliance */}
+      <div className="mb-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-2">
+          Track
+        </p>
+        <div className="flex gap-2 flex-wrap">
+          {trackChips.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => {
+                setTrack(c.id);
+                setSub("all");
+              }}
+              className={`rounded-lg px-4 py-2.5 text-base font-semibold whitespace-nowrap transition-colors ${
+                track === c.id
+                  ? "bg-blue-700 text-white"
+                  : "border border-neutral-200 text-neutral-700 hover:border-blue-400 hover:text-blue-800"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Secondary: refine within track */}
+      <div className="mb-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-2">
+          Filter within {trackLabel}
+        </p>
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {subChips.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => setSub(c.id)}
+              className={`shrink-0 rounded px-3 py-2 text-sm sm:text-base font-medium whitespace-nowrap transition-colors ${
+                sub === c.id
+                  ? "bg-neutral-900 text-white"
+                  : "border border-neutral-200 text-neutral-600 hover:border-neutral-400"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="border border-neutral-200 rounded overflow-hidden divide-y divide-neutral-200">
