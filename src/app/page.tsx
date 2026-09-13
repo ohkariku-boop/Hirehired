@@ -59,17 +59,23 @@ export default function Home() {
                 </form>
 
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {["Remote", "Singapore", "Engineering", "Product", "Senior", "Full-time"].map(
-                    (t) => (
-                      <Link
-                        key={t}
-                        href="/jobs/"
-                        className="rounded border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-base text-neutral-600 hover:border-neutral-400 hover:text-neutral-900"
-                      >
-                        {t}
-                      </Link>
-                    )
-                  )}
+                  {[
+                    { label: "Remote", href: "/jobs/?filter=remote" },
+                    { label: "Singapore", href: "/jobs/?filter=singapore" },
+                    { label: "Engineering", href: "/jobs/?q=Engineering" },
+                    { label: "Product", href: "/jobs/?q=Product" },
+                    { label: "Senior", href: "/jobs/?filter=senior" },
+                    { label: "Permanent", href: "/jobs/?filter=permanent" },
+                    { label: "Contract", href: "/jobs/?filter=contract" },
+                  ].map((t) => (
+                    <Link
+                      key={t.label}
+                      href={t.href}
+                      className="rounded border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-base text-neutral-600 hover:border-neutral-400 hover:text-neutral-900"
+                    >
+                      {t.label}
+                    </Link>
+                  ))}
                 </div>
               </div>
 
@@ -80,7 +86,7 @@ export default function Home() {
                   { k: "Apply", v: "Employer direct" },
                   { k: "Noise", v: "Less crowded" },
                   { k: "Refresh", v: "Updated daily" },
-                  { k: "Reach", v: "Global + APAC" },
+                  { k: "Reach", v: "Global · APAC focused" },
                 ].map((s) => (
                   <div
                     key={s.k}

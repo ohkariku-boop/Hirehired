@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export type Job = {
   id: string;
@@ -39,21 +40,42 @@ type FilterId =
   | "mid"
   | "senior"
   | "director"
-  | "remote";
+  | "remote"
+  | "permanent"
+  | "contract";
 
 export function JobsBoard({ jobs }: { jobs: Job[] }) {
-  const [filter, setFilter] = useState<FilterId>("all");
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+  const initialQ = searchParams.get("q") || "";
+  const initialFilter = (searchParams.get("filter") as FilterId) || "all";
+
+  const [filter, setFilter] = useState<FilterId>(
+    ["all", "apac", "singapore", "mid", "senior", "director", "remote", "permanent", "contract"].includes(initialFilter)
+      ? initialFilter
+      : "all"
+  );
+  const [query, setQuery] = useState(initialQ);
+
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    const f = (searchParams.get("filter") as FilterId) || "all";
+    setQuery(q);
+    if (["all", "apac", "singapore", "mid", "senior", "director", "remote", "permanent", "contract"].includes(f)) {
+      setFilter(f);
+    }
+  }, [searchParams]);
 
   const counts = useMemo(() => {
     return {
       all: jobs.length,
       apac: jobs.filter((j) => j.region === "APAC").length,
       singapore: jobs.filter((j) => /singapore/i.test(j.location)).length,
-      mid: jobs.filter((j) => /mid/i.test(j.level)).length,
+      mid: jobs.filter((j) => /^mid$/i.test(j.level)).length,
       senior: jobs.filter((j) => /senior|staff|principal|lead/i.test(j.level)).length,
       director: jobs.filter((j) => /director|vp|head/i.test(j.level)).length,
       remote: jobs.filter((j) => /remote/i.test(j.location)).length,
+      permanent: jobs.filter((j) => /permanent|full[- ]?time/i.test(j.type)).length,
+      contract: jobs.filter((j) => /contract|freelance|temp/i.test(j.type)).length,
     };
   }, [jobs]);
 
@@ -67,7 +89,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
         list = list.filter((j) => /singapore/i.test(j.location));
         break;
       case "mid":
-        list = list.filter((j) => /mid/i.test(j.level));
+        list = list.filter((j) => /^mid$/i.test(j.level));
         break;
       case "senior":
         list = list.filter((j) => /senior|staff|principal|lead/i.test(j.level));
@@ -78,6 +100,12 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
       case "remote":
         list = list.filter((j) => /remote/i.test(j.location));
         break;
+      case "permanent":
+        list = list.filter((j) => /permanent|full[- ]?time/i.test(j.type));
+        break;
+      case "contract":
+        list = list.filter((j) => /contract|freelance|temp/i.test(j.type));
+        break;
     }
     if (query.trim()) {
       const q = query.toLowerCase();
@@ -86,6 +114,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           j.title.toLowerCase().includes(q) ||
           j.company.toLowerCase().includes(q) ||
           j.location.toLowerCase().includes(q) ||
+          j.category?.toLowerCase().includes(q) ||
           j.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
@@ -102,6 +131,8 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     { id: "senior", label: `Senior ${counts.senior}` },
     { id: "director", label: `Director ${counts.director}` },
     { id: "remote", label: `Remote ${counts.remote}` },
+    { id: "permanent", label: `Permanent ${counts.permanent}` },
+    { id: "contract", label: `Contract ${counts.contract}` },
   ];
 
   return (
@@ -169,7 +200,10 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
                   <span className="text-sm text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5">
                     {job.level}
                   </span>
-                  {job.tags.slice(0, 3).map((t) => (
+                  <span className="text-sm text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5">
+                    {/full[- ]?time/i.test(job.type) ? "Permanent" : job.type}
+                  </span>
+                  {job.tags.slice(0, 2).map((t) => (
                     <span
                       key={t}
                       className="text-sm text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5"
