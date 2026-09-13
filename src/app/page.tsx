@@ -28,12 +28,12 @@ export default function Home() {
       <main className="flex-1 w-full">
         <section className="w-full border-b border-neutral-200">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-14 lg:py-16">
-            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-              <div className="lg:col-span-7">
-                <p className="text-lg font-medium text-blue-700 mb-3 tracking-wide uppercase">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+              <div className="lg:col-span-7 flex flex-col justify-center">
+                <p className="text-base sm:text-lg font-medium text-blue-700 mb-3 tracking-wide uppercase">
                   Direct from company career pages
                 </p>
-                <h1 className="text-[2.35rem] sm:text-[3.75rem] lg:text-[3.75rem] font-bold tracking-tight leading-[1.1]">
+                <h1 className="text-[2.35rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.1]">
                   Find roles before
                   <br className="hidden sm:block" />{" "}
                   they hit the big boards.
@@ -48,23 +48,23 @@ export default function Home() {
                     type="search"
                     name="q"
                     placeholder="Role, skill, or company"
-                    className="min-w-0 flex-1 h-11 rounded border border-neutral-300 bg-white px-3 text-[17px] placeholder:text-neutral-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                    className="min-w-0 flex-1 h-12 rounded border border-neutral-300 bg-white px-3 text-[17px] placeholder:text-neutral-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                   <button
                     type="submit"
-                    className="h-11 shrink-0 rounded bg-blue-700 px-4 text-base font-semibold text-white hover:bg-blue-800"
+                    className="h-12 shrink-0 rounded bg-blue-700 px-5 text-base font-semibold text-white hover:bg-blue-800"
                   >
                     Search
                   </button>
                 </form>
 
-                <div className="mt-4 flex flex-wrap gap-1.5">
+                <div className="mt-4 flex flex-wrap gap-2">
                   {["Remote", "Singapore", "Engineering", "Product", "Senior", "Full-time"].map(
                     (t) => (
                       <Link
                         key={t}
                         href="/jobs/"
-                        className="rounded border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-lg text-neutral-600 hover:border-neutral-400 hover:text-neutral-900"
+                        className="rounded border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-base text-neutral-600 hover:border-neutral-400 hover:text-neutral-900"
                       >
                         {t}
                       </Link>
@@ -73,21 +73,25 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 grid grid-cols-2 gap-3">
+              <div className="lg:col-span-5 grid grid-cols-2 grid-rows-3 gap-3 sm:gap-4 h-full min-h-[280px] lg:min-h-0">
                 {[
                   { k: "Source", v: "Career pages" },
                   { k: "Timing", v: "Earlier signal" },
                   { k: "Apply", v: "Employer direct" },
                   { k: "Noise", v: "Less crowded" },
+                  { k: "Refresh", v: "Updated daily" },
+                  { k: "Reach", v: "Global + APAC" },
                 ].map((s) => (
                   <div
                     key={s.k}
-                    className="rounded border border-neutral-200 bg-neutral-50 px-4 py-3"
+                    className="flex flex-col justify-center rounded-lg border border-neutral-200 bg-neutral-50 px-4 sm:px-5 py-5 sm:py-6"
                   >
-                    <p className="text-sm uppercase tracking-wide text-neutral-400">
+                    <p className="text-sm sm:text-base uppercase tracking-wide text-neutral-400 font-medium">
                       {s.k}
                     </p>
-                    <p className="mt-1 text-[17px] font-semibold">{s.v}</p>
+                    <p className="mt-2 text-lg sm:text-xl font-semibold text-neutral-900 leading-snug">
+                      {s.v}
+                    </p>
                   </div>
                 ))}
               </div>
