@@ -23,7 +23,7 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      window.location.href = "/dashboard/";
+      window.location.href = (process.env.NODE_ENV === "production" ? "/Hirehired" : "") + "/dashboard/";
     } catch {
       setError("Auth not available in static preview.");
       setLoading(false);

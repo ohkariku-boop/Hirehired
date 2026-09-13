@@ -857,13 +857,161 @@ async function fetchJobsPipe() {
   return out;
 }
 
+
+const SMARTRECRUITERS_COMPANIES = [
+  ["Grab", "Grab"],
+  ["Wise", "Wise"],
+  ["DeliveryHero", "Delivery Hero"],
+  ["Auto1", "AUTO1 Group"],
+];
+
+async function fetchSmartRecruiters(slug, company) {
+  try {
+    const jobs = [];
+    let offset = 0;
+    const limit = 100;
+    for (let page = 0; page < 5; page++) {
+      const r = await fetch(
+        `https://api.smartrecruiters.com/v1/companies/${slug}/postings?limit=${limit}&offset=${offset}`,
+        { headers: { "User-Agent": "HirehiredBot/1.0", Accept: "application/json" } }
+      );
+      if (!r.ok) break;
+      const data = await r.json();
+      const content = data.content || [];
+      if (!content.length) break;
+      for (const j of content) {
+        const title = j.name || j.title || "";
+        if (!isTargetLevel(title)) continue;
+        if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
+        if (isNonItSupport(title)) continue;
+        const applyUrl =
+          j.ref ||
+          j.applyUrl ||
+          (j.id
+            ? `https://jobs.smartrecruiters.com/${slug}/${j.id}`
+            : "");
+        if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) continue;
+        const loc =
+          j.location?.fullLocation ||
+          j.location?.city ||
+          j.location?.region ||
+          (j.location?.remote ? "Remote" : "") ||
+          j.location?.country ||
+          "Remote";
+        const compliance = isComplianceTitle(title);
+        jobs.push({
+          id: `sr-${slug}-${j.id || title}`,
+          title: title.trim(),
+          company,
+          location: String(loc),
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: /contract|temporary/i.test(j.typeOfEmployment?.label || "")
+            ? "Contract"
+            : "Permanent",
+          level: levelFromTitle(title),
+          salary: "Competitive",
+          posted: (j.releasedDate || j.createdOn || "").slice(0, 10) ||
+            new Date().toISOString().slice(0, 10),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl,
+          source: "smartrecruiters",
+          description: `${title.trim()} at ${company}. Apply on the employer SmartRecruiters page.`,
+        });
+      }
+      offset += limit;
+      if (offset >= (data.totalFound || 0)) break;
+    }
+    return jobs;
+  } catch (e) {
+    console.warn(`SmartRecruiters ${slug}:`, e.message);
+    return [];
+  }
+}
+
+const WORKABLE_ACCOUNTS = [
+  ["spotify", "Spotify"],
+  ["intercom", "Intercom"],
+  ["typeform", "Typeform"],
+  ["revolut", "Revolut"],
+  ["transferwise", "Wise"],
+  ["monzo", "Monzo"],
+  ["deliveroo", "Deliveroo"],
+  ["skyscanner", "Skyscanner"],
+  ["n26", "N26"],
+  ["checkout", "Checkout.com"],
+];
+
+async function fetchWorkable(slug, company) {
+  try {
+    let data = null;
+    for (const url of [
+      `https://www.workable.com/api/accounts/${slug}?details=true`,
+      `https://apply.workable.com/api/v1/widget/accounts/${slug}?details=true`,
+    ]) {
+      const r = await fetch(url, {
+        headers: { "User-Agent": "HirehiredBot/1.0", Accept: "application/json" },
+      });
+      if (!r.ok) continue;
+      data = await r.json();
+      if ((data.jobs || []).length) break;
+    }
+    if (!data) return [];
+    const list = data.jobs || data.results || (Array.isArray(data) ? data : []);
+    return list
+      .filter((j) => isTargetLevel(j.title || ""))
+      .filter((j) => isComplianceTitle(j.title || "") || isTechTitle(j.title || ""))
+      .filter((j) => !isNonItSupport(j.title || ""))
+      .map((j) => {
+        const title = (j.title || "").trim();
+        const loc =
+          j.city ||
+          j.location ||
+          (Array.isArray(j.locations) && j.locations[0]) ||
+          "Remote";
+        const applyUrl =
+          j.url ||
+          j.application_url ||
+          (j.shortcode
+            ? `https://jobs.workable.com/view/${j.shortcode}`
+            : "") ||
+          (j.id ? `https://apply.workable.com/${slug}/j/${j.shortcode || j.id}/` : "");
+        if (!applyUrl || !/^https?:\/\//i.test(String(applyUrl))) return null;
+        const compliance = isComplianceTitle(title);
+        return {
+          id: `workable-${slug}-${j.shortcode || j.id || title}`,
+          title,
+          company,
+          location: String(loc),
+          region: isApac(`${loc} ${title}`) ? "APAC" : "Global",
+          type: /contract|temporary/i.test(j.employment_type || j.type || "")
+            ? "Contract"
+            : "Permanent",
+          level: levelFromTitle(title),
+          salary: "Competitive",
+          posted: (j.published_on || j.created_at || "").slice(0, 10) ||
+            new Date().toISOString().slice(0, 10),
+          tags: tagsFromTitle(title),
+          category: compliance ? "Compliance" : categoryFromTitle(title),
+          applyUrl: String(applyUrl),
+          source: "workable",
+          description: `${title} at ${company}. Apply on the employer Workable page.`,
+        };
+      })
+      .filter(Boolean);
+  } catch (e) {
+    console.warn(`Workable ${slug}:`, e.message);
+    return [];
+  }
+}
+
 function isDirectJobUrl(url) {
   if (!url) return false;
   return (
     /greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /boards\.greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
-    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url)
+    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url) || /smartrecruiters\.com/i.test(url) || /workable\.com/i.test(url)
   );
 }
 
@@ -894,6 +1042,20 @@ async function main() {
   const fromAshby = ashbyResults.flat();
   console.log(`Ashby: ${fromAshby.length}`);
 
+  console.log("Fetching SmartRecruiters...");
+  const srResults = await Promise.all(
+    SMARTRECRUITERS_COMPANIES.map(([slug, name]) => fetchSmartRecruiters(slug, name))
+  );
+  const fromSr = srResults.flat();
+  console.log(`SmartRecruiters: ${fromSr.length}`);
+
+  console.log("Fetching Workable...");
+  const workableResults = await Promise.all(
+    WORKABLE_ACCOUNTS.map(([slug, name]) => fetchWorkable(slug, name))
+  );
+  const fromWorkable = workableResults.flat();
+  console.log(`Workable: ${fromWorkable.length}`);
+
   console.log("Fetching Workday banks / enterprises...");
   const fromWd = await fetchAllWorkday();
   console.log(`Workday: ${fromWd.length}`);
@@ -915,6 +1077,8 @@ async function main() {
     ...fromGh,
     ...fromLever,
     ...fromAshby,
+    ...fromSr,
+    ...fromWorkable,
     ...fromWd,
     ...remote,
     ...remotive,

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import jobs from "@/data/jobs.json";
+import { withBase } from "@/lib/base-path";
 
 function formatPosted(dateStr: string) {
   try {
@@ -43,7 +44,7 @@ export default function Home() {
                   LinkedIn or Indeed. Apply with less noise and fewer applicants.
                 </p>
 
-                <form action="/jobs/" className="mt-6 flex gap-2 max-w-lg">
+                <form action={withBase("/jobs/")} className="mt-6 flex gap-2 max-w-lg">
                   <input
                     type="search"
                     name="q"
