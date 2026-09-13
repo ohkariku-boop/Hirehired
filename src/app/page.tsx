@@ -44,7 +44,7 @@ export default function Home() {
                   LinkedIn or Indeed. Apply with less noise and fewer applicants.
                 </p>
 
-                <form action={withBase("/jobs/")} className="mt-6 flex gap-2 max-w-lg">
+                <form action="/Hirehired/jobs/" className="mt-6 flex gap-2 max-w-lg">
                   <input
                     type="search"
                     name="q"
