@@ -14,10 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install deps
         run: npm install
@@ -31,14 +34,16 @@ jobs:
           REED_API_KEY: ${{ secrets.REED_API_KEY }}
           JOBSPIPE_API_KEY: ${{ secrets.JOBSPIPE_API_KEY }}
 
-      - name: Commit updated jobs if changed
+      - name: Commit and push updated jobs
         run: |
           git config user.name "hirehired-bot"
           git config user.email "bot@hirehired.local"
           git add src/data/jobs.json
           if git diff --staged --quiet; then
             echo "No job data changes"
-          else
-            git commit -m "chore: daily job refresh $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          git commit -m "chore: daily job refresh $(date -u +%Y-%m-%d)"
+          # Avoid race with concurrent pushes (deploy / manual commits)
+          git pull --rebase origin main || git pull --rebase --autostash origin main
+          git push origin main
