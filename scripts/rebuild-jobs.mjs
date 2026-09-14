@@ -17,7 +17,7 @@ const COMP_RE =
 
 // End-to-end IT: eng, product, project/program/portfolio PM, IT gov/strategy/infra/software, Head of IT
 const TECH_RE =
-  /\b(engineer|engineering|software|developer|devops|sre|platform|infra|infrastructure|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|data.?engineer|mlops|security.?engineer|architect|engineering.?manager|technical.?lead|staff|principal|product.?manager|product.?owner|product.?lead|product.?director|head of product|vp.?product|chief.?product|project.?manager|program.?manager|portfolio.?manager|technical.?program|tpm\b|it.?manager|it.?director|head of it|vp.?it|chief.?information|cio\b|cto\b|it.?governance|it.?strategy|it.?operations|it.?service|it.?support|systems.?admin|system.?administrator|network.?engineer|cloud.?engineer|solutions.?architect|enterprise.?architect|scrum.?master|delivery.?manager|release.?manager|qa.?engineer|quality.?assurance|test.?engineer|site.?reliability|platform.?engineer|security.?architect|info.?sec|information.?security|cyber.?security|application.?security|devsecops|agile.?coach)\b/i;
+  /\b(engineer|engineering|software|developer|devops|sre|platform|infra|infrastructure|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|data.?engineer|mlops|security.?engineer|architect|engineering.?manager|technical.?lead|staff|principal|product.?manager|product.?owner|product.?lead|product.?director|head of product|vp.?product|chief.?product|project.?manager|program.?manager|portfolio.?manager|technical.?program|\btpm\b|it.?project.?manager|technology.?project.?manager|digital.?project.?manager|it.?program.?manager|technology.?program.?manager|it.?portfolio|technology.?portfolio|it.?manager|it.?director|head of it|head of technology|head of digital|head of engineering|vp.?it|vp.?technology|chief.?information|cio\b|cto\b|chief.?technology|it.?governance|tech.?governance|technology.?governance|it.?strategy|tech.?strategy|technology.?strategy|digital.?strategy|it.?architecture|technology.?architecture|enterprise.?architecture|it.?operations|it.?service|it.?support|systems.?admin|system.?administrator|network.?engineer|cloud.?engineer|solutions.?architect|enterprise.?architect|scrum.?master|delivery.?manager|release.?manager|qa.?engineer|quality.?assurance|test.?engineer|site.?reliability|platform.?engineer|security.?architect|info.?sec|information.?security|cyber.?security|application.?security|devsecops|agile.?coach|change.?manager.?it|it.?change|technology.?risk)\b/i;
 
 const LEVEL_RE =
   /\b(mid[- ]?level|mid[- ]?senior|senior|staff|principal|lead|manager|director|head of|vp|vice president|head,|analyst|specialist|officer)\b/i;
@@ -585,6 +585,8 @@ async function fetchAllWorkday() {
     const batches = await Promise.all([
       fetchWorkdaySite(host, tenant, site, company, "compliance KYC AML"),
       fetchWorkdaySite(host, tenant, site, company, "engineer software product manager"),
+      fetchWorkdaySite(host, tenant, site, company, "IT project manager program manager"),
+      fetchWorkdaySite(host, tenant, site, company, "Head of IT technology governance strategy"),
     ]);
     all.push(...batches.flat());
     console.log(`  Workday ${company}: ${batches.flat().length} matched`);
@@ -605,6 +607,10 @@ async function fetchAdzuna() {
     "compliance KYC AML",
     "software engineer senior",
     "product manager",
+    "IT project manager",
+    "Head of IT",
+    "technology governance",
+    "IT strategy",
   ];
   const out = [];
   for (const country of countries) {
@@ -734,6 +740,10 @@ async function fetchReed() {
     { keywords: "compliance", locationName: "Singapore" },
     { keywords: "senior software engineer", locationName: "London" },
     { keywords: "product manager", locationName: "London" },
+    { keywords: "IT project manager", locationName: "London" },
+    { keywords: "Head of IT", locationName: "London" },
+    { keywords: "IT governance", locationName: "London" },
+    { keywords: "technology strategy", locationName: "London" },
   ];
   const out = [];
   const auth = Buffer.from(`${key}:`).toString("base64");
@@ -813,6 +823,9 @@ async function fetchJobsPipe() {
     { job_title_or: ["compliance", "KYC", "AML"], limit: 50 },
     { job_title_or: ["senior software engineer", "staff engineer"], limit: 50 },
     { job_title_or: ["product manager"], limit: 25 },
+    { job_title_or: ["IT project manager", "project manager IT"], limit: 25 },
+    { job_title_or: ["Head of IT", "IT Director"], limit: 25 },
+    { job_title_or: ["IT governance", "technology governance", "IT strategy"], limit: 25 },
   ];
   const out = [];
   for (const body of queries) {
@@ -1029,6 +1042,13 @@ async function fetchMyCareersFuture() {
     "product manager",
     "IT manager",
     "technical program manager",
+    "IT project manager",
+    "Head of IT",
+    "technology governance",
+    "IT governance",
+    "IT strategy",
+    "technology strategy",
+    "program manager IT",
   ];
   const out = [];
   for (const search of queries) {
