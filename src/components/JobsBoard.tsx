@@ -21,9 +21,10 @@ export type Job = {
 };
 
 const PAGE_SIZE = 20;
-const MAX_AGE_DAYS = 30;
+type AgeDays = 7 | 14 | 30;
+const AGE_OPTIONS: AgeDays[] = [7, 14, 30];
 
-function isRecentJob(posted: string, maxDays = MAX_AGE_DAYS) {
+function isRecentJob(posted: string, maxDays: number) {
   if (!posted) return false;
   const t = new Date(posted).getTime();
   if (Number.isNaN(t)) return false;
@@ -110,6 +111,10 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     return "all";
   })();
   const initialQ = searchParams.get("q") || "";
+  const ageParam = parseInt(searchParams.get("age") || "30", 10);
+  const initialAge: AgeDays = AGE_OPTIONS.includes(ageParam as AgeDays)
+    ? (ageParam as AgeDays)
+    : 30;
 
   const [track, setTrack] = useState<TrackId>(
     TRACKS.includes(initialTrack) ? initialTrack : "all"
@@ -118,6 +123,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     SUBS.includes(initialSub) ? initialSub : "all"
   );
   const [query, setQuery] = useState(initialQ);
+  const [ageDays, setAgeDays] = useState<AgeDays>(initialAge);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -134,16 +140,18 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     if (TRACKS.includes(t)) setTrack(t);
     setSub(s);
     setQuery(searchParams.get("q") || "");
+    const a = parseInt(searchParams.get("age") || "30", 10);
+    if (AGE_OPTIONS.includes(a as AgeDays)) setAgeDays(a as AgeDays);
   }, [searchParams]);
 
   useEffect(() => {
     setPage(1);
-  }, [track, sub, query]);
+  }, [track, sub, query, ageDays]);
 
   // Base pool by main track
   const recentJobs = useMemo(
-    () => jobs.filter((j) => isRecentJob(j.posted)),
-    [jobs]
+    () => jobs.filter((j) => isRecentJob(j.posted, ageDays)),
+    [jobs, ageDays]
   );
 
   const byTrack = useMemo(() => {
@@ -151,6 +159,15 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     if (track === "compliance") return recentJobs.filter(isCompliance);
     return recentJobs;
   }, [recentJobs, track]);
+
+
+  const ageCounts = useMemo(() => {
+    return {
+      7: jobs.filter((j) => isRecentJob(j.posted, 7)).length,
+      14: jobs.filter((j) => isRecentJob(j.posted, 14)).length,
+      30: jobs.filter((j) => isRecentJob(j.posted, 30)).length,
+    };
+  }, [jobs]);
 
   const trackCounts = useMemo(
     () => ({
@@ -289,7 +306,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
             Open roles
           </h1>
           <p className="mt-1 text-base text-neutral-500">
-            {filtered.length} shown
+            {filtered.length} shown · last {ageDays}d
             {track !== "all" || sub !== "all" || query
               ? ` · ${trackLabel}${sub !== "all" ? ` · ${sub}` : ""}`
               : ""}
@@ -305,6 +322,33 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           placeholder="Search title, company…"
           className="h-11 w-full sm:w-56 rounded border border-neutral-300 px-3 text-base focus:outline-none focus:border-blue-600"
         />
+      </div>
+
+
+      {/* Posted within */}
+      <div className="mb-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-2">
+          Posted within
+        </p>
+        <div className="flex gap-2 flex-wrap">
+          {AGE_OPTIONS.map((d) => (
+            <button
+              key={d}
+              type="button"
+              onClick={() => setAgeDays(d)}
+              className={`rounded-lg px-4 py-2 text-sm sm:text-base font-semibold whitespace-nowrap transition-colors ${
+                ageDays === d
+                  ? "bg-blue-700 text-white"
+                  : "border border-neutral-200 text-neutral-700 hover:border-blue-400 hover:text-blue-800"
+              }`}
+            >
+              {d} days
+              <span className={`ml-1.5 font-medium ${ageDays === d ? "text-blue-100" : "text-neutral-400"}`}>
+                {ageCounts[d]}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Primary: Tech / Compliance */}
