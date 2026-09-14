@@ -33,6 +33,20 @@ function isRecentJob(posted: string, maxDays: number) {
   return age <= maxDays * 86400000;
 }
 
+
+function companySearchSlug(name: string) {
+  return encodeURIComponent(name.trim());
+}
+
+/** Outbound company research links (no scraping — search pages only). */
+function glassdoorSearchUrl(company: string) {
+  return `https://www.glassdoor.com/Search/results.htm?keyword=${companySearchSlug(company)}`;
+}
+
+function levelsFyiSearchUrl(company: string) {
+  return `https://www.levels.fyi/companies/?search=${companySearchSlug(company)}`;
+}
+
 function formatPosted(dateStr: string) {
   try {
     const d = new Date(dateStr);
@@ -427,6 +441,27 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
                 </div>
                 <p className="text-sm text-neutral-500 mt-0.5">
                   {job.company} · {job.location}
+                </p>
+                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-neutral-400">
+                  <a
+                    href={glassdoorSearchUrl(job.company)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-700 hover:underline"
+                    title={`Glassdoor reviews for ${job.company}`}
+                  >
+                    Glassdoor
+                  </a>
+                  <span aria-hidden>·</span>
+                  <a
+                    href={levelsFyiSearchUrl(job.company)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-700 hover:underline"
+                    title={`Levels.fyi compensation for ${job.company}`}
+                  >
+                    Levels.fyi
+                  </a>
                 </p>
                 <div className="mt-1.5 flex flex-wrap gap-1">
                   <span className="text-sm text-neutral-500 border border-neutral-200 rounded px-1.5 py-0.5">
