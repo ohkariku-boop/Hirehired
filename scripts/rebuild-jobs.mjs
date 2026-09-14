@@ -99,6 +99,18 @@ function tagsFromTitle(title) {
   return tags.slice(0, 5);
 }
 
+
+const MAX_AGE_DAYS = 30;
+
+function isRecent(job, maxDays = MAX_AGE_DAYS) {
+  if (!job?.posted) return false;
+  const t = new Date(job.posted).getTime();
+  if (Number.isNaN(t)) return false;
+  const ageMs = Date.now() - t;
+  if (ageMs < 0) return true; // future-dated treat as fresh
+  return ageMs <= maxDays * 86400000;
+}
+
 const GREENHOUSE_BOARDS = [
   // Fintech / payments / crypto (compliance-heavy)
   ["okx", "OKX"],
@@ -1232,7 +1244,12 @@ async function main() {
   add(tech, 25);
 
   // Cap overall
-  const capped = final.slice(0, 1000);
+  // Keep only jobs posted within the last 30 days
+  const recent = final.filter((j) => isRecent(j, MAX_AGE_DAYS));
+  console.log(
+    `Age filter: ${final.length} → ${recent.length} (last ${MAX_AGE_DAYS} days)`
+  );
+  const capped = recent.slice(0, 1000);
 
   capped.sort((a, b) => {
     if (a.region === "APAC" && b.region !== "APAC") return -1;

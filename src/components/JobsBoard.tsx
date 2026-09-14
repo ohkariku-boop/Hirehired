@@ -21,6 +21,16 @@ export type Job = {
 };
 
 const PAGE_SIZE = 20;
+const MAX_AGE_DAYS = 30;
+
+function isRecentJob(posted: string, maxDays = MAX_AGE_DAYS) {
+  if (!posted) return false;
+  const t = new Date(posted).getTime();
+  if (Number.isNaN(t)) return false;
+  const age = Date.now() - t;
+  if (age < 0) return true;
+  return age <= maxDays * 86400000;
+}
 
 function formatPosted(dateStr: string) {
   try {
@@ -131,19 +141,24 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
   }, [track, sub, query]);
 
   // Base pool by main track
+  const recentJobs = useMemo(
+    () => jobs.filter((j) => isRecentJob(j.posted)),
+    [jobs]
+  );
+
   const byTrack = useMemo(() => {
-    if (track === "tech") return jobs.filter(isTech);
-    if (track === "compliance") return jobs.filter(isCompliance);
-    return jobs;
-  }, [jobs, track]);
+    if (track === "tech") return recentJobs.filter(isTech);
+    if (track === "compliance") return recentJobs.filter(isCompliance);
+    return recentJobs;
+  }, [recentJobs, track]);
 
   const trackCounts = useMemo(
     () => ({
-      all: jobs.length,
-      tech: jobs.filter(isTech).length,
-      compliance: jobs.filter(isCompliance).length,
+      all: recentJobs.length,
+      tech: recentJobs.filter(isTech).length,
+      compliance: recentJobs.filter(isCompliance).length,
     }),
-    [jobs]
+    [recentJobs]
   );
 
   // Counts for sub-filters within current track
