@@ -272,6 +272,78 @@
     "description": "KYC Operations Analyst 1 - C09 - MUMBAI at Citi. Apply on the employer Workday careers page."
   },
   {
+    "id": "jobspipe-4465487677",
+    "title": "Compliance Analyst",
+    "company": "Salt",
+    "location": "Singapore, Singapore",
+    "region": "APAC",
+    "type": "Permanent",
+    "level": "Mid",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Compliance"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://sg.linkedin.com/jobs/view/compliance-analyst-at-salt-4465487677",
+    "source": "jobspipe",
+    "description": "Compliance Analyst at Salt"
+  },
+  {
+    "id": "jobspipe-4465491628",
+    "title": "Regulatory Compliance Analyst",
+    "company": "Nicoll Curtin",
+    "location": "Singapore, Singapore",
+    "region": "APAC",
+    "type": "Permanent",
+    "level": "Mid",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Compliance"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://sg.linkedin.com/jobs/view/regulatory-compliance-analyst-at-nicoll-curtin-4465491628",
+    "source": "jobspipe",
+    "description": "Regulatory Compliance Analyst at Nicoll Curtin"
+  },
+  {
+    "id": "jobspipe-4464762193",
+    "title": "Compliance Operations Analyst",
+    "company": "Russell Tobin",
+    "location": "Singapore, Singapore",
+    "region": "APAC",
+    "type": "Permanent",
+    "level": "Mid",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Compliance"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://sg.linkedin.com/jobs/view/compliance-operations-analyst-at-russell-tobin-4464762193",
+    "source": "jobspipe",
+    "description": "Compliance Operations Analyst at Russell Tobin"
+  },
+  {
+    "id": "jobspipe-4464771009",
+    "title": "Administration Excellence & Compliance Lead | Hybrid | NSW or QLD",
+    "company": "Cancer Care Associates",
+    "location": "New South Wales, Australia",
+    "region": "APAC",
+    "type": "Permanent",
+    "level": "Senior",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Compliance"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://au.linkedin.com/jobs/view/administration-excellence-compliance-lead-hybrid-nsw-or-qld-at-cancer-care-associates-4464771009",
+    "source": "jobspipe",
+    "description": "Administration Excellence & Compliance Lead | Hybrid | NSW or QLD at Cancer Care Associates"
+  },
+  {
     "id": "jobspipe-4465703334",
     "title": "AML Operation/Analyst",
     "company": "SRKay Consulting Group",
@@ -306,42 +378,6 @@
     "applyUrl": "https://au.linkedin.com/jobs/view/senior-associate-public-law-and-regulatory-compliance-at-russell-kennedy-4466782984",
     "source": "jobspipe",
     "description": "Senior Associate - Public Law and Regulatory Compliance at Russell Kennedy"
-  },
-  {
-    "id": "jobspipe-22354d6dd7018f12",
-    "title": "Global Financial Crimes Compliance Officer - Vice President",
-    "company": "JPMorganChase",
-    "location": "Sydney NSW 2000",
-    "region": "APAC",
-    "type": "Permanent",
-    "level": "Director",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=22354d6dd7018f12",
-    "source": "jobspipe",
-    "description": "Global Financial Crimes Compliance Officer - Vice President at JPMorganChase"
-  },
-  {
-    "id": "jobspipe-138a4cd53a4f1b85",
-    "title": "VP, Compliance Officer (primary market / investment banking)",
-    "company": "China Securities (International) Finance Holding Company Limited",
-    "location": "Hong Kong",
-    "region": "APAC",
-    "type": "Permanent",
-    "level": "Director",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=138a4cd53a4f1b85",
-    "source": "jobspipe",
-    "description": "VP, Compliance Officer (primary market / investment banking) at China Securities (International) Finance Holding Company Limited"
   },
   {
     "id": "gh-alpaca-6138388004",
@@ -868,7 +904,7 @@
     "description": "• Strategic risk and governance leadership role • Partner directly with senior technology executives • Drive enterprise-wide governance, compliance and control outcomes The Opportunity We're partnering with a highly regarded organisation seeking an experienced Technology Risk & G"
   },
   {
-    "id": "gh-coinbase-8147660",
+    "id": "gh-coinbase-8147663",
     "title": "Payments Risk Analyst I",
     "company": "Coinbase",
     "location": "Manila, Philippines",
@@ -879,7 +915,7 @@
     "posted": "2026-09-09",
     "tags": [],
     "category": "Compliance",
-    "applyUrl": "https://www.coinbase.com/careers/positions/8147660?gh_jid=8147660",
+    "applyUrl": "https://www.coinbase.com/careers/positions/8147663?gh_jid=8147663",
     "source": "greenhouse",
     "description": "Payments Risk Analyst I at Coinbase. Apply directly on the employer career page."
   },
@@ -1222,10 +1258,10 @@
     "description": "Provide technology risk governance and oversight across strategic transformation and technology initiatives Conduct risk assessments and control reviews throughout project lifecycles Review and challenge risk exceptions, control gaps, and remediation plans About the Role Major Gl"
   },
   {
-    "id": "adzuna-5870261987",
+    "id": "adzuna-5870261980",
     "title": "Technology Governance & Risk Lead",
     "company": "AFCA",
-    "location": "Melbourne, Melbourne Region",
+    "location": "Sydney, Sydney Region",
     "region": "APAC",
     "type": "Permanent",
     "level": "Senior",
@@ -1233,7 +1269,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Compliance",
-    "applyUrl": "https://www.adzuna.com.au/details/5870261987?utm_medium=api&utm_source=538ab1e3",
+    "applyUrl": "https://www.adzuna.com.au/details/5870261980?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Job Description Help shape how technology risk is governed across one of Australia’s most important consumer-facing organisations. AFCA is building a world-first scams prevention capability designed to benefit all Australians, alongside major transformation across digital service"
   },
@@ -1309,24 +1345,6 @@
     "applyUrl": "https://www.mycareersfuture.gov.sg/job/banking-finance/kyc-analyst-senior-analyst-argyll-scott-consulting-e729f94f5aede0e2975265c4aca3339d",
     "source": "mycareersfuture",
     "description": "KYC Analyst / Senior Analyst at ARGYLL SCOTT CONSULTING PTE. LTD. (MyCareersFuture Singapore)."
-  },
-  {
-    "id": "mcf-e04cf389d328f53a6f9b92eb3a754a4d",
-    "title": "CDD Analyst",
-    "company": "STEENBOK PTE LTD",
-    "location": "Islandwide, Singapore",
-    "region": "APAC",
-    "type": "Contract",
-    "level": "Mid",
-    "salary": "S$3k – S$4k",
-    "posted": "2026-09-03",
-    "tags": [
-      "CDD"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.mycareersfuture.gov.sg/job/banking-finance/cdd-analyst-steenbok-e04cf389d328f53a6f9b92eb3a754a4d",
-    "source": "mycareersfuture",
-    "description": "CDD Analyst at STEENBOK PTE LTD (MyCareersFuture Singapore)."
   },
   {
     "id": "mcf-d03ecc3c9bdb1e52a8914e4ffe2cce58",
@@ -2952,7 +2970,7 @@
     "posted": "2026-09-14",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882727247?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=9715141AF54C357A2F63015D5005BBC4A15662DE",
+    "applyUrl": "https://www.adzuna.com.au/details/5882727247?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description At Squiz, we are building a cloud-based Digital Experience Platform (DXP) designed to power complex content management, optimization tooling, and platform services. Within this ecosystem, our Discovery team is fundamentally redefining how enterprise customers interact"
   },
@@ -2968,7 +2986,7 @@
     "posted": "2026-09-14",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882727392?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=E19C28225F24FBD9EB165280E3D73AD403F3C300",
+    "applyUrl": "https://www.adzuna.com.au/details/5882727392?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Propeller is on a mission to take the guesswork out of moving dirt - reducing wasted fuel, time, and money. We do this through the power of maps. Our customers use Propeller's integrated hardware and software products to capture accurate 3D versions of their worksites"
   },
@@ -2984,7 +3002,7 @@
     "posted": "2026-09-14",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882726898?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=126B4D23FB80C2BACB72D5A53F188B3F7BCDEE3B",
+    "applyUrl": "https://www.adzuna.com.au/details/5882726898?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description About CORTO We are CORTO, a cutting-edge software company dedicated to revolutionising the legal industry. Our mission is to empower legal practitioners with AI-driven solutions that streamline their workflow, boost productivity, and provide more efficient client serv"
   },
@@ -3000,9 +3018,27 @@
     "posted": "2026-09-14",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://jobs.lever.co/jobgether/e6ef9573-f90d-46fb-9bd8-f07912777db1",
+    "applyUrl": "https://in.linkedin.com/jobs/view/senior-software-engineer-devices-at-jobgether-4465495410",
     "source": "jobspipe",
     "description": "Senior Software Engineer, Devices at Jobgether"
+  },
+  {
+    "id": "jobspipe-4463992065",
+    "title": "Senior Software Engineer/ SRE - 生成AIファーム - 年収〜2,000万",
+    "company": "Randstad Japan",
+    "location": "Greater Tokyo Area",
+    "region": "APAC",
+    "type": "Permanent",
+    "level": "Senior",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Infra"
+    ],
+    "category": "Engineering",
+    "applyUrl": "https://jp.linkedin.com/jobs/view/senior-software-engineer-sre-%E7%94%9F%E6%88%90ai%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0-%E5%B9%B4%E5%8F%8E%E3%80%9C2-000%E4%B8%87-at-randstad-japan-4463992065",
+    "source": "jobspipe",
+    "description": "Senior Software Engineer/ SRE - 生成AIファーム - 年収〜2,000万 at Randstad Japan"
   },
   {
     "id": "jobspipe-4466786767",
@@ -3314,7 +3350,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5881032019?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=DED056D0AA432DD0C8A169464AA9D918E5900D43",
+    "applyUrl": "https://www.adzuna.com.au/details/5881032019?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Senior Software Engineer Slater and Gordon Lawyers are a leading personal injury and class actions law firm where every member of our team has a shared passion for our clients: we are people caring for people. Our commitment to our people includes offering genuine work-life balan"
   },
@@ -3330,7 +3366,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5881968162?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=4AC495C5584F19843031E21BC51C0061EF16247A",
+    "applyUrl": "https://www.adzuna.com.au/details/5881968162?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "This is a contract opportunity for an experienced iOS Engineer. The role is based in a major bank in Sydney's CBD. Duration : 12 months Location : Sydney NSW Essential : Proven track record of developing robust and secured enterprise native iOS applications with Swift and SwiftUI"
   },
@@ -3346,7 +3382,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882234523?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=9D871407881DF8AD28CFB7DFDE3AF28A2C358156",
+    "applyUrl": "https://www.adzuna.com.au/details/5882234523?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Job Description: Australian Citizens residing in Australia only respond. must have baseline clearance. 1. Programming/software development: Level 5 (SFIA)Takes technical responsibility across all stages and iterations of software development. Plans and drives software constructio"
   },
@@ -3362,7 +3398,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882234509?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=6640C6FC6AB1C6B847FA7BE867CCBA29D717B483",
+    "applyUrl": "https://www.adzuna.com.au/details/5882234509?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "People are a company's greatest asset! What will you be helping us with? You will be working quite closely with our Head of Product to build out and support our Recruitment Marketing product. This space is evolving at a rapid pace and you’ll get a chance to really shape the futur"
   },
@@ -3378,7 +3414,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882476184?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=4479E1D53A2D7F804EC5DAC2105B00A1D4941A0C",
+    "applyUrl": "https://www.adzuna.com.au/details/5882476184?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Job Description: Australian Citizens residing in Australia only respond. must have NV1. 1. 1. Demonstrated experience designing and implementing enterprise IAM solutions using Active Directory, and Active Directory Federation Services (ADFS) and Microsoft Entra ID (Azure AD). 2. "
   },
@@ -3394,7 +3430,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5881967977?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=48A35683E8D50E9460F2A9617DAB024FDDCB791F",
+    "applyUrl": "https://www.adzuna.com.au/details/5881967977?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "​The Trade Desk is a global technology company with a mission to create a better, more open internet for everyone through principled, intelligent advertising. Handling over 1 trillion queries per day, our platform operates at an unprecedented scale. We have also built something e"
   },
@@ -3410,7 +3446,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5882475737?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=219091F4A9DDDC594012158A35745CAD43687ECF",
+    "applyUrl": "https://www.adzuna.com.au/details/5882475737?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Key skill sets: - Linux, Perl/Python - Node JS/GraphQL, CSS, Java script - MySQL, Apache web server - Kafka, Docker (optional) - Basic networking Min experience - Worked as Software engineer using Open source technology min 5 years - Worked as full stack developer, mainly back en"
   },
@@ -3426,7 +3462,7 @@
     "posted": "2026-09-13",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5881968430?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=30EFFCCD74F45C5AE71D8762EE5E72A90606352B",
+    "applyUrl": "https://www.adzuna.com.au/details/5881968430?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Johnson Controls helps create smart, healthy, and sustainable buildings, and this role sits at the center of that mission for the HVAC portfolio in Australia. You will help shape product direction, strengthen market position, and support customers with solutions that balance perf"
   },
@@ -3481,20 +3517,22 @@
     "description": "Senior Software Engineer at LeadSquared"
   },
   {
-    "id": "jobspipe-4401140246",
-    "title": "Senior Software Engineer, DriveAV - Autonomous Vehicles",
-    "company": "NVIDIA",
-    "location": "Bengaluru, Karnataka, India",
+    "id": "jobspipe-1a9a8409b8b1c1bf",
+    "title": "Senior Software Engineer I - Java fullstack",
+    "company": "Optum",
+    "location": "Bengaluru, Karnataka",
     "region": "APAC",
     "type": "Permanent",
     "level": "Senior",
     "salary": "Competitive",
     "posted": "2026-09-13",
-    "tags": [],
+    "tags": [
+      "Java"
+    ],
     "category": "Engineering",
-    "applyUrl": "https://in.linkedin.com/jobs/view/senior-software-engineer-driveav-autonomous-vehicles-at-nvidia-4401140246",
+    "applyUrl": "https://www.indeed.com/viewjob?jk=1a9a8409b8b1c1bf",
     "source": "jobspipe",
-    "description": "Senior Software Engineer, DriveAV - Autonomous Vehicles at NVIDIA"
+    "description": "Senior Software Engineer I - Java fullstack at Optum"
   },
   {
     "id": "jobspipe-1b587c7699a2d9d1",
@@ -3820,7 +3858,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880047404?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=591528C486DE2E747424818DD29AECEA8C2301DA",
+    "applyUrl": "https://www.adzuna.com.au/details/5880047404?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Senior Software Engineer (44212) Role Type: 2-year full time contract Salary: $127,793 - $135,612 per annum plus superannuation Orchestrate AI agents across the full stack in one of Australia’s leading genomics research teams Fully remote role, with optional office space in Sydne"
   },
@@ -3836,7 +3874,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880803031?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=D0AD08692C91B032D79511C9D68CE8D071693780",
+    "applyUrl": "https://www.adzuna.com.au/details/5880803031?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Garvan Institute of Medical Research brings together world leading scientists and clinicians, collaborating locally and globally, to advance our understanding of disease, particularly cancer, autoimmunity and genetic disorders. Garvan is a global leader in fundamental biomedical "
   },
@@ -3852,7 +3890,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880807031?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=F99CBAF6475080514C23758746433671F0178138",
+    "applyUrl": "https://www.adzuna.com.au/details/5880807031?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Propeller is on a mission to take the guesswork out of moving dirt - reducing wasted fuel, time, and money. We do this through the power of maps. Our customers use Propeller’s integrated hardware and software products to capture accurate 3D versions of their worksites"
   },
@@ -3868,7 +3906,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880807097?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=F37A02A845A92E8B4EBF05DA53396BBFBAAC9616",
+    "applyUrl": "https://www.adzuna.com.au/details/5880807097?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Engineering@Easygo Easygo leads the world in crafting top-tier entertainment experiences. Within our engineering organisation, we foster a continuous learning environment, constantly pushing the boundaries of large-scale software design and development. Our culture revolves aroun"
   },
@@ -3884,7 +3922,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880046577?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=9E13B0CA015609AE2788C30810990D60B786D1F6",
+    "applyUrl": "https://www.adzuna.com.au/details/5880046577?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Job Description Join the team redefining how the world experiences design. Hey, g'day, mabuhay, kia ora, 你好, hallo, vítejte! Thanks for stopping by. We know job hunting can be a little time consuming and you're probably keen to find out what's on offer, so we'll get straight to t"
   },
@@ -3900,7 +3938,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880600711?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=6CA931DC1EF519E6CD3492294840D3836BCA5C8F",
+    "applyUrl": "https://www.adzuna.com.au/details/5880600711?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Job Description Product Manager – Marketplace (Seller Success) 6-month contract | Major Australian retail marketplace | Melbourne based Lead the Seller enablement Squad for the Marketplace team Own prioritisation, platform strategy and investment trade-offs across multiple busine"
   },
@@ -3916,7 +3954,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880806939?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=5CEBF32C25AB2ECDF236B0F9B919CA06981EFA73",
+    "applyUrl": "https://www.adzuna.com.au/details/5880806939?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Who we are: Milwaukee Tools is an industry leader in the manufacturing of cordless & electric power tools, accessories, and hand tools. We pride ourselves on an unrelenting strategic focus on powerful brands, innovative products and exceptional people. Our culture is centred arou"
   },
@@ -3932,7 +3970,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880600554?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=30F1893D9FCCEF63046B6283BFC06935794BFFD4",
+    "applyUrl": "https://www.adzuna.com.au/details/5880600554?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Drive growth in our Mechanical Power Transmission portfolio through technical leadership, category strategy and customer-focused solutions. Market aligned remuneration bonuses annual salary review! Develop your career in a role that combines strategy, product expertise and custom"
   },
@@ -3980,7 +4018,7 @@
     "posted": "2026-09-12",
     "tags": [],
     "category": "Program",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5880046731?se=bIv5ueOv8RGVwoVza5ySeQ&utm_medium=api&utm_source=538ab1e3&v=A752CFA84E32521087067AACF525DA80E9502474",
+    "applyUrl": "https://www.adzuna.com.au/details/5880046731?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Lead projects that connect technology, operations and business improvement across a diverse Australian group. KGIT is looking for an experienced Business & IT Project Manager to join our growing PMO and take ownership of a diverse portfolio of technology and business "
   },
@@ -5295,7 +5333,7 @@
     "posted": "2026-09-11",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5878781292?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=14C503DF34522E5A42ECEF22F924631BDC587391",
+    "applyUrl": "https://www.adzuna.com.au/details/5878781292?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Senior Software Engineer (iOS) Job Description Senior Software Engineer (iOS) will shape the technical direction of our team, partnering with Team Leaders and senior technology leaders to define strategic roadmaps and prioritise initiatives that deliver business outcomes. The Sen"
   },
@@ -5311,7 +5349,7 @@
     "posted": "2026-09-11",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5878894984?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=5FDF42C476E6343F15D35166497778DE7E12E948",
+    "applyUrl": "https://www.adzuna.com.au/details/5878894984?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Are you ready to join the winning team at The Lottery Corporation? We power Australia’s biggest lottery games – and we’re one of the world’s top-performing lottery businesses. As the home of The Lott and Keno, we’re building on decades of excitement and life-changing "
   },
@@ -5329,7 +5367,7 @@
       "Backend"
     ],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5878895081?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=6E6DA33D321E3763472F26EEAA01ABC7184B6B19",
+    "applyUrl": "https://www.adzuna.com.au/details/5878895081?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Are you ready to join the winning team at The Lottery Corporation? We power Australia’s biggest lottery games – and we’re one of the world’s top-performing lottery businesses. As the home of The Lott and Keno, we’re building on decades of excitement and life-changing "
   },
@@ -5345,7 +5383,7 @@
     "posted": "2026-09-11",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5879229550?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=C32FCC02FBA59FE1EA95901713E61BF472EC5232",
+    "applyUrl": "https://www.adzuna.com.au/details/5879229550?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Are you ready to join the winning team at The Lottery Corporation? We power Australia’s biggest lottery games – and we’re one of the world’s top-performing lottery businesses. As the home of The Lott and Keno, we’re building on decades of excitement and life-changing "
   },
@@ -6823,7 +6861,7 @@
     "posted": "2026-09-09",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5875677595?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=D2B9C767E39FA799D00AFC95070A885F04488233",
+    "applyUrl": "https://www.adzuna.com.au/details/5875677595?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "07th September, 2026 Senior Software Engineer - Digital & Data Location: Canberra, ACT Contract: Labour-hire contract to 30 June 2027, with two 12-month extension options Pay: $130 - $160 p/h including super (negotiable) Work type: Full-time Work arrangement: Hybrid, with specifi"
   },
@@ -6839,7 +6877,7 @@
     "posted": "2026-09-09",
     "tags": [],
     "category": "Data",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5875678084?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=5683934A9CF9B309B5EE3508CE5812A20234EB56",
+    "applyUrl": "https://www.adzuna.com.au/details/5875678084?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Design and deliver delightful, reliable AI/ML products that help millions of people experience property in new ways. Permanent role based in Melbourne or Sydney We're REA With bold and ambitious goals, REA Group is changing the way the world experiences property. No matter where "
   },
@@ -6871,7 +6909,7 @@
     "posted": "2026-09-09",
     "tags": [],
     "category": "Program",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5876426719?se=bIv5ueOv8RGVwoVza5ySeQ&utm_medium=api&utm_source=538ab1e3&v=E7C7E1D59268AA7F9438644FA4901263656948F1",
+    "applyUrl": "https://www.adzuna.com.au/details/5876426719?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Net2Source is a Global Workforce Solutions Company headquartered at NJ, USA with its branch offices in Asia Pacific, ANZ, middle East, UK/Europe region. We are one of the fastest growing IT Consulting company. We are hiring \" IT Project Manager \" for one of our clients . We offer"
   },
@@ -7421,7 +7459,7 @@
     "posted": "2026-09-08",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5874943067?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=FE5B418BE45C8AE4DF82E164B09CE52DB9F8AE77",
+    "applyUrl": "https://www.adzuna.com.au/details/5874943067?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "About the Team Anduril’s Maritime Division has assembled a diverse team of experts in software, robotics, artificial intelligence, sensor fusion, and data analysis to create software and hardware solutions that radically evolve the capabilities of our customers. We are fielding t"
   },
@@ -7437,7 +7475,7 @@
     "posted": "2026-09-08",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5874383704?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=90701D439FFF2DBFCE7B3C2FE6809436C57DFDB0",
+    "applyUrl": "https://www.adzuna.com.au/details/5874383704?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description About us: Redox is an ASX listed, leading raw material and ingredients distributor with 23 staff locations throughout Australia, New Zealand, Asia and North America. We bring the best products from around the world to clients in over 170 unique industries. Established"
   },
@@ -8144,7 +8182,7 @@
     "posted": "2026-09-05",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870913624?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=3427C4587EE6BD75CF1DD04CB683C8AA75CE9DA5",
+    "applyUrl": "https://www.adzuna.com.au/details/5870913624?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Senior Software Engineer Job Description The Senior Engineer is pivotal in supporting the delivery of our Domain Strategy by driving innovation and ensuring the development of high-quality software solutions. They are responsible for the entire lifecycle of medium-sized projects:"
   },
@@ -8160,25 +8198,9 @@
     "posted": "2026-09-05",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870914038?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=4717A475EA047F3F5C48A8A75F6DF5CA60D97C84",
+    "applyUrl": "https://www.adzuna.com.au/details/5870914038?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Senior Software Engineer – General Device Intelligence ThreatMetrix is seeking a highly talented and experienced developer to join our end-user facing Device Intelligence team, building software that runs invisibly in mobile apps and web browsers used by millions of people every "
-  },
-  {
-    "id": "adzuna-5870913130",
-    "title": "EL1 Senior Software Engineer (Developer)",
-    "company": "Softtest pays pty",
-    "location": "Brisbane, Brisbane Region",
-    "region": "APAC",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "Competitive",
-    "posted": "2026-09-05",
-    "tags": [],
-    "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870913130?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=7378E548C1415FDB0CC928257FD40270047DFCB6",
-    "source": "adzuna",
-    "description": "Job Description: Australian Citizens with NV1 Clearance residing in Australia only respond. Job details : Role/s: 1 x EL1 Full Stack Engineer The EL1 Fullstack Engineer (Labour Hire) is accountable under broad direction to undertake very complex work that delivers quality outcome"
   },
   {
     "id": "adzuna-5870750094",
@@ -8520,7 +8542,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870154111?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=1116DF56AF57D6F7A74D3FBD599C5773994A948B",
+    "applyUrl": "https://www.adzuna.com.au/details/5870154111?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "We’re looking for a Senior Software Engineer to join Pathify’s Australian engineering team. You’ll work across our front end and back end stack, primarily using Python/Django, Angular and TypeScript , as well as emerging AI capabilities including agent workflows built on foundati"
   },
@@ -8536,7 +8558,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870137634?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=D8F741553797083C0C7FD38A19D4A3C54A80B31C",
+    "applyUrl": "https://www.adzuna.com.au/details/5870137634?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Senior Software Engineer Job no: 512897 Work type: Full Time Location: VIC People are a company's greatest asset! What will you be helping us with? You will be working quite closely with our Head of Product to build out and support our Recruitment Marketing product. This space is"
   },
@@ -8552,7 +8574,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870142160?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=382EFAB605B27F5AE84E4A0036126B30CEFF1EB3",
+    "applyUrl": "https://www.adzuna.com.au/details/5870142160?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "It's fun to work in a company where people truly BELIEVE in what they're doing! Job Description Summary: Rocket’s Data Modernization Business Unit enables organizations to effectively manage, govern, and unlock the full value of their enterprise data. Building on a strong legacy "
   },
@@ -8568,7 +8590,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870132541?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=6F06CAE3603E32657C5BE36226F5F5F958089A1A",
+    "applyUrl": "https://www.adzuna.com.au/details/5870132541?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "STR is hiring experienced Senior Software Engineers to join our multidisciplinary cyber/networking team committed to developing cutting-edge technologies that have an immediate and significant impact on our national security. Our team innovates communications technology across al"
   },
@@ -8584,7 +8606,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870152046?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=30AACFEF6BDF27ABF792A74BB1442D75541372E1",
+    "applyUrl": "https://www.adzuna.com.au/details/5870152046?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "About Us Lorikeet is redefining what customer support looks like — and we're just getting started. We build AI that handles complex, high-volume support for fintechs, healthtechs, marketplaces, and delivery services. Not chatbot-tier AI. The kind that actually resolves tickets, g"
   },
@@ -8616,7 +8638,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870153824?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=A1C0B149971BB8AAFF975C13EFC68A408FA0B72D",
+    "applyUrl": "https://www.adzuna.com.au/details/5870153824?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Join Powerline and help revolutionize the future of the electricity grid! We are a disruptive, VC-backed climate tech company based in Silicon Valley with offices in Australia and Europe. Our cutting-edge technology leverages machine learning and artificial intelligence to optimi"
   },
@@ -8632,7 +8654,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870131334?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=8E4B99A29B5FC0D6B1F48862BDC7FDAF4F849FA0",
+    "applyUrl": "https://www.adzuna.com.au/details/5870131334?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "About the role Mytra’s robotics team is looking for an experienced Senior Software Engineer to develop software critical for the integration of our perception software and our robotics firmware across our robotic fleet as we scale. You will collaborate closely across multidiscipl"
   },
@@ -8648,7 +8670,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870132038?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=CCEDF8346E2C81719D911238231506A7D3DEAF69",
+    "applyUrl": "https://www.adzuna.com.au/details/5870132038?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "In Australia, Dabble has been operating a licensed sportsbook under the NTRWC since 2021. We're here to deliver extraordinary - with a truly immersive socialised betting experience designed to provide evolutionary entertainment to our punters via genuine interaction and engagemen"
   },
@@ -8664,7 +8686,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870158700?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=2C355FC714276C80D66E65F432DCDED626F9B312",
+    "applyUrl": "https://www.adzuna.com.au/details/5870158700?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "About Airwallex Airwallex is the only unified payments and financial platform for global businesses. Powered by our unique combination of proprietary infrastructure and software, we empower over 250,000 businesses worldwide – including Brex, Navan, Qantas, SHEIN and many more – w"
   },
@@ -8680,7 +8702,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870152444?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=900741F68FEB410F50D19C9E0B8A226D4CD46800",
+    "applyUrl": "https://www.adzuna.com.au/details/5870152444?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Company Description At NCS Australia, we are more than a technology services company—we are a team of innovators, problem-solvers, and creators shaping the future. With a strong presence across the APAC region, we partner with government and enterprise organisations to tackle com"
   },
@@ -8696,7 +8718,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870143752?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=AFCACF773F0B698E0DBBC9DEEBBAAB7A6FE76EA4",
+    "applyUrl": "https://www.adzuna.com.au/details/5870143752?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "You are: An experienced engineer with deep Dynamics 365, agentic AI and Microsoft ecosystem expertise, ready to lead the build of intelligent contact centre capability at enterprise scale. We are: The EverydayAI and Contact Centre Intelligence teams within End User Experience, cr"
   },
@@ -8712,9 +8734,25 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Data",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870153375?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=E82E377A4226A3D040CE10C6E837A87218D89118",
+    "applyUrl": "https://www.adzuna.com.au/details/5870153375?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "About Us At Mary Technology, we’re tackling one of the legal industry’s biggest challenges: Fact Chaos — the overwhelming disorder that arises from managing mountains of unstructured information. We’re building intuitive, scalable tools that help lawyers spend less time untanglin"
+  },
+  {
+    "id": "adzuna-5870131718",
+    "title": "EL1 Senior Software Engineer (Developer)",
+    "company": "Softtest pays pty",
+    "location": "Adelaide, Adelaide Region",
+    "region": "APAC",
+    "type": "Permanent",
+    "level": "Senior",
+    "salary": "Competitive",
+    "posted": "2026-09-04",
+    "tags": [],
+    "category": "Engineering",
+    "applyUrl": "https://www.adzuna.com.au/details/5870131718?utm_medium=api&utm_source=538ab1e3",
+    "source": "adzuna",
+    "description": "Job Description: Australian Citizens with NV1 Clearance residing in Australia only respond. Job details : Role/s: 1 x EL1 Full Stack Engineer The EL1 Fullstack Engineer (Labour Hire) is accountable under broad direction to undertake very complex work that delivers quality outcome"
   },
   {
     "id": "adzuna-5870158681",
@@ -8730,7 +8768,7 @@
       "Java"
     ],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870158681?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=9D7C50F9196AE254A3BC6022AA9315B29E1F1CC5",
+    "applyUrl": "https://www.adzuna.com.au/details/5870158681?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Ambush is a people-first company where talented, thoughtful individuals come together to build meaningful products and lasting partnerships. We believe the best work happens when people feel supported, trusted, and empowered to bring their full abilities to the table. Since 2015,"
   },
@@ -8746,7 +8784,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Engineering",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870155146?se=QBghueOv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=AAA705A8DAC730D0EAAEDCAB76FFC2249432E195",
+    "applyUrl": "https://www.adzuna.com.au/details/5870155146?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Company Description MODRON is a legal tech startup developing innovative dispute resolution technology for global infrastructures. Our vision is to change the way disputes are resolved by focusing on human-centric technology which is designed to facilitate human agility, efficien"
   },
@@ -8762,7 +8800,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870134266?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=FB68DA6F0F835E99A661AF97E31F5A6F1D5EDA15",
+    "applyUrl": "https://www.adzuna.com.au/details/5870134266?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Topcon Positioning Systems (TPS) is a global leader in the development and manufacturing of precision positioning equipment. The company offers the largest selection of innovative precision GPS and GNSS systems, commercial lasers, optical instruments for surveying, civil engineer"
   },
@@ -8778,7 +8816,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870137549?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=78C5A4AADB6F60B4B12280D9EF0D4F2DE23C0FC7",
+    "applyUrl": "https://www.adzuna.com.au/details/5870137549?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Join Our Fast-Growing Touring Division at Ignite! At Ignite, our rapidly expanding Touring division is on a mission to open a world of happiness for our suppliers, people and customers. We are on the lookout for a dynamic Product Manager to craft innovative and value-packed touri"
   },
@@ -8794,7 +8832,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870138105?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=FA0131840A173A0C8B93DE36EF0F25B919B5C828",
+    "applyUrl": "https://www.adzuna.com.au/details/5870138105?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Are you passionate about creating exceptional cruise holidays that deliver outstanding value and unforgettable experiences? We're looking for a Cruise Product Manager to join the My Cruises Product Team and play a critical role in developing compelling, competitive, and commercia"
   },
@@ -8810,7 +8848,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870158263?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=496953373F4D8D350E8D5C86B38C0A1C09AA9BDB",
+    "applyUrl": "https://www.adzuna.com.au/details/5870158263?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "We are looking for a Product Manager to join our team in Broadbeach! Ignite Travel Group is an award-winning travel company (NTIA Most Outstanding Online Travel Agency 2022), and Australia’s largest travel advertiser, delivering incredible holidays and trailblazing win-win-win mo"
   },
@@ -8826,7 +8864,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Product",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870145796?se=TIl2ueOv8RGhe8--YZ_w9w&utm_medium=api&utm_source=538ab1e3&v=3538B7B75377E8C0EFCA7C0A159772E7EB40DE5C",
+    "applyUrl": "https://www.adzuna.com.au/details/5870145796?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Since its launch in 1993 with a collection of six essential handbags, Kate Spade New York has always been colorful, bold, and optimistic. Today, it is a global lifestyle brand that designs extraordinary things for the everyday, delivering seasonal collections of handbags, ready-t"
   },
@@ -8874,7 +8912,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Program",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870135472?se=bIv5ueOv8RGVwoVza5ySeQ&utm_medium=api&utm_source=538ab1e3&v=D492F4F5D2F24482C329B450DF5A3BFC3223CADB",
+    "applyUrl": "https://www.adzuna.com.au/details/5870135472?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Description Reporting to the Team Leader IT Business Initiatives, the IT Business Analyst / Project Manager partners with business units to analyse processes, identify improvement opportunities, and translate business needs into actionable technology requirements. You will lead t"
   },
@@ -8890,7 +8928,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Program",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870143308?se=bIv5ueOv8RGVwoVza5ySeQ&utm_medium=api&utm_source=538ab1e3&v=C80A8E53D085E4745B6FB30470FE09662B3DEC7B",
+    "applyUrl": "https://www.adzuna.com.au/details/5870143308?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "About the team Worldline Service Australia (WSA) delivers end-to-end payment services and technology support to Worldline clients within the Australian market. Our team focuses on ensuring reliable payment processing, proactive service management, and a superior customer experien"
   },
@@ -8922,7 +8960,7 @@
     "posted": "2026-09-04",
     "tags": [],
     "category": "Program",
-    "applyUrl": "https://www.adzuna.com.au/land/ad/5870150680?se=bIv5ueOv8RGVwoVza5ySeQ&utm_medium=api&utm_source=538ab1e3&v=5E3122102C4AFEB4E6E1AF784B7A4EFB04D36B39",
+    "applyUrl": "https://www.adzuna.com.au/details/5870150680?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "Application Delivery or Migration of Data Warehouse/BI projects; Familiarity with Agile Deliveries preferred. Min 10 Years IT. 5 in Project Management. Monitoring and managing the team and deliveries, collaborating with Client and TCS teams, project planning, status reporting, ri"
   },
@@ -11327,22 +11365,6 @@
     "description": "Staff/Senior Staff Engineer, Kubernetes at OKX. Apply directly on the employer career page."
   },
   {
-    "id": "gh-coinbase-8067033",
-    "title": "Senior Software Engineer, Consumer",
-    "company": "Coinbase",
-    "location": "Remote - Singapore",
-    "region": "APAC",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "Competitive",
-    "posted": "2026-08-26",
-    "tags": [],
-    "category": "Engineering",
-    "applyUrl": "https://www.coinbase.com/careers/positions/8067033?gh_jid=8067033",
-    "source": "greenhouse",
-    "description": "Senior Software Engineer, Consumer at Coinbase. Apply directly on the employer career page."
-  },
-  {
     "id": "gh-bitgo-7307107002",
     "title": "Engineering Manager  - Ecosystem",
     "company": "BitGo",
@@ -12796,6 +12818,25 @@
     "description": "GRC Strategy and Insights Lead at Adobe. Apply on the employer Workday careers page."
   },
   {
+    "id": "jobspipe-/job/Argentina-Munro/Information-Security-Analyst---Business-Security-and-Compliance_R10093304",
+    "title": "Information Security Analyst - Business Security and Compliance",
+    "company": "Air Liquide",
+    "location": "Argentina, Munro",
+    "region": "Global",
+    "type": "Permanent",
+    "level": "Mid",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Compliance",
+      "Security"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://airliquidehr.wd3.myworkdayjobs.com/AirLiquideExternalCareer/job/Argentina-Munro/Information-Security-Analyst---Business-Security-and-Compliance_R10093304",
+    "source": "jobspipe",
+    "description": "Information Security Analyst - Business Security and Compliance at Air Liquide"
+  },
+  {
     "id": "jobspipe-74c29fe6f6951b8d",
     "title": "Senior Fundraising Compliance Officer",
     "company": "Parkinson's UK",
@@ -12904,6 +12945,24 @@
     "description": "Grants and Compliance Manager / Officer in prayagraj at Perform Digital"
   },
   {
+    "id": "jobspipe-150563",
+    "title": "Manager, Cyber Compliance, Deloitte Global Technology",
+    "company": "Deloitte",
+    "location": "Canada",
+    "region": "Global",
+    "type": "Permanent",
+    "level": "Senior",
+    "salary": "$61k – $113k",
+    "posted": "2026-09-13",
+    "tags": [
+      "Compliance"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://jobicy.com/jobs/150563-manager-cyber-compliance-deloitte-global-technology",
+    "source": "jobspipe",
+    "description": "Manager, Cyber Compliance, Deloitte Global Technology at Deloitte"
+  },
+  {
     "id": "jobspipe-a5309531909426ad",
     "title": "Chief Compliance Officer / Head of Governance (Volunteer Role)",
     "company": "Vandanam Organization",
@@ -12960,60 +13019,6 @@
     "description": "Senior Executive, Legal & Compliance (AML/CFT) at Nextpert Talent"
   },
   {
-    "id": "jobspipe-8d14826ae6bdc559",
-    "title": "Compliance and Ops Risk Test Manager - Vice President",
-    "company": "JPMorganChase",
-    "location": "Columbus, OH 43240",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Director",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=8d14826ae6bdc559",
-    "source": "jobspipe",
-    "description": "Compliance and Ops Risk Test Manager - Vice President at JPMorganChase"
-  },
-  {
-    "id": "jobspipe-993724044b423d6b",
-    "title": "Compliance and Controls Test Manager",
-    "company": "JPMorganChase",
-    "location": "DUBLIN 2, County Dublin",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=993724044b423d6b",
-    "source": "jobspipe",
-    "description": "Compliance and Controls Test Manager at JPMorganChase"
-  },
-  {
-    "id": "jobspipe-0ea63aeaac042549",
-    "title": "Principal Software Engineer-KYC Risk Assessment",
-    "company": "JPMorganChase",
-    "location": "Houston, TX 77002",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "KYC"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=0ea63aeaac042549",
-    "source": "jobspipe",
-    "description": "Principal Software Engineer-KYC Risk Assessment at JPMorganChase"
-  },
-  {
     "id": "jobspipe-5ca37cef7a27b4b2",
     "title": "Core Cash Fraud Prevention Product Manager - Payments - Vice President",
     "company": "JPMorganChase",
@@ -13030,60 +13035,6 @@
     "applyUrl": "https://www.indeed.com/viewjob?jk=5ca37cef7a27b4b2",
     "source": "jobspipe",
     "description": "Core Cash Fraud Prevention Product Manager - Payments - Vice President at JPMorganChase"
-  },
-  {
-    "id": "jobspipe-150563",
-    "title": "Manager, Cyber Compliance, Deloitte Global Technology",
-    "company": "Deloitte",
-    "location": "Canada",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "$61k – $113k",
-    "posted": "2026-09-13",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://jobicy.com/jobs/150563-manager-cyber-compliance-deloitte-global-technology",
-    "source": "jobspipe",
-    "description": "Manager, Cyber Compliance, Deloitte Global Technology at Deloitte"
-  },
-  {
-    "id": "jobspipe-049704f068fd33d6",
-    "title": "Lead Site Reliability Engineer - Corporate KYC",
-    "company": "JPMorganChase",
-    "location": "Houston, TX 77002",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "KYC"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=049704f068fd33d6",
-    "source": "jobspipe",
-    "description": "Lead Site Reliability Engineer - Corporate KYC at JPMorganChase"
-  },
-  {
-    "id": "jobspipe-6eef1ff5950f8a78",
-    "title": "QSHE Compliance Manager",
-    "company": "Kuehne+Nagel",
-    "location": "Bicester",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Senior",
-    "salary": "Competitive",
-    "posted": "2026-09-13",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.indeed.com/viewjob?jk=6eef1ff5950f8a78",
-    "source": "jobspipe",
-    "description": "QSHE Compliance Manager at Kuehne+Nagel"
   },
   {
     "id": "gh-block-5212159008",
@@ -13246,24 +13197,6 @@
     "description": "Description WTW is expanding its Technology Risk & Assurance (TRA) capability to strengthen technology governance, risk management, and regulatory readiness across the enterprise. TRA serves as an embedded risk and control function within Global Technology, partnering closely wit"
   },
   {
-    "id": "jobspipe-4457387922",
-    "title": "Vice President, IT Governance, Risk & Compliance",
-    "company": "Northwestern Mutual",
-    "location": "Milwaukee, WI",
-    "region": "Global",
-    "type": "Permanent",
-    "level": "Director",
-    "salary": "$220k – $220k",
-    "posted": "2026-09-12",
-    "tags": [
-      "Compliance"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.linkedin.com/jobs/view/vice-president-it-governance-risk-compliance-at-northwestern-mutual-4457387922",
-    "source": "jobspipe",
-    "description": "Vice President, IT Governance, Risk & Compliance at Northwestern Mutual"
-  },
-  {
     "id": "jobspipe-4465416633",
     "title": "IT Governance, Risk, and Compliance Analyst",
     "company": "RemoteHunter",
@@ -13280,6 +13213,24 @@
     "applyUrl": "https://www.linkedin.com/jobs/view/it-governance-risk-and-compliance-analyst-at-remotehunter-4465416633",
     "source": "jobspipe",
     "description": "IT Governance, Risk, and Compliance Analyst at RemoteHunter"
+  },
+  {
+    "id": "jobspipe-4457387922",
+    "title": "Vice President, IT Governance, Risk & Compliance",
+    "company": "Northwestern Mutual",
+    "location": "Milwaukee, WI",
+    "region": "Global",
+    "type": "Permanent",
+    "level": "Director",
+    "salary": "$220k – $220k",
+    "posted": "2026-09-12",
+    "tags": [
+      "Compliance"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://www.linkedin.com/jobs/view/vice-president-it-governance-risk-compliance-at-northwestern-mutual-4457387922",
+    "source": "jobspipe",
+    "description": "Vice President, IT Governance, Risk & Compliance at Northwestern Mutual"
   },
   {
     "id": "gh-stripe-8188321",
@@ -14279,7 +14230,7 @@
       "Compliance"
     ],
     "category": "Compliance",
-    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5877472090?se=kIl_suOv8RG-FLx_YfIXKQ&utm_medium=api&utm_source=538ab1e3&v=9FBCEB12DD3E28AE5817A47FF741B9D66039F30C",
+    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5877472090?se=3ktCu-mv8RG0kNLO67V9CA&utm_medium=api&utm_source=538ab1e3&v=9FBCEB12DD3E28AE5817A47FF741B9D66039F30C",
     "source": "adzuna",
     "description": "Sterling Williams are supporting a growing Series-B Payment institution with their search for an experienced and strategic Head of UK Compliance to lead their compliance function within the UK market. The successful candidate will have payments/EMI industry and/or Crypto industry"
   },
@@ -14401,7 +14352,7 @@
     "posted": "2026-09-08",
     "tags": [],
     "category": "Compliance",
-    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5876082225?se=kIl_suOv8RG-FLx_YfIXKQ&utm_medium=api&utm_source=538ab1e3&v=4FD6EFACADA84D3F930EA299CAD1AA08E0A9ED5D",
+    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5876082225?se=3ktCu-mv8RG0kNLO67V9CA&utm_medium=api&utm_source=538ab1e3&v=4FD6EFACADA84D3F930EA299CAD1AA08E0A9ED5D",
     "source": "adzuna",
     "description": "To see more Chinese jobs please follow us on WeChat: teamchinapf AND pfteamchina Ref: 23492 The Skills You'll Need: Mandarin to a native level, relevant compliance experience such as KYC, CDD, AML etc. Your New Salary: Depending on experience Office based Perm Start: ASAP Working"
   },
@@ -14614,7 +14565,7 @@
       "Compliance"
     ],
     "category": "Compliance",
-    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5871082261?se=kIl_suOv8RG-FLx_YfIXKQ&utm_medium=api&utm_source=538ab1e3&v=A8FF342903B2730CEAED0A602C0F4F576CD8E4DD",
+    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5871082261?se=3ktCu-mv8RG0kNLO67V9CA&utm_medium=api&utm_source=538ab1e3&v=A8FF342903B2730CEAED0A602C0F4F576CD8E4DD",
     "source": "adzuna",
     "description": "SWRP are recruiting on behalf of a well-established professional services firm for an AML & Compliance Analyst to join their Compliance team based in Spalding, Lincolnshire. This is an excellent opportunity for someone with strong analytical skills and attention to detail to deve"
   },
@@ -15946,24 +15897,6 @@
     "description": "Senior Software Engineer II - KYC Experience at Wise. Apply on the employer SmartRecruiters page."
   },
   {
-    "id": "adzuna-5853400956",
-    "title": "KYC Analyst - SPVs / Funds / Trust",
-    "company": "Delta Capita",
-    "location": "London, UK",
-    "region": "Global",
-    "type": "Contract",
-    "level": "Mid",
-    "salary": "$42k – $42k",
-    "posted": "2026-08-23",
-    "tags": [
-      "KYC"
-    ],
-    "category": "Compliance",
-    "applyUrl": "https://www.adzuna.co.uk/jobs/details/5853400956?utm_medium=api&utm_source=538ab1e3",
-    "source": "adzuna",
-    "description": "KYC Analyst - SPVs / Funds / Trust London 6 Months FTC We are seeking a KYC Analyst to join our Client Lifecycle Management (CLM) team to support a large-scale Know Your Client (KYC) project for a leading financial institution. Based in London, you will be responsible for the end"
-  },
-  {
     "id": "adzuna-5853715397",
     "title": "Senior Administrator Dealing, Registration and AML/KYC - Transfer Agency",
     "company": "Apex Group",
@@ -15981,6 +15914,24 @@
     "applyUrl": "https://www.adzuna.co.uk/jobs/details/5853715397?utm_medium=api&utm_source=538ab1e3",
     "source": "adzuna",
     "description": "The Apex Group was established in Bermuda in 2003 and is now one of the world’s largest fund administration and middle office solutions providers. Our business is unique in its ability to reach globally, service locally and provide cross-jurisdictional services. With our clients "
+  },
+  {
+    "id": "adzuna-5853400956",
+    "title": "KYC Analyst - SPVs / Funds / Trust",
+    "company": "Delta Capita",
+    "location": "London, UK",
+    "region": "Global",
+    "type": "Contract",
+    "level": "Mid",
+    "salary": "$42k – $42k",
+    "posted": "2026-08-23",
+    "tags": [
+      "KYC"
+    ],
+    "category": "Compliance",
+    "applyUrl": "https://www.adzuna.co.uk/jobs/details/5853400956?utm_medium=api&utm_source=538ab1e3",
+    "source": "adzuna",
+    "description": "KYC Analyst - SPVs / Funds / Trust London 6 Months FTC We are seeking a KYC Analyst to join our Client Lifecycle Management (CLM) team to support a large-scale Know Your Client (KYC) project for a leading financial institution. Based in London, you will be responsible for the end"
   },
   {
     "id": "remoteok-1137061",
@@ -16016,7 +15967,7 @@
     "posted": "2026-08-22",
     "tags": [],
     "category": "Compliance",
-    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5852253652?se=GkhPs-Ov8RG-FLx_YfIXKQ&utm_medium=api&utm_source=538ab1e3&v=C9ED84E07DF3BDFBEC371E2CC20466A87BEB7511",
+    "applyUrl": "https://www.adzuna.co.uk/jobs/land/ad/5852253652?se=jDo2vOmv8RGQCqo3hlJMDA&utm_medium=api&utm_source=538ab1e3&v=C9ED84E07DF3BDFBEC371E2CC20466A87BEB7511",
     "source": "adzuna",
     "description": "hackajob is partnering directly with Sage to hire for this role. About the role At Sage, we help businesses flow by making accounting, finance, HR and payroll simpler and more connected. Sage's Domain Services organisation provides reusable platform capabilities that help Sage pr"
   },
@@ -16894,5 +16845,59 @@
     "applyUrl": "https://santander.wd3.myworkdayjobs.com/SantanderCareers/job/Madrid/Senior-Data-Engineer---ODS_Req1594540-1",
     "source": "workday",
     "description": "Senior Data Engineer - ODS at Santander. Apply on the employer Workday careers page."
+  },
+  {
+    "id": "wd-santander--job-Madrid-Senior-Cybersecurity-Operations-Engineer---ODS-Req1564852",
+    "title": "Senior Cybersecurity Operations Engineer - ODS",
+    "company": "Santander",
+    "location": "Madrid",
+    "region": "Global",
+    "type": "Permanent",
+    "level": "Senior",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Security"
+    ],
+    "category": "Engineering",
+    "applyUrl": "https://santander.wd3.myworkdayjobs.com/SantanderCareers/job/Madrid/Senior-Cybersecurity-Operations-Engineer---ODS_Req1564852",
+    "source": "workday",
+    "description": "Senior Cybersecurity Operations Engineer - ODS at Santander. Apply on the employer Workday careers page."
+  },
+  {
+    "id": "wd-santander--job-Boadilla-del-Monte-Risk-Technology-Risk---Cybersecurity-Specialist-III-Req1",
+    "title": "Risk Technology Risk & Cybersecurity Specialist III",
+    "company": "Santander",
+    "location": "Boadilla del Monte",
+    "region": "Global",
+    "type": "Permanent",
+    "level": "Mid",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Security"
+    ],
+    "category": "Engineering",
+    "applyUrl": "https://santander.wd3.myworkdayjobs.com/SantanderCareers/job/Boadilla-del-Monte/Risk-Technology-Risk---Cybersecurity-Specialist-III_Req1501427-1",
+    "source": "workday",
+    "description": "Risk Technology Risk & Cybersecurity Specialist III at Santander. Apply on the employer Workday careers page."
+  },
+  {
+    "id": "wd-blackrock--job-New-York-NY-Senior-Data-Warehouse-Developer---PFS-R265422",
+    "title": "Senior Data Warehouse Developer - PFS",
+    "company": "BlackRock",
+    "location": "New York, NY",
+    "region": "Global",
+    "type": "Permanent",
+    "level": "Senior",
+    "salary": "Competitive",
+    "posted": "2026-09-14",
+    "tags": [
+      "Data"
+    ],
+    "category": "Engineering",
+    "applyUrl": "https://blackrock.wd1.myworkdayjobs.com/BlackRock_Professional/job/New-York-NY/Senior-Data-Warehouse-Developer---PFS_R265422",
+    "source": "workday",
+    "description": "Senior Data Warehouse Developer - PFS at BlackRock. Apply on the employer Workday careers page."
   }
 ]
