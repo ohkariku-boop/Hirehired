@@ -1005,13 +1005,106 @@ async function fetchWorkable(slug, company) {
   }
 }
 
+
+/** MyCareersFuture (Singapore government) — public POST search, no key */
+async function fetchMyCareersFuture() {
+  const queries = [
+    "compliance AML KYC CDD",
+    "KYC analyst",
+    "AML officer",
+    "compliance manager Singapore",
+    "software engineer senior",
+    "product manager",
+    "IT manager",
+    "technical program manager",
+  ];
+  const out = [];
+  for (const search of queries) {
+    for (let page = 0; page < 3; page++) {
+      try {
+        const r = await fetch("https://api.mycareersfuture.gov.sg/v2/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "User-Agent": "HirehiredBot/1.0",
+          },
+          body: JSON.stringify({ search, limit: 50, page }),
+        });
+        if (!r.ok) break;
+        const data = await r.json();
+        const rows = data.results || [];
+        if (!rows.length) break;
+        for (const j of rows) {
+          const title = j.title || "";
+          if (!isTargetLevel(title)) continue;
+          if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
+          if (isNonItSupport(title)) continue;
+          const applyUrl =
+            j.metadata?.jobDetailsUrl ||
+            (j.uuid
+              ? `https://www.mycareersfuture.gov.sg/job/${j.uuid}`
+              : "");
+          if (!applyUrl) continue;
+          const companyName =
+            (j.postedCompany && j.postedCompany.name) ||
+            (j.hiringCompany && j.hiringCompany.name) ||
+            "Singapore employer";
+          const locParts = [];
+          if (j.address?.building) locParts.push(j.address.building);
+          if (j.address?.street) locParts.push(j.address.street);
+          if (j.address?.districts?.[0]?.location)
+            locParts.push(j.address.districts[0].location);
+          const loc = locParts.length ? locParts.join(", ") + ", Singapore" : "Singapore";
+          const levelHint = (j.positionLevels || [])
+            .map((p) => p.position)
+            .join(" ");
+          const compliance = isComplianceTitle(title);
+          const sal =
+            j.salary?.minimum && j.salary?.maximum
+              ? `S$${Math.round(j.salary.minimum / 1000)}k – S$${Math.round(j.salary.maximum / 1000)}k`
+              : "Competitive";
+          out.push({
+            id: `mcf-${j.uuid || j.metadata?.jobPostId}`,
+            title: title.trim(),
+            company: companyName,
+            location: loc,
+            region: "APAC",
+            type: /contract|temporary/i.test(
+              (j.employmentTypes || []).map((e) => e.employmentType).join(" ") || ""
+            )
+              ? "Contract"
+              : "Permanent",
+            level: levelFromTitle(`${title} ${levelHint}`),
+            salary: sal,
+            posted:
+              j.metadata?.newPostingDate ||
+              (j.metadata?.updatedAt || "").slice(0, 10) ||
+              new Date().toISOString().slice(0, 10),
+            tags: tagsFromTitle(title),
+            category: compliance ? "Compliance" : categoryFromTitle(title),
+            applyUrl,
+            source: "mycareersfuture",
+            description: `${title.trim()} at ${companyName} (MyCareersFuture Singapore).`,
+          });
+        }
+        if (rows.length < 50) break;
+      } catch (e) {
+        console.warn("MCF:", e.message);
+        break;
+      }
+    }
+  }
+  return out;
+}
+
 function isDirectJobUrl(url) {
   if (!url) return false;
   return (
     /greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /boards\.greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
-    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url) || /smartrecruiters\.com/i.test(url) || /workable\.com/i.test(url)
+    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url) || /smartrecruiters\.com/i.test(url) || /workable\.com/i.test(url) || /mycareersfuture\.gov\.sg/i.test(url)
   );
 }
 
@@ -1061,6 +1154,10 @@ async function main() {
   console.log(`Workday: ${fromWd.length}`);
 
   console.log("Fetching public APIs + optional Adzuna / Reed / JobsPipe...");
+  console.log("Fetching MyCareersFuture (Singapore)...");
+  const fromMcf = await fetchMyCareersFuture();
+  console.log(`MyCareersFuture: ${fromMcf.length}`);
+
   const [remote, remotive, arbeit, adzuna, reed, jobspipe] = await Promise.all([
     fetchRemoteOK(),
     fetchRemotive(),
@@ -1080,6 +1177,7 @@ async function main() {
     ...fromSr,
     ...fromWorkable,
     ...fromWd,
+    ...fromMcf,
     ...remote,
     ...remotive,
     ...arbeit,
