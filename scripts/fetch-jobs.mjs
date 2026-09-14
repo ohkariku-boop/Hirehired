@@ -112,7 +112,7 @@ function isRecent(job, maxDays = MAX_AGE_DAYS) {
 }
 
 const GREENHOUSE_BOARDS = [
-  // Fintech / payments / crypto (compliance-heavy)
+  // Fintech / payments / crypto
   ["okx", "OKX"],
   ["alpaca", "Alpaca"],
   ["stripe", "Stripe"],
@@ -147,7 +147,23 @@ const GREENHOUSE_BOARDS = [
   ["trustbank", "Trust Bank"],
   ["trmlabs", "TRM Labs"],
   ["hyphenconnect", "Hyphen Connect"],
-  // Tech
+  ["bybit", "Bybit"],
+  ["consensys", "Consensys"],
+  ["nansen", "Nansen"],
+  ["paradigm", "Paradigm"],
+  ["flowtraders", "Flow Traders"],
+  // Quant / trading
+  ["janestreet", "Jane Street"],
+  ["jumptrading", "Jump Trading"],
+  ["imc", "IMC Trading"],
+  ["point72", "Point72"],
+  ["worldquant", "WorldQuant"],
+  ["schonfeld", "Schonfeld"],
+  ["aqr", "AQR Capital"],
+  ["virtu", "Virtu Financial"],
+  ["akunacapital", "Akuna Capital"],
+  ["pdtpartners", "PDT Partners"],
+  // Tech / F500-scale
   ["openai", "OpenAI"],
   ["anthropic", "Anthropic"],
   ["cloudflare", "Cloudflare"],
@@ -175,6 +191,7 @@ const GREENHOUSE_BOARDS = [
   ["datadog", "Datadog"],
   ["okta", "Okta"],
   ["scaleai", "Scale AI"],
+  ["spacex", "SpaceX"],
 ];
 
 async function fetchGreenhouseBoard(board, company) {
@@ -416,6 +433,7 @@ const LEVER_COMPANIES = [
   ["certik", "CertiK"],
   ["spotify", "Spotify"],
   ["palantir", "Palantir"],
+  ["binance", "Binance"],
 ];
 
 async function fetchLever(companySlug, companyName) {
@@ -674,6 +692,13 @@ const ASHBY_BOARDS = [
   ["posthog", "PostHog"],
   ["render", "Render"],
   ["resend", "Resend"],
+  // Crypto
+  ["circle", "Circle"],
+  ["elliptic", "Elliptic"],
+  ["mystenlabs", "Mysten Labs"],
+  ["paradigm", "Paradigm"],
+  ["opensea", "OpenSea"],
+  ["uniswap", "Uniswap"],
 ];
 
 async function fetchAshby(slug, company) {
@@ -888,6 +913,11 @@ const SMARTRECRUITERS_COMPANIES = [
   ["Wise", "Wise"],
   ["DeliveryHero", "Delivery Hero"],
   ["Auto1", "AUTO1 Group"],
+  ["Siemens", "Siemens"],
+  ["Visa", "Visa"],
+  ["Mastercard", "Mastercard"],
+  ["Accenture", "Accenture"],
+  ["Deloitte", "Deloitte"],
 ];
 
 async function fetchSmartRecruiters(slug, company) {
@@ -1049,6 +1079,13 @@ async function fetchMyCareersFuture() {
     "IT strategy",
     "technology strategy",
     "program manager IT",
+    "crypto compliance",
+    "blockchain",
+    "digital assets compliance",
+    "virtual assets",
+    "quantitative analyst",
+    "quant researcher",
+    "trading systems",
   ];
   const out = [];
   for (const search of queries) {
