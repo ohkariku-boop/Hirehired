@@ -1,0 +1,11 @@
+{
+  "_note": "Curated Glassdoor overall ratings (out of 5). Not live API — update periodically. Source: public Glassdoor company pages.",
+  "_updated": "2026-09-14",
+  "ratings": {
+    "Grab": { "rating": 3.7, "reviews": 4047, "glassdoorId": "958580" },
+    "Stripe": { "rating": 3.8, "reviews": 1382, "glassdoorId": "671932" },
+    "Coinbase": { "rating": 3.5, "reviews": 1183, "glassdoorId": "779622" },
+    "Bybit": { "rating": 3.9, "reviews": 357, "glassdoorId": "2545178" },
+    "Binance": { "rating": 4.0, "reviews": 1234, "glassdoorId": "1816824" }
+  }
+}

@@ -2,6 +2,27 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import ratingsData from "@/data/company-ratings.json";
+
+type RatingEntry = { rating: number; reviews?: number; glassdoorId?: string };
+
+const RATING_MAP: Record<string, RatingEntry> = Object.fromEntries(
+  Object.entries(
+    (ratingsData as { ratings: Record<string, RatingEntry> }).ratings || {}
+  ).map(([k, v]) => [k.toLowerCase(), v])
+);
+
+function getCompanyRating(company: string): RatingEntry | null {
+  if (!company) return null;
+  const key = company.trim().toLowerCase();
+  if (RATING_MAP[key]) return RATING_MAP[key];
+  // fuzzy: company starts with known key or vice versa
+  for (const [k, v] of Object.entries(RATING_MAP)) {
+    if (key === k || key.startsWith(k + " ") || k.startsWith(key)) return v;
+  }
+  return null;
+}
+
 
 export type Job = {
   id: string;
@@ -40,12 +61,14 @@ function companySearchSlug(name: string) {
 
 /** Outbound company research links (no scraping — search pages only). */
 function glassdoorSearchUrl(company: string) {
+  const entry = getCompanyRating(company);
+  if (entry?.glassdoorId) {
+    const slug = company.replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return `https://www.glassdoor.com/Reviews/${slug}-Reviews-E${entry.glassdoorId}.htm`;
+  }
   return `https://www.glassdoor.com/Search/results.htm?keyword=${companySearchSlug(company)}`;
 }
 
-function levelsFyiSearchUrl(company: string) {
-  return `https://www.levels.fyi/companies/?search=${companySearchSlug(company)}`;
-}
 
 function formatPosted(dateStr: string) {
   try {
@@ -442,25 +465,33 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
                 <p className="text-sm text-neutral-500 mt-0.5">
                   {job.company} · {job.location}
                 </p>
-                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-neutral-400">
+                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-neutral-500">
                   <a
                     href={glassdoorSearchUrl(job.company)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-blue-700 hover:underline"
+                    className="inline-flex items-center gap-1 hover:text-blue-700 hover:underline"
                     title={`Glassdoor reviews for ${job.company}`}
                   >
-                    Glassdoor
-                  </a>
-                  <span aria-hidden>·</span>
-                  <a
-                    href={levelsFyiSearchUrl(job.company)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-blue-700 hover:underline"
-                    title={`Levels.fyi compensation for ${job.company}`}
-                  >
-                    Levels.fyi
+                    {(() => {
+                      const r = getCompanyRating(job.company);
+                      if (r) {
+                        return (
+                          <>
+                            <span className="font-semibold text-amber-700">
+                              ★ {r.rating.toFixed(1)}
+                            </span>
+                            <span className="text-neutral-400">Glassdoor</span>
+                            {r.reviews ? (
+                              <span className="text-neutral-400">
+                                ({r.reviews.toLocaleString()} reviews)
+                              </span>
+                            ) : null}
+                          </>
+                        );
+                      }
+                      return <span>Glassdoor reviews</span>;
+                    })()}
                   </a>
                 </p>
                 <div className="mt-1.5 flex flex-wrap gap-1">
