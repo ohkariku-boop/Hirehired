@@ -16,9 +16,19 @@ function getCompanyRating(company: string): RatingEntry | null {
   if (!company) return null;
   const key = company.trim().toLowerCase();
   if (RATING_MAP[key]) return RATING_MAP[key];
-  // fuzzy: company starts with known key or vice versa
+  // strip common legal suffixes for match
+  const bare = key
+    .replace(/\s*(pte\.?\s*ltd\.?|private limited|limited|ltd\.?|inc\.?|corp\.?|corporation|group|bank,? n\.?a\.?|singapore branch)\.?$/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (bare && RATING_MAP[bare]) return RATING_MAP[bare];
   for (const [k, v] of Object.entries(RATING_MAP)) {
-    if (key === k || key.startsWith(k + " ") || k.startsWith(key)) return v;
+    if (key === k || bare === k) return v;
+    if (key.startsWith(k + " ") || k.startsWith(key + " ")) return v;
+    if (bare.length >= 3 && (key.includes(k) || k.includes(bare))) {
+      // avoid tiny substring false positives
+      if (k.length >= 4 && bare.length >= 4) return v;
+    }
   }
   return null;
 }
