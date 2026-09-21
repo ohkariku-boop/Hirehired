@@ -1,6 +1,7 @@
 /**
  * Client-side resume text extraction and field heuristics.
  * PDF/DOCX loaders from CDN at runtime (no extra npm packages).
+ * Not an LLM - pattern-based only.
  */
 
 export type ParsedResume = {
@@ -27,9 +28,97 @@ const SKILL_LEXICON = [
   "platform engineering", "security", "cybersecurity", "blockchain", "fintech",
 ];
 
+async function dynamicImport(url: string): Promise<any> {
+  return new Function("u", "return import(u)")(url);
+}
+
+export async function extractResumeText(file: File): Promise<string> {
+  const name = file.name.toLowerCase();
+  const type = file.type || "";
+
+  if (name.endsWith(".txt") || name.endsWith(".md") || type.startsWith("text/")) {
+    return file.text();
+  }
+  if (name.endsWith(".pdf") || type === "application/pdf") {
+    return extractPdfText(file);
+  }
+  if (name.endsWith(".docx") || type.includes("wordprocessingml")) {
+    return extractDocxText(file);
+  }
+  if (name.endsWith(".doc")) {
+    throw new Error("Old .doc files are not supported. Use PDF, DOCX, or TXT.");
+  }
+  try {
+    const t = await file.text();
+    if (t && t.length > 40 && !t.includes("\u0000")) return t;
+  } catch {
+    /* ignore */
+  }
+  throw new Error("Unsupported file. Upload a PDF, DOCX, or TXT resume.");
+}
+
+async function extractPdfText(file: File): Promise<string> {
+  const data = new Uint8Array(await file.arrayBuffer());
+  const pdfjs = await dynamicImport(
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs"
+  );
+  pdfjs.GlobalWorkerOptions.workerSrc =
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
+  const doc = await pdfjs.getDocument({ data }).promise;
+  const parts: string[] = [];
+  const maxPages = Math.min(doc.numPages, 8);
+  for (let i = 1; i <= maxPages; i++) {
+    const page = await doc.getPage(i);
+    const content = await page.getTextContent();
+    const items = content.items as { str?: string; hasEOL?: boolean }[];
+    let line = "";
+    const lines: string[] = [];
+    for (const it of items) {
+      line += it.str || "";
+      if (it.hasEOL) {
+        lines.push(line);
+        line = "";
+      } else {
+        line += " ";
+      }
+    }
+    if (line.trim()) lines.push(line);
+    parts.push(lines.join("\n"));
+  }
+  const text = parts.join("\n").trim();
+  if (!text || text.length < 30) {
+    throw new Error(
+      "Could not read text from this PDF (it may be image-only). Try DOCX or TXT."
+    );
+  }
+  return text;
+}
+
+async function extractDocxText(file: File): Promise<string> {
+  const mod = await dynamicImport("https://esm.sh/mammoth@1.8.0");
+  const mammoth = mod.default || mod;
+  const arrayBuffer = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer });
+  const text = (result.value || "").trim();
+  if (!text || text.length < 30) {
+    throw new Error("Could not read text from this DOCX.");
+  }
+  return text;
+}
+
+function findUrl(text: string, host: RegExp): string {
+  const m = text.match(
+    new RegExp(`https?:\\/\\/(?:www\\.)?${host.source}[^\\s)\\]>\"']+`, "i")
+  );
+  if (m) return m[0].replace(/[.,;:]+$/, "");
+  const bare = text.match(
+    new RegExp(`(?:^|\\s)(${host.source}\\/[^\\s)\\]>\"']+)`, "i")
+  );
+  if (bare) return "https://" + bare[1].replace(/[.,;:]+$/, "");
+  return "";
+}
 
 function cleanLines(text: string): string[] {
-  // PDFs often glue words; also split on bullets and pipes
   const softened = text
     .replace(/\r/g, "\n")
     .replace(/[•·▪◦]/g, "\n")
@@ -41,11 +130,9 @@ function cleanLines(text: string): string[] {
     .filter(Boolean);
 }
 
-/** Rebuild lines when PDF extraction returns one long string */
 function expandLines(text: string): string[] {
-  let lines = cleanLines(text);
+  const lines = cleanLines(text);
   if (lines.length >= 6) return lines;
-  // Split long blob on common resume anchors
   const blob = text.replace(/\s+/g, " ").trim();
   const pieces = blob
     .split(
@@ -55,7 +142,6 @@ function expandLines(text: string): string[] {
     .map((s) => s.trim())
     .filter((s) => s.length > 1);
   if (pieces.length > lines.length) return pieces;
-  // Last resort: split every ~60 chars on spaces near start for name hunting
   return lines.length ? lines : [blob.slice(0, 200)];
 }
 
@@ -63,7 +149,7 @@ function titleCaseName(s: string): string {
   return s
     .split(/\s+/)
     .map((w) => {
-      if (w.length <= 2 && w === w.toUpperCase()) return w; // JR, II
+      if (w.length <= 2 && w === w.toUpperCase()) return w;
       if (/^[A-Z]\.?$/.test(w)) return w.toUpperCase();
       return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
     })
@@ -80,7 +166,7 @@ function looksLikeName(line: string): boolean {
   )
     return false;
   if (
-    /^(summary|experience|education|skills|projects|objective|profile|contact|work history|employment|certifications|technical|objective)\b/i.test(
+    /^(summary|experience|education|skills|projects|objective|profile|contact|work history|employment|certifications|technical)\b/i.test(
       s
     )
   )
@@ -90,13 +176,10 @@ function looksLikeName(line: string): boolean {
     return false;
   const words = s.split(/\s+/).filter(Boolean);
   if (words.length < 2 || words.length > 5) return false;
-  // Letters only (allow hyphen, apostrophe, period)
   if (!words.every((w) => /^[A-Za-z][A-Za-z.'-]*$/.test(w))) return false;
-  // ALL CAPS or Title Case or mixed
   if (/^[A-Z][A-Z]+(?:\s+[A-Z][A-Z.]+){1,4}$/.test(s)) return true;
   if (/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?(?:\s+[A-Z][a-z]+)+$/.test(s)) return true;
   if (/^[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z.]+){1,3}$/.test(s)) return true;
-  // firstname lastname all lowercase rare but accept 2-3 alpha words
   if (words.length >= 2 && words.length <= 3 && words.every((w) => /^[a-zA-Z]{2,}$/.test(w)))
     return true;
   return false;
@@ -109,8 +192,7 @@ function nameFromEmail(text: string): string {
   if (!m) return "";
   const local = m[1].replace(/[._-]+/g, " ").trim();
   const parts = local.split(/\s+/).filter((p) => p.length > 1);
-  if (parts.length < 2) return "";
-  if (parts.length > 4) return "";
+  if (parts.length < 2 || parts.length > 4) return "";
   return titleCaseName(parts.join(" "));
 }
 
@@ -120,7 +202,9 @@ function nameFromLabel(text: string): string {
   );
   if (!m) return "";
   const n = m[1].trim();
-  return looksLikeName(n) || /^[A-Za-z].*\s+[A-Za-z]/.test(n) ? titleCaseName(n) : "";
+  return looksLikeName(n) || /^[A-Za-z].*\s+[A-Za-z]/.test(n)
+    ? titleCaseName(n)
+    : "";
 }
 
 function guessName(lines: string[], text: string): string {
@@ -129,17 +213,13 @@ function guessName(lines: string[], text: string): string {
 
   const head = lines.slice(0, 12);
   for (const line of head) {
-    // "Name | Title" or "Name - Title"
     const split = line.split(/\s+[|–—-]\s+/);
     if (split.length >= 2 && looksLikeName(split[0])) {
       return titleCaseName(split[0]);
     }
-    if (looksLikeName(line)) {
-      return titleCaseName(line);
-    }
+    if (looksLikeName(line)) return titleCaseName(line);
   }
 
-  // First line might be "JOHN DOE Senior Engineer" without separator
   const first = head[0] || "";
   const roleHit = first.match(
     /^([A-Za-z][A-Za-z .']{2,40}?)\s+(?=(?:Senior|Staff|Principal|Lead|Junior)?\s*(?:Software|Platform|Data|Compliance|Product|IT)?\s*(?:Engineer|Developer|Manager|Director|Analyst|Architect|Officer|Consultant|Designer)\b)/i
@@ -150,7 +230,6 @@ function guessName(lines: string[], text: string): string {
 
   const fromEmail = nameFromEmail(text);
   if (fromEmail) return fromEmail;
-
   return "";
 }
 
@@ -178,22 +257,18 @@ function cleanHeadline(s: string): string {
 
 function guessHeadline(lines: string[], text: string, name: string): string {
   const skipName = (l: string) =>
-    name && l.toLowerCase() === name.toLowerCase();
+    Boolean(name && l.toLowerCase() === name.toLowerCase());
 
-  // Same line as name: "Jane Doe | Senior Engineer"
   for (const line of lines.slice(0, 10)) {
     const split = line.split(/\s+[|–—]\s+/);
     if (split.length >= 2) {
       const right = split.slice(1).join(" - ");
       if (ROLE_WORDS.test(right) && right.length < 100) return cleanHeadline(right);
     }
-    const dash = line.match(
-      /^[A-Za-z .']{3,40}\s+[-–—]\s+(.+)$/
-    );
+    const dash = line.match(/^[A-Za-z .']{3,40}\s+[-–—]\s+(.+)$/);
     if (dash && ROLE_WORDS.test(dash[1])) return cleanHeadline(dash[1]);
   }
 
-  // Dedicated title lines near the top
   for (let i = 0; i < Math.min(lines.length, 15); i++) {
     const l = lines[i];
     if (skipName(l)) continue;
@@ -206,20 +281,17 @@ function guessHeadline(lines: string[], text: string, name: string): string {
     )
       continue;
     if (ROLE_WORDS.test(l) && !/\b(university|bachelor|master|degree|graduated)\b/i.test(l)) {
-      // Prefer lines that look like job titles, not job bullets
       if (/^[•\-\d]/.test(l)) continue;
-      if (/\bat\b.+\d{4}/i.test(l)) continue; // "Engineer at X 2019"
+      if (/\bat\b.+\d{4}/i.test(l)) continue;
       return cleanHeadline(l);
     }
   }
 
-  // Labeled title
   const labeled = text.match(
     /(?:title|headline|role|current role|position)\s*[:\-]\s*([^\n]{6,100})/i
   );
   if (labeled && ROLE_WORDS.test(labeled[1])) return cleanHeadline(labeled[1]);
 
-  // Regex over full text for common patterns
   const patterns = [
     /\b((?:Senior|Staff|Principal|Lead|Junior)?\s*Software\s+Engineers?(?:\s*,?\s*[A-Za-z /&]+){0,4})/i,
     /\b((?:Senior|Staff|Principal|Lead)?\s*(?:Platform|Backend|Frontend|Full[- ]?Stack|Data|DevOps|Security|Cloud)\s+Engineers?(?:\s*,?\s*[A-Za-z /&]+){0,3})/i,
@@ -232,7 +304,6 @@ function guessHeadline(lines: string[], text: string, name: string): string {
     const m = text.match(re);
     if (m) return cleanHeadline(m[1]);
   }
-
   return "";
 }
 
@@ -306,7 +377,6 @@ export function parseResumeText(text: string): ParsedResume {
   const normalized = text.replace(/\u0000/g, " ");
   const lines = expandLines(normalized);
   let full_name = guessName(lines, normalized);
-  // PDF single-line headers: take first 2-4 words if they look like a name
   if (!full_name) {
     const head = normalized.replace(/\s+/g, " ").trim().slice(0, 120);
     const tokens = head.split(" ").filter(Boolean);
