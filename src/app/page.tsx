@@ -32,16 +32,17 @@ export default function Home() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
               <div className="lg:col-span-7 flex flex-col justify-center">
                 <p className="text-base sm:text-lg font-medium text-blue-700 mb-3 tracking-wide uppercase">
-                  From company career pages
+                  Listings in one place
                 </p>
                 <h1 className="text-[2.35rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.1]">
-                  Jobs listed on employer sites,
+                  Jobs from career pages, ATS boards,
                   <br className="hidden sm:block" />{" "}
-                  in one place.
+                  and selected feeds.
                 </h1>
                 <p className="mt-4 text-lg sm:text-xl text-neutral-600 leading-relaxed max-w-xl">
-                  We pull openings from career pages and public ATS boards.
-                  You apply on the employer site, not through another job board form.
+                  Jobs from company career pages, ATS boards, and selected job feeds
+                  in one place. Apply opens the listing we found. Hirehired does not
+                  take the application.
                 </p>
 
                 <form action={withBase("/jobs/")} className="mt-6 flex gap-2 max-w-lg">
@@ -161,7 +162,7 @@ export default function Home() {
                 {
                   n: "1",
                   t: "We collect listings",
-                  d: "Open roles from company career pages and public ATS feeds, updated regularly.",
+                  d: "Company career pages, ATS boards, and selected job feeds, updated regularly.",
                 },
                 {
                   n: "2",
@@ -171,7 +172,7 @@ export default function Home() {
                 {
                   n: "3",
                   t: "You apply on their site",
-                  d: "Apply opens the employer page. Hirehired does not take the application for them.",
+                  d: "Apply opens the listing we found. Hirehired does not take the application.",
                 },
               ].map((s) => (
                 <div key={s.n} className="bg-white border border-neutral-200 rounded p-4">
@@ -215,7 +216,7 @@ export default function Home() {
                 {jobs.length}+ roles tracked
               </h2>
               <p className="mt-1 text-base text-neutral-400">
-                Refreshed daily from career pages and public boards.
+                Refreshed daily from career pages, ATS boards, and selected feeds.
               </p>
             </div>
             <Link
