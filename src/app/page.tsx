@@ -34,13 +34,14 @@ export default function Home() {
                 <p className="text-base sm:text-lg font-medium text-blue-700 mb-3 tracking-wide uppercase">
                   Experienced hires
                 </p>
-                <h1 className="text-[2.35rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.1]">
-                  Jobs from direct career pages, ATS boards,
-                  <br className="hidden sm:block" />{" "}
-                  and selected feeds.
+                <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight leading-[1.2]">
+                  Jobs from direct career pages,
+                  <br />
+                  ATS boards, and selected feeds.
                 </h1>
-                <p className="mt-4 text-lg sm:text-xl text-neutral-600 leading-relaxed max-w-xl">
-                  Focused on mid, senior, and director-level roles. Jobs from direct career pages, ATS boards, and selected feeds in one place. Apply
+                <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed max-w-xl">
+                  Focused on mid, senior, and director-level roles. Jobs from direct
+                  career pages, ATS boards, and selected feeds in one place. Apply
                   opens the listing we found. Hirehired does not take the application.
                 </p>
 
