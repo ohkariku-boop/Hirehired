@@ -35,13 +35,13 @@ export default function Home() {
                   Experienced hires
                 </p>
                 <h1 className="text-[2.35rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.1]">
-                  Jobs from career pages, ATS boards,
+                  Jobs from direct career pages, ATS boards,
                   <br className="hidden sm:block" />{" "}
                   and selected feeds.
                 </h1>
                 <p className="mt-4 text-lg sm:text-xl text-neutral-600 leading-relaxed max-w-xl">
                   Focused on mid, senior, and director-level roles. Jobs from company
-                  career pages, ATS boards, and selected job feeds in one place. Apply
+                  direct direct career pages, ATS boards, and selected feeds in one place. Apply
                   opens the listing we found. Hirehired does not take the application.
                 </p>
 
@@ -162,7 +162,7 @@ export default function Home() {
                 {
                   n: "1",
                   t: "We collect listings",
-                  d: "Company career pages, ATS boards, and selected job feeds, updated regularly.",
+                  d: "Company direct direct career pages, ATS boards, and selected feeds, updated regularly.",
                 },
                 {
                   n: "2",
@@ -216,7 +216,7 @@ export default function Home() {
                 {jobs.length}+ roles tracked
               </h2>
               <p className="mt-1 text-base text-neutral-400">
-                Refreshed daily from career pages, ATS boards, and selected feeds.
+                Refreshed daily from direct career pages, ATS boards, and selected feeds.
               </p>
             </div>
             <Link
