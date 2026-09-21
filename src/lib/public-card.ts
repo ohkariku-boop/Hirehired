@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/client";
 import type { PublicCard } from "@/lib/profile";
 import { loadCardLocally, saveCardLocally, removeCardLocally } from "@/lib/profile";
+import { getSampleCard } from "@/lib/sample-card";
 
 function hasRealSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -46,6 +47,8 @@ export async function unpublishCard(slug: string): Promise<void> {
 }
 
 export async function fetchPublicCard(slug: string): Promise<PublicCard | null> {
+  const sample = getSampleCard(slug);
+  if (sample) return sample;
   const local = loadCardLocally(slug);
   if (hasRealSupabase()) {
     try {
