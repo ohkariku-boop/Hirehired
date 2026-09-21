@@ -27,116 +27,137 @@ const SKILL_LEXICON = [
   "platform engineering", "security", "cybersecurity", "blockchain", "fintech",
 ];
 
+
 function cleanLines(text: string): string[] {
-  return text
+  // PDFs often glue words; also split on bullets and pipes
+  const softened = text
     .replace(/\r/g, "\n")
+    .replace(/[•·▪◦]/g, "\n")
+    .replace(/\s*\|\s*/g, "\n")
+    .replace(/\t+/g, "\n");
+  return softened
     .split("\n")
     .map((l) => l.replace(/\s+/g, " ").trim())
     .filter(Boolean);
 }
 
-async function dynamicImport(url: string): Promise<any> {
-  // Avoid bundler resolving CDN URLs at build time
-  return new Function("u", "return import(u)")(url);
+/** Rebuild lines when PDF extraction returns one long string */
+function expandLines(text: string): string[] {
+  let lines = cleanLines(text);
+  if (lines.length >= 6) return lines;
+  // Split long blob on common resume anchors
+  const blob = text.replace(/\s+/g, " ").trim();
+  const pieces = blob
+    .split(
+      /(?=\b(?:Summary|Professional Summary|Profile|Objective|Experience|Work Experience|Employment|Education|Skills|Technical Skills|Projects|Certifications|Contact)\b)/i
+    )
+    .flatMap((p) => p.split(/(?<=\.)\s+(?=[A-Z])/))
+    .map((s) => s.trim())
+    .filter((s) => s.length > 1);
+  if (pieces.length > lines.length) return pieces;
+  // Last resort: split every ~60 chars on spaces near start for name hunting
+  return lines.length ? lines : [blob.slice(0, 200)];
 }
 
-export async function extractResumeText(file: File): Promise<string> {
-  const name = file.name.toLowerCase();
-  const type = file.type || "";
-
-  if (name.endsWith(".txt") || name.endsWith(".md") || type.startsWith("text/")) {
-    return file.text();
-  }
-
-  if (name.endsWith(".pdf") || type === "application/pdf") {
-    return extractPdfText(file);
-  }
-
-  if (name.endsWith(".docx") || type.includes("wordprocessingml")) {
-    return extractDocxText(file);
-  }
-
-  if (name.endsWith(".doc")) {
-    throw new Error("Old .doc files are not supported. Use PDF, DOCX, or TXT.");
-  }
-
-  try {
-    const t = await file.text();
-    if (t && t.length > 40 && !t.includes("\u0000")) return t;
-  } catch {
-    /* ignore */
-  }
-  throw new Error("Unsupported file. Upload a PDF, DOCX, or TXT resume.");
+function titleCaseName(s: string): string {
+  return s
+    .split(/\s+/)
+    .map((w) => {
+      if (w.length <= 2 && w === w.toUpperCase()) return w; // JR, II
+      if (/^[A-Z]\.?$/.test(w)) return w.toUpperCase();
+      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    })
+    .join(" ");
 }
 
-async function extractPdfText(file: File): Promise<string> {
-  const data = new Uint8Array(await file.arrayBuffer());
-  const pdfjs = await dynamicImport(
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs"
-  );
-  pdfjs.GlobalWorkerOptions.workerSrc =
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
-  const doc = await pdfjs.getDocument({ data }).promise;
-  const parts: string[] = [];
-  const maxPages = Math.min(doc.numPages, 8);
-  for (let i = 1; i <= maxPages; i++) {
-    const page = await doc.getPage(i);
-    const content = await page.getTextContent();
-    const line = (content.items as { str?: string }[])
-      .map((it) => it.str || "")
-      .join(" ");
-    parts.push(line);
-  }
-  const text = parts.join("\n").replace(/\s+/g, " ").trim();
-  if (!text || text.length < 30) {
-    throw new Error(
-      "Could not read text from this PDF (it may be image-only). Try DOCX or TXT."
-    );
-  }
-  return text;
+function looksLikeName(line: string): boolean {
+  const s = line.trim();
+  if (s.length < 3 || s.length > 70) return false;
+  if (
+    /@|https?:|www\.|\.com|linkedin|github|resume|curriculum|vitae|phone|mobile|email|address|street|singapore \d|postal|tel\.|fax/i.test(
+      s
+    )
+  )
+    return false;
+  if (
+    /^(summary|experience|education|skills|projects|objective|profile|contact|work history|employment|certifications|technical)\b/i.test(
+      s
+    )
+  )
+    return false;
+  if (/\d{5,}/.test(s)) return false;
+  // ALL CAPS name: JANE MARY SMITH
+  if (/^[A-Z][A-Z]+(?:\s+[A-Z][A-Z.]+){1,4}$/.test(s) && s.split(/\s+/).length <= 5)
+    return true;
+  // Title Case: Jane Mary Smith / Jane M. Smith
+  if (
+    /^[A-Z][a-z]+(?:\s+[A-Z]\.?)?(?:\s+[A-Z][a-z]+)+$/.test(s) &&
+    s.split(/\s+/).length >= 2 &&
+    s.split(/\s+/).length <= 5
+  )
+    return true;
+  // Mixed: JANE Smith
+  if (/^[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z.]+){1,3}$/.test(s) && !/\b(Engineer|Manager|Director|Developer)\b/i.test(s))
+    return true;
+  return false;
 }
 
-async function extractDocxText(file: File): Promise<string> {
-  const mod = await dynamicImport("https://esm.sh/mammoth@1.8.0");
-  const mammoth = mod.default || mod;
-  const arrayBuffer = await file.arrayBuffer();
-  const result = await mammoth.extractRawText({ arrayBuffer });
-  const text = (result.value || "").trim();
-  if (!text || text.length < 30) {
-    throw new Error("Could not read text from this DOCX.");
-  }
-  return text;
-}
-
-function findUrl(text: string, host: RegExp): string {
+function nameFromEmail(text: string): string {
   const m = text.match(
-    new RegExp(`https?:\\/\\/(?:www\\.)?${host.source}[^\\s)\\]>\"']+`, "i")
+    /([a-zA-Z][a-zA-Z._-]{1,30})@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/
   );
-  if (m) return m[0].replace(/[.,;:]+$/, "");
-  const bare = text.match(
-    new RegExp(`(?:^|\\s)(${host.source}\\/[^\\s)\\]>\"']+)`, "i")
-  );
-  if (bare) return "https://" + bare[1].replace(/[.,;:]+$/, "");
-  return "";
+  if (!m) return "";
+  const local = m[1].replace(/[._-]+/g, " ").trim();
+  const parts = local.split(/\s+/).filter((p) => p.length > 1);
+  if (parts.length < 2) return "";
+  if (parts.length > 4) return "";
+  return titleCaseName(parts.join(" "));
 }
 
-function guessName(lines: string[]): string {
-  for (const line of lines.slice(0, 8)) {
-    if (line.length < 3 || line.length > 60) continue;
-    if (/@|http|www\.|linkedin|github|resume|curriculum|phone|email|\d{3}/i.test(line))
-      continue;
-    if (/^(summary|experience|education|skills|projects|objective|profile)\b/i.test(line))
-      continue;
-    if (/^[A-Z][a-z]+([ -][A-Z][a-z.]+)+$/.test(line)) return line;
-    if (/^[A-Z][a-z]+(\s+[A-Z][a-z]+)+$/.test(line)) return line;
+function nameFromLabel(text: string): string {
+  const m = text.match(
+    /(?:^|\n)\s*(?:name|full\s*name|candidate)\s*[:\-]\s*([A-Za-z][A-Za-z .'-]{2,50})/i
+  );
+  if (!m) return "";
+  const n = m[1].trim();
+  return looksLikeName(n) || /^[A-Za-z].*\s+[A-Za-z]/.test(n) ? titleCaseName(n) : "";
+}
+
+function guessName(lines: string[], text: string): string {
+  const labeled = nameFromLabel(text);
+  if (labeled) return labeled;
+
+  const head = lines.slice(0, 12);
+  for (const line of head) {
+    // "Name | Title" or "Name - Title"
+    const split = line.split(/\s+[|–—-]\s+/);
+    if (split.length >= 2 && looksLikeName(split[0])) {
+      return titleCaseName(split[0]);
+    }
+    if (looksLikeName(line)) {
+      return titleCaseName(line);
+    }
   }
+
+  // First line might be "JOHN DOE Senior Engineer" without separator
+  const first = head[0] || "";
+  const roleHit = first.match(
+    /^([A-Za-z][A-Za-z .']{2,40}?)\s+(?=(?:Senior|Staff|Principal|Lead|Junior)?\s*(?:Software|Platform|Data|Compliance|Product|IT)?\s*(?:Engineer|Developer|Manager|Director|Analyst|Architect|Officer|Consultant|Designer)\b)/i
+  );
+  if (roleHit && looksLikeName(roleHit[1].trim())) {
+    return titleCaseName(roleHit[1].trim());
+  }
+
+  const fromEmail = nameFromEmail(text);
+  if (fromEmail) return fromEmail;
+
   return "";
 }
 
 function guessLocation(text: string, lines: string[]): string {
   const cities =
-    /\b(Singapore|Hong Kong|Tokyo|Sydney|Melbourne|London|New York|San Francisco|Berlin|Remote|Kuala Lumpur|Bangkok|Jakarta|Seoul|Taipei|Mumbai|Bangalore|Bengaluru|Hyderabad|Dubai|Toronto|Vancouver|Austin|Seattle|Boston)\b/i;
-  for (const line of lines.slice(0, 15)) {
+    /\b(Singapore|Hong Kong|Tokyo|Sydney|Melbourne|London|New York|San Francisco|Berlin|Remote|Kuala Lumpur|Bangkok|Jakarta|Seoul|Taipei|Mumbai|Bangalore|Bengaluru|Hyderabad|Dubai|Toronto|Vancouver|Austin|Seattle|Boston|Chicago|Los Angeles|Paris|Amsterdam|Zurich)\b/i;
+  for (const line of lines.slice(0, 20)) {
     const m = line.match(cities);
     if (m) return m[1];
   }
@@ -144,23 +165,75 @@ function guessLocation(text: string, lines: string[]): string {
   return m ? m[1] : "";
 }
 
-function guessHeadline(lines: string[], text: string): string {
-  const roleLine = lines.find((l, i) => {
-    if (i === 0) return false;
-    return (
-      l.length > 8 &&
-      l.length < 100 &&
-      /\b(engineer|developer|manager|director|analyst|specialist|lead|architect|officer|consultant|product|compliance|designer)\b/i.test(
-        l
-      ) &&
-      !/\b(experience|education|university|company)\b/i.test(l)
+const ROLE_WORDS =
+  /\b(engineer|engineering|developer|manager|director|analyst|specialist|lead|architect|officer|consultant|designer|scientist|programmer|administrator|head of|vp|vice president|product owner|scrum master|cto|cio)\b/i;
+
+function cleanHeadline(s: string): string {
+  return s
+    .replace(/\s+/g, " ")
+    .replace(/^[\s|·•\-–—]+|[\s|·•\-–—]+$/g, "")
+    .trim()
+    .slice(0, 120);
+}
+
+function guessHeadline(lines: string[], text: string, name: string): string {
+  const skipName = (l: string) =>
+    name && l.toLowerCase() === name.toLowerCase();
+
+  // Same line as name: "Jane Doe | Senior Engineer"
+  for (const line of lines.slice(0, 10)) {
+    const split = line.split(/\s+[|–—]\s+/);
+    if (split.length >= 2) {
+      const right = split.slice(1).join(" - ");
+      if (ROLE_WORDS.test(right) && right.length < 100) return cleanHeadline(right);
+    }
+    const dash = line.match(
+      /^[A-Za-z .']{3,40}\s+[-–—]\s+(.+)$/
     );
-  });
-  if (roleLine) return roleLine;
-  const m = text.match(
-    /\b((?:Senior|Staff|Principal|Lead)?\s*(?:Software|Platform|Data|Compliance|Product)?\s*(?:Engineer|Manager|Director|Analyst|Architect)[^.\n]{0,40})/i
+    if (dash && ROLE_WORDS.test(dash[1])) return cleanHeadline(dash[1]);
+  }
+
+  // Dedicated title lines near the top
+  for (let i = 0; i < Math.min(lines.length, 15); i++) {
+    const l = lines[i];
+    if (skipName(l)) continue;
+    if (l.length < 6 || l.length > 110) continue;
+    if (/@|https?:|www\./i.test(l)) continue;
+    if (
+      /^(summary|experience|education|skills|projects|objective|profile|contact|work history)\b/i.test(
+        l
+      )
+    )
+      continue;
+    if (ROLE_WORDS.test(l) && !/\b(university|bachelor|master|degree|graduated)\b/i.test(l)) {
+      // Prefer lines that look like job titles, not job bullets
+      if (/^[•\-\d]/.test(l)) continue;
+      if (/\bat\b.+\d{4}/i.test(l)) continue; // "Engineer at X 2019"
+      return cleanHeadline(l);
+    }
+  }
+
+  // Labeled title
+  const labeled = text.match(
+    /(?:title|headline|role|current role|position)\s*[:\-]\s*([^\n]{6,100})/i
   );
-  return m ? m[1].trim() : "";
+  if (labeled && ROLE_WORDS.test(labeled[1])) return cleanHeadline(labeled[1]);
+
+  // Regex over full text for common patterns
+  const patterns = [
+    /\b((?:Senior|Staff|Principal|Lead|Junior)?\s*Software\s+Engineers?(?:\s*,?\s*[A-Za-z /&]+){0,4})/i,
+    /\b((?:Senior|Staff|Principal|Lead)?\s*(?:Platform|Backend|Frontend|Full[- ]?Stack|Data|DevOps|Security|Cloud)\s+Engineers?(?:\s*,?\s*[A-Za-z /&]+){0,3})/i,
+    /\b((?:Senior|Staff|Lead)?\s*Product\s+Managers?(?:\s*,?\s*[A-Za-z /&]+){0,3})/i,
+    /\b((?:Senior|Lead)?\s*(?:Compliance|AML|KYC|Risk)\s+(?:Manager|Officer|Analyst|Director|Lead)(?:\s*,?\s*[A-Za-z /&]+){0,3})/i,
+    /\b((?:Head of|VP|Vice President|Director of)\s+[A-Za-z][A-Za-z /&]{2,40})/i,
+    /\b((?:Senior|Staff|Principal|Lead)?\s*(?:Engineering|Technology)\s+Managers?(?:\s*,?\s*[A-Za-z /&]+){0,3})/i,
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (m) return cleanHeadline(m[1]);
+  }
+
+  return "";
 }
 
 function guessSkills(text: string): string[] {
@@ -231,9 +304,9 @@ export function buildSummaryFromResume(
 
 export function parseResumeText(text: string): ParsedResume {
   const normalized = text.replace(/\u0000/g, " ");
-  const lines = cleanLines(normalized);
-  const full_name = guessName(lines);
-  const headline = guessHeadline(lines, normalized);
+  const lines = expandLines(normalized);
+  const full_name = guessName(lines, normalized);
+  const headline = guessHeadline(lines, normalized, full_name);
   const location = guessLocation(normalized, lines);
   const skills = guessSkills(normalized);
   const github_url = findUrl(normalized, /github\.com/);
