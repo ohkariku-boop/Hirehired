@@ -18,7 +18,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-neutral-500 leading-relaxed max-w-[240px] text-base">
-              Jobs sourced from company career pages. Earlier signal, less noise.
+              Listings from company career pages and ATS boards.
             </p>
           </div>
           <div>

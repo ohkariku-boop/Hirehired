@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const metadata: Metadata = {
-  title: "Hirehired  -  Find the job before everyone else",
+  title: "Hirehired - Jobs from company career pages",
   description:
     "Open roles from company career pages and ATS boards. Search, then apply on the employer site.",
   metadataBase: new URL(
