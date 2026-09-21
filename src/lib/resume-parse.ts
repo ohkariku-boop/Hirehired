@@ -74,30 +74,30 @@ function looksLikeName(line: string): boolean {
   const s = line.trim();
   if (s.length < 3 || s.length > 70) return false;
   if (
-    /@|https?:|www\.|\.com|linkedin|github|resume|curriculum|vitae|phone|mobile|email|address|street|singapore \d|postal|tel\.|fax/i.test(
+    /@|https?:|www\.|\.com\b|linkedin|github|resume|curriculum|vitae|phone|mobile|email|address|street|postal|tel\.|fax|\+\d/i.test(
       s
     )
   )
     return false;
   if (
-    /^(summary|experience|education|skills|projects|objective|profile|contact|work history|employment|certifications|technical)\b/i.test(
+    /^(summary|experience|education|skills|projects|objective|profile|contact|work history|employment|certifications|technical|objective)\b/i.test(
       s
     )
   )
     return false;
-  if (/\d{5,}/.test(s)) return false;
-  // ALL CAPS name: JANE MARY SMITH
-  if (/^[A-Z][A-Z]+(?:\s+[A-Z][A-Z.]+){1,4}$/.test(s) && s.split(/\s+/).length <= 5)
-    return true;
-  // Title Case: Jane Mary Smith / Jane M. Smith
-  if (
-    /^[A-Z][a-z]+(?:\s+[A-Z]\.?)?(?:\s+[A-Z][a-z]+)+$/.test(s) &&
-    s.split(/\s+/).length >= 2 &&
-    s.split(/\s+/).length <= 5
-  )
-    return true;
-  // Mixed: JANE Smith
-  if (/^[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z.]+){1,3}$/.test(s) && !/\b(Engineer|Manager|Director|Developer)\b/i.test(s))
+  if (/\d{4,}/.test(s)) return false;
+  if (/\b(engineer|developer|manager|director|analyst|specialist|consultant)\b/i.test(s))
+    return false;
+  const words = s.split(/\s+/).filter(Boolean);
+  if (words.length < 2 || words.length > 5) return false;
+  // Letters only (allow hyphen, apostrophe, period)
+  if (!words.every((w) => /^[A-Za-z][A-Za-z.'-]*$/.test(w))) return false;
+  // ALL CAPS or Title Case or mixed
+  if (/^[A-Z][A-Z]+(?:\s+[A-Z][A-Z.]+){1,4}$/.test(s)) return true;
+  if (/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?(?:\s+[A-Z][a-z]+)+$/.test(s)) return true;
+  if (/^[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z.]+){1,3}$/.test(s)) return true;
+  // firstname lastname all lowercase rare but accept 2-3 alpha words
+  if (words.length >= 2 && words.length <= 3 && words.every((w) => /^[a-zA-Z]{2,}$/.test(w)))
     return true;
   return false;
 }
@@ -305,7 +305,19 @@ export function buildSummaryFromResume(
 export function parseResumeText(text: string): ParsedResume {
   const normalized = text.replace(/\u0000/g, " ");
   const lines = expandLines(normalized);
-  const full_name = guessName(lines, normalized);
+  let full_name = guessName(lines, normalized);
+  // PDF single-line headers: take first 2-4 words if they look like a name
+  if (!full_name) {
+    const head = normalized.replace(/\s+/g, " ").trim().slice(0, 120);
+    const tokens = head.split(" ").filter(Boolean);
+    for (let n = 4; n >= 2; n--) {
+      const cand = tokens.slice(0, n).join(" ");
+      if (looksLikeName(cand)) {
+        full_name = titleCaseName(cand);
+        break;
+      }
+    }
+  }
   const headline = guessHeadline(lines, normalized, full_name);
   const location = guessLocation(normalized, lines);
   const skills = guessSkills(normalized);

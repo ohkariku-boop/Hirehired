@@ -70,17 +70,18 @@ export default function ProfilePage() {
       const parsed = parseResumeText(text);
       const next = {
         ...profile,
-        full_name: parsed.full_name || profile.full_name,
-        headline: parsed.headline || profile.headline,
-        location: parsed.location || profile.location,
-        summary: parsed.summary || profile.summary,
+        full_name: parsed.full_name.trim() ? parsed.full_name.trim() : profile.full_name,
+        headline: parsed.headline.trim() ? parsed.headline.trim() : profile.headline,
+        location: parsed.location.trim() ? parsed.location.trim() : profile.location,
+        summary: parsed.summary.trim() ? parsed.summary.trim() : profile.summary,
         skills: parsed.skills.length ? parsed.skills : profile.skills,
         github_url: parsed.github_url || profile.github_url,
         linkedin_url: parsed.linkedin_url || profile.linkedin_url,
         portfolio_url: parsed.portfolio_url || profile.portfolio_url,
       };
       setSkillsInput(next.skills.join(", "));
-      persist(next);
+      setProfile(next);
+      saveProfile(next);
       const filled = [
         parsed.full_name && "name",
         parsed.headline && "headline",
@@ -90,11 +91,16 @@ export default function ProfilePage() {
         parsed.github_url && "GitHub",
         parsed.linkedin_url && "LinkedIn",
       ].filter(Boolean);
-      setResumeStatus(
-        filled.length
-          ? `Resume read. Filled: ${filled.join(", ")}. Review and edit before publishing.`
-          : "Resume text read, but little structure was detected. Paste or edit fields manually."
-      );
+      if (!parsed.full_name) {
+        setResumeStatus(
+          `Resume text was read (${text.length} chars), but name was not detected. Type your name in Full name. ` +
+            (filled.length ? `Filled: ${filled.join(", ")}.` : "Edit other fields manually.")
+        );
+      } else {
+        setResumeStatus(
+          `Name set to "${parsed.full_name}". Filled: ${filled.join(", ") || "summary only"}. Review and edit before publishing.`
+        );
+      }
     } catch (e) {
       setResumeStatus(e instanceof Error ? e.message : "Could not read resume.");
     } finally {
@@ -235,7 +241,7 @@ export default function ProfilePage() {
                   className={field}
                   value={profile.full_name}
                   onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                  placeholder="Alex Tan"
+                  placeholder="Full name"
                 />
               </div>
               <div>
@@ -244,7 +250,7 @@ export default function ProfilePage() {
                   className={field}
                   value={profile.headline}
                   onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
-                  placeholder="Senior Compliance Manager, APAC"
+                  placeholder="e.g. Senior Software Engineer"
                 />
               </div>
               <div>
@@ -253,7 +259,7 @@ export default function ProfilePage() {
                   className={field}
                   value={profile.location}
                   onChange={(e) => setProfile({ ...profile, location: e.target.value })}
-                  placeholder="Singapore"
+                  placeholder="City or country"
                 />
               </div>
               <div>
