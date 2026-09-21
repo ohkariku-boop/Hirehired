@@ -47,21 +47,37 @@ function isTechTitle(title) {
   return TECH_RE.test(title || "");
 }
 
-function isTargetLevel(title) {
-  if (isJunior(title)) return false;
-  // Compliance: Analyst/Specialist/Officer count as mid+
-  if (isComplianceTitle(title)) {
-    return LEVEL_RE.test(title) || /\b(analyst|specialist|officer)\b/i.test(title);
-  }
-  return LEVEL_RE.test(title);
+// Prefer mid / senior / director. "5+ years" when stated in title or description.
+const EARLY_YEARS_RE =
+  /\b([0-2]|0\s*[-–to]+\s*2|1\s*[-–to]+\s*3|2\s*[-–to]+\s*3)\s*(\+|years?|yrs?)\b/i;
+const FIVE_PLUS_RE =
+  /\b([5-9]|[1-9]\d)\s*(\+|\+\s*)?(years?|yrs?)(\s+of)?(\s+experience)?\b/i;
+const SENIOR_SIGNAL_RE =
+  /\b(mid[- ]?level|mid[- ]?senior|senior|staff|principal|lead|manager|director|head of|head,|vp|vice president|avp|svp|chief)\b/i;
+
+function isEarlyCareerText(text) {
+  const t = text || "";
+  if (JUNIOR_RE.test(t)) return true;
+  if (EARLY_YEARS_RE.test(t) && !FIVE_PLUS_RE.test(t) && !SENIOR_SIGNAL_RE.test(t)) return true;
+  return false;
+}
+
+function isTargetLevel(title, description = "") {
+  const t = title || "";
+  if (isJunior(t)) return false;
+  if (isEarlyCareerText(`${t} ${description || ""}`)) return false;
+  // Need a mid+ signal in the title (not bare "analyst" alone)
+  if (!SENIOR_SIGNAL_RE.test(t)) return false;
+  // Explicit 5+ years in text is strong; senior signal already required above
+  return true;
 }
 
 function levelFromTitle(title) {
   const t = title || "";
-  if (/\b(director|head of|head,|vp|vice president)\b/i.test(t)) return "Director";
+  if (/\b(director|head of|head,|vp|vice president|chief|svp)\b/i.test(t)) return "Director";
   if (/\b(staff|principal)\b/i.test(t)) return "Senior";
-  if (/\b(senior|lead|manager)\b/i.test(t)) return "Senior";
-  if (/\b(mid|analyst|specialist|officer)\b/i.test(t)) return "Mid";
+  if (/\b(senior|lead|manager|avp)\b/i.test(t)) return "Senior";
+  if (/\b(mid[- ]?level|mid[- ]?senior|mid)\b/i.test(t)) return "Mid";
   return "Senior";
 }
 
@@ -868,7 +884,12 @@ async function fetchJobsPipe() {
         body: JSON.stringify(body),
       });
       if (!r.ok) {
-        console.warn("JobsPipe HTTP", r.status, (await r.text()).slice(0, 120));
+        const errText = (await r.text()).slice(0, 200);
+        console.warn("JobsPipe HTTP", r.status, errText);
+        if (r.status === 402 || r.status === 401 || r.status === 403) {
+          console.warn("JobsPipe: stopping further queries (auth/quota)");
+          break;
+        }
         continue;
       }
       const data = await r.json();
