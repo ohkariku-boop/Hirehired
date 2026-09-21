@@ -40,8 +40,7 @@ export default function Home() {
                   and selected feeds.
                 </h1>
                 <p className="mt-4 text-lg sm:text-xl text-neutral-600 leading-relaxed max-w-xl">
-                  Focused on mid, senior, and director-level roles. Jobs from company
-                  direct direct career pages, ATS boards, and selected feeds in one place. Apply
+                  Focused on mid, senior, and director-level roles. Jobs from direct career pages, ATS boards, and selected feeds in one place. Apply
                   opens the listing we found. Hirehired does not take the application.
                 </p>
 
@@ -162,7 +161,7 @@ export default function Home() {
                 {
                   n: "1",
                   t: "We collect listings",
-                  d: "Company direct direct career pages, ATS boards, and selected feeds, updated regularly.",
+                  d: "Direct career pages, ATS boards, and selected feeds, updated regularly.",
                 },
                 {
                   n: "2",

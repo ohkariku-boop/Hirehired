@@ -18,7 +18,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-neutral-500 leading-relaxed max-w-[240px] text-base">
-              Experienced hires from direct direct career pages, ATS boards, and selected feeds.
+              Experienced hires from direct career pages, ATS boards, and selected feeds.
             </p>
           </div>
           <div>
