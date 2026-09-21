@@ -32,7 +32,7 @@ export default function Home() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
               <div className="lg:col-span-7 flex flex-col justify-center">
                 <p className="text-base sm:text-lg font-medium text-blue-700 mb-3 tracking-wide uppercase">
-                  Listings in one place
+                  Experienced hires
                 </p>
                 <h1 className="text-[2.35rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.1]">
                   Jobs from career pages, ATS boards,
@@ -40,9 +40,9 @@ export default function Home() {
                   and selected feeds.
                 </h1>
                 <p className="mt-4 text-lg sm:text-xl text-neutral-600 leading-relaxed max-w-xl">
-                  Jobs from company career pages, ATS boards, and selected job feeds
-                  in one place. Apply opens the listing we found. Hirehired does not
-                  take the application.
+                  Focused on mid, senior, and director-level roles. Jobs from company
+                  career pages, ATS boards, and selected job feeds in one place. Apply
+                  opens the listing we found. Hirehired does not take the application.
                 </p>
 
                 <form action={withBase("/jobs/")} className="mt-6 flex gap-2 max-w-lg">
@@ -85,7 +85,7 @@ export default function Home() {
                 {[
                   { k: "Source", v: "Career pages" },
                   { k: "Apply", v: "On their site" },
-                  { k: "Focus", v: "Tech and compliance" },
+                  { k: "Focus", v: "Experienced tech and compliance" },
                   { k: "Update", v: "Daily refresh" },
                   { k: "Regions", v: "Global and APAC" },
                   { k: "Age", v: "Last 7 to 30 days" },
@@ -167,7 +167,7 @@ export default function Home() {
                 {
                   n: "2",
                   t: "You filter and search",
-                  d: "Tech or compliance, location, permanent or contract, and how recent the post is.",
+                  d: "Tech or compliance, experienced level, location, permanent or contract, and how recent the post is.",
                 },
                 {
                   n: "3",

@@ -18,7 +18,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export const metadata: Metadata = {
   title: "Hirehired - Jobs from career pages, ATS, and selected feeds",
   description:
-    "Jobs from company career pages, ATS boards, and selected job feeds in one place. Apply opens the listing we found. Hirehired does not take the application.",
+    "Mid, senior, and director-level roles from company career pages, ATS boards, and selected job feeds. Apply opens the listing we found. Hirehired does not take the application.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ||
       (process.env.NODE_ENV === "production"

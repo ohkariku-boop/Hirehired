@@ -30,8 +30,8 @@ export default function AboutPage() {
           <div className="rounded-xl border border-neutral-200 p-5">
             <h2 className="text-lg font-semibold">For candidates</h2>
             <p className="mt-2 text-base leading-relaxed text-neutral-600">
-              Search tech and compliance roles, filter by age and location, then
-              open the employer listing to apply.
+              Search mid, senior, and director-level tech and compliance roles,
+              filter by age and location, then open the listing to apply.
             </p>
           </div>
           <div className="rounded-xl border border-neutral-200 p-5">
