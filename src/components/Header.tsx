@@ -18,10 +18,12 @@ export function Header() {
         <nav className="hidden md:flex items-center gap-6 text-[15px] text-neutral-600">
           <Link href="/jobs/" className="hover:text-neutral-900">Jobs</Link>
           <Link href="/#how" className="hover:text-neutral-900">How it works</Link>
+          <Link href="/profile/" className="hover:text-neutral-900">Profile</Link>
           <Link href="/about/" className="hover:text-neutral-900">About</Link>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <Link href="/jobs/" className="md:hidden text-[15px] text-neutral-600 px-1">Jobs</Link>
+          <Link href="/profile/" className="hidden sm:inline text-[15px] text-neutral-600 hover:text-neutral-900">Profile</Link>
           <Link href="/login/" className="hidden sm:inline text-[15px] text-neutral-600 hover:text-neutral-900">Sign in</Link>
           <Link href="/signup/" className="inline-flex h-10 items-center rounded bg-blue-700 px-3.5 text-[15px] font-semibold text-white hover:bg-blue-800">
             Get started

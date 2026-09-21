@@ -25,6 +25,7 @@ export function Footer() {
             <p className="font-semibold text-neutral-900 mb-3">Product</p>
             <ul className="space-y-2 text-neutral-500">
               <li><Link href="/jobs/" className="hover:text-neutral-900">Browse jobs</Link></li>
+              <li><Link href="/profile/" className="hover:text-neutral-900">Your profile</Link></li>
               <li><Link href="/#how" className="hover:text-neutral-900">How it works</Link></li>
               <li><Link href="/about/" className="hover:text-neutral-900">About</Link></li>
             </ul>
