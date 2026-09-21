@@ -16,6 +16,7 @@ import {
   slugifyName,
   profileToPublicCard,
 } from "@/lib/profile";
+import { extractResumeText, parseResumeText } from "@/lib/resume-parse";
 import {
   publishCard,
   unpublishCard,
@@ -28,6 +29,8 @@ export default function ProfilePage() {
   const [skillsInput, setSkillsInput] = useState("");
   const [saved, setSaved] = useState(false);
   const [publishMsg, setPublishMsg] = useState("");
+  const [resumeStatus, setResumeStatus] = useState("");
+  const [resumeBusy, setResumeBusy] = useState(false);
   const [claimDraft, setClaimDraft] = useState({
     claim_type: "link" as Claim["claim_type"],
     title: "",
@@ -55,6 +58,48 @@ export default function ProfilePage() {
     saveProfile(merged);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  }
+
+
+  async function onResumeFile(file: File | null) {
+    if (!file) return;
+    setResumeBusy(true);
+    setResumeStatus("");
+    try {
+      const text = await extractResumeText(file);
+      const parsed = parseResumeText(text);
+      const next = {
+        ...profile,
+        full_name: parsed.full_name || profile.full_name,
+        headline: parsed.headline || profile.headline,
+        location: parsed.location || profile.location,
+        summary: parsed.summary || profile.summary,
+        skills: parsed.skills.length ? parsed.skills : profile.skills,
+        github_url: parsed.github_url || profile.github_url,
+        linkedin_url: parsed.linkedin_url || profile.linkedin_url,
+        portfolio_url: parsed.portfolio_url || profile.portfolio_url,
+      };
+      setSkillsInput(next.skills.join(", "));
+      persist(next);
+      const filled = [
+        parsed.full_name && "name",
+        parsed.headline && "headline",
+        parsed.location && "location",
+        parsed.summary && "summary",
+        parsed.skills.length && "skills",
+        parsed.github_url && "GitHub",
+        parsed.linkedin_url && "LinkedIn",
+      ].filter(Boolean);
+      setResumeStatus(
+        filled.length
+          ? `Resume read. Filled: ${filled.join(", ")}. Review and edit before publishing.`
+          : "Resume text read, but little structure was detected. Paste or edit fields manually."
+      );
+    } catch (e) {
+      setResumeStatus(e instanceof Error ? e.message : "Could not read resume.");
+    } finally {
+      setResumeBusy(false);
+    }
   }
 
   function onSave() {
@@ -150,12 +195,38 @@ export default function ProfilePage() {
         <div className="max-w-[800px] mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your profile</h1>
           <p className="mt-3 text-lg text-neutral-600 leading-relaxed">
-            Save a profile you can export as a JSON file. Publish a short public
-            card with a link and QR - like a virtual business card. Claims are
+            Upload a resume to fill fields and draft a summary, or edit by hand.
+            Export as JSON or publish a short public card with a QR. Claims are
             self-reported or linked to a URL. Hirehired does not verify backgrounds.
           </p>
 
           <div className="mt-8 space-y-6">
+            <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-3">
+              <h2 className="text-lg font-semibold">Upload resume</h2>
+              <p className="text-sm text-neutral-500 leading-relaxed">
+                PDF, DOCX, or TXT. We read the file in your browser and fill name,
+                headline, location, skills, links, and a short summary. Nothing is
+                uploaded to Hirehired servers for this step. Always review the result.
+              </p>
+              <input
+                type="file"
+                accept=".pdf,.docx,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+                disabled={resumeBusy}
+                onChange={(e) => {
+                  const f = e.target.files?.[0] || null;
+                  void onResumeFile(f);
+                  e.target.value = "";
+                }}
+                className="block w-full text-sm text-neutral-600 file:mr-3 file:h-10 file:rounded file:border-0 file:bg-neutral-900 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-neutral-800"
+              />
+              {resumeBusy ? (
+                <p className="text-sm text-neutral-500">Reading resume...</p>
+              ) : null}
+              {resumeStatus ? (
+                <p className="text-sm text-neutral-600">{resumeStatus}</p>
+              ) : null}
+            </section>
+
             <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-4">
               <h2 className="text-lg font-semibold">Basics</h2>
               <div>
