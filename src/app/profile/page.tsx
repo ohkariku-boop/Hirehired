@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -13,12 +13,21 @@ import {
   exportProfileJson,
   newClaimId,
   statusLabel,
+  slugifyName,
+  profileToPublicCard,
 } from "@/lib/profile";
+import {
+  publishCard,
+  unpublishCard,
+  cardPublicUrl,
+  qrImageUrl,
+} from "@/lib/public-card";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<HirehiredProfile>(EMPTY_PROFILE);
   const [skillsInput, setSkillsInput] = useState("");
   const [saved, setSaved] = useState(false);
+  const [publishMsg, setPublishMsg] = useState("");
   const [claimDraft, setClaimDraft] = useState({
     claim_type: "link" as Claim["claim_type"],
     title: "",
@@ -32,27 +41,28 @@ export default function ProfilePage() {
     setSkillsInput(p.skills.join(", "));
   }, []);
 
+  function withSkills(p: HirehiredProfile): HirehiredProfile {
+    const skills = skillsInput
+      .split(/[,;]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    return { ...p, skills };
+  }
+
   function persist(next: HirehiredProfile) {
-    setProfile(next);
-    saveProfile(next);
+    const merged = withSkills(next);
+    setProfile(merged);
+    saveProfile(merged);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   }
 
   function onSave() {
-    const skills = skillsInput
-      .split(/[,;]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    persist({ ...profile, skills });
+    persist(profile);
   }
 
   function onExport() {
-    const skills = skillsInput
-      .split(/[,;]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const json = exportProfileJson({ ...profile, skills });
+    const json = exportProfileJson(withSkills(profile));
     const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -60,6 +70,47 @@ export default function ProfilePage() {
     a.download = `hirehired-profile-${(profile.full_name || "candidate").replace(/\s+/g, "-").toLowerCase()}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  async function onPublish() {
+    setPublishMsg("");
+    let next = withSkills(profile);
+    if (!next.full_name.trim()) {
+      setPublishMsg("Add your name before publishing.");
+      return;
+    }
+    if (!next.public_slug.trim()) {
+      next = { ...next, public_slug: slugifyName(next.full_name) };
+    }
+    next = {
+      ...next,
+      share_enabled: true,
+      public_slug: next.public_slug.toLowerCase().replace(/[^a-z0-9-]/g, "-"),
+      published_at: new Date().toISOString(),
+    };
+    const card = profileToPublicCard(next);
+    if (!card) {
+      setPublishMsg("Could not build card.");
+      return;
+    }
+    const res = await publishCard(card);
+    setProfile(next);
+    saveProfile(next);
+    if (res.error) {
+      setPublishMsg(
+        `Published on this device. Cloud sync note: ${res.error}. Run supabase/public-cards.sql if needed.`
+      );
+    } else {
+      setPublishMsg("Card published. Anyone with the link or QR can open it.");
+    }
+  }
+
+  async function onUnpublish() {
+    const slug = profile.public_slug;
+    if (slug) await unpublishCard(slug);
+    const next = { ...profile, share_enabled: false, published_at: undefined };
+    persist(next);
+    setPublishMsg("Card unpublished.");
   }
 
   function addClaim() {
@@ -84,6 +135,11 @@ export default function ProfilePage() {
     persist({ ...profile, claims: profile.claims.filter((c) => c.id !== id) });
   }
 
+  const publicUrl = useMemo(() => {
+    if (!profile.public_slug) return "";
+    return cardPublicUrl(profile.public_slug);
+  }, [profile.public_slug]);
+
   const field =
     "w-full h-11 rounded border border-neutral-300 px-3 text-base focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600";
 
@@ -92,14 +148,11 @@ export default function ProfilePage() {
       <Header />
       <main className="flex-1 w-full">
         <div className="max-w-[800px] mx-auto px-4 sm:px-6 py-10 sm:py-12">
-          <p className="text-sm font-medium text-blue-700 uppercase tracking-wide mb-2">
-            Your profile
-          </p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your profile</h1>
           <p className="mt-3 text-lg text-neutral-600 leading-relaxed">
-            Keep a profile you can export and take with you. Proofs are labeled honestly  - 
-            self-reported or linked evidence  -  not fake platform verification. Discovery stays
-            the core of Hirehired; identity travels with you over time.
+            Save a profile you can export as a JSON file. Publish a short public
+            card with a link and QR - like a virtual business card. Claims are
+            self-reported or linked to a URL. Hirehired does not verify backgrounds.
           </p>
 
           <div className="mt-8 space-y-6">
@@ -120,7 +173,7 @@ export default function ProfilePage() {
                   className={field}
                   value={profile.headline}
                   onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
-                  placeholder="Senior Compliance Manager · APAC"
+                  placeholder="Senior Compliance Manager, APAC"
                 />
               </div>
               <div>
@@ -157,7 +210,7 @@ export default function ProfilePage() {
             <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-4">
               <h2 className="text-lg font-semibold">Links</h2>
               <p className="text-sm text-neutral-500">
-                External profiles you control. Linking is not the same as Hirehired verifying you.
+                External profiles you control. Linking is not verification by Hirehired.
               </p>
               {(
                 [
@@ -179,7 +232,7 @@ export default function ProfilePage() {
             </section>
 
             <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-4">
-              <h2 className="text-lg font-semibold">Claims & evidence</h2>
+              <h2 className="text-lg font-semibold">Claims and evidence</h2>
               <p className="text-sm text-neutral-500">
                 Optional. Self-reported means you typed it. Linked means you added a URL.
               </p>
@@ -275,11 +328,99 @@ export default function ProfilePage() {
               </button>
             </section>
 
+            <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-4">
+              <h2 className="text-lg font-semibold">Public card and QR</h2>
+              <p className="text-sm text-neutral-500 leading-relaxed">
+                Publish a short public page others can open from a link or QR code.
+                Off by default. Unpublish anytime.
+              </p>
+              <div>
+                <label className="block text-sm font-medium text-neutral-600 mb-1">
+                  Card URL slug
+                </label>
+                <div className="flex flex-wrap gap-2 items-center">
+                  <span className="text-sm text-neutral-400">/c/</span>
+                  <input
+                    className={`${field} max-w-xs`}
+                    value={profile.public_slug}
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        public_slug: e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9-]/g, "-"),
+                      })
+                    }
+                    placeholder={slugifyName(profile.full_name || "your-name")}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={onPublish}
+                  className="h-11 px-5 rounded bg-blue-700 text-white text-base font-semibold hover:bg-blue-800"
+                >
+                  Publish card
+                </button>
+                {profile.share_enabled ? (
+                  <button
+                    type="button"
+                    onClick={onUnpublish}
+                    className="h-11 px-5 rounded border border-neutral-300 text-base font-semibold hover:border-neutral-500"
+                  >
+                    Unpublish
+                  </button>
+                ) : null}
+                {profile.share_enabled && publicUrl ? (
+                  <a
+                    href={publicUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-11 px-5 inline-flex items-center rounded border border-neutral-200 text-base font-medium text-blue-700 hover:border-blue-400"
+                  >
+                    Open card
+                  </a>
+                ) : null}
+              </div>
+              {publishMsg ? (
+                <p className="text-sm text-neutral-600">{publishMsg}</p>
+              ) : null}
+              {profile.share_enabled && publicUrl ? (
+                <div className="flex flex-col sm:flex-row gap-4 items-start pt-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={qrImageUrl(publicUrl, 200)}
+                    alt="QR code linking to your public card"
+                    width={200}
+                    height={200}
+                    className="border border-neutral-200 rounded bg-white"
+                  />
+                  <div className="text-sm text-neutral-600 space-y-2">
+                    <p className="font-medium text-neutral-800">Your card QR</p>
+                    <p className="break-all">{publicUrl}</p>
+                    <a
+                      href={qrImageUrl(publicUrl, 400)}
+                      download={`hirehired-card-${profile.public_slug}.png`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-10 items-center rounded border border-neutral-300 px-3 text-sm font-semibold hover:border-neutral-500"
+                    >
+                      Open QR image
+                    </a>
+                    <p className="text-xs text-neutral-400">
+                      Scan opens your public card. Same idea as handing someone a business card.
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+            </section>
+
             <div className="flex flex-wrap gap-3 items-center">
               <button
                 type="button"
                 onClick={onSave}
-                className="h-11 px-5 rounded bg-blue-700 text-white text-base font-semibold hover:bg-blue-800"
+                className="h-11 px-5 rounded bg-neutral-900 text-white text-base font-semibold hover:bg-neutral-800"
               >
                 Save profile
               </button>
@@ -300,7 +441,9 @@ export default function ProfilePage() {
             </div>
 
             <p className="text-xs text-neutral-400 leading-relaxed">
-              Saved in this browser for now. Export downloads a JSON file you can keep offline.
+              Profile is saved in this browser. Export downloads a JSON file.
+              Publish stores the public card locally and on Supabase when{" "}
+              <code className="text-neutral-600">public_cards</code> is set up.
             </p>
           </div>
         </div>
