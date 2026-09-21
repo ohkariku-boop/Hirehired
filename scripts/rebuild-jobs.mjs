@@ -17,7 +17,7 @@ const COMP_RE =
 
 // End-to-end IT: eng, product, project/program/portfolio PM, IT gov/strategy/infra/software, Head of IT
 const TECH_RE =
-  /\b(engineer|engineering|software|developer|devops|sre|platform|infra|infrastructure|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|data.?engineer|mlops|security.?engineer|architect|engineering.?manager|technical.?lead|staff|principal|product.?manager|product.?owner|product.?lead|product.?director|head of product|vp.?product|chief.?product|project.?manager|program.?manager|portfolio.?manager|technical.?program|\btpm\b|it.?project.?manager|technology.?project.?manager|digital.?project.?manager|it.?program.?manager|technology.?program.?manager|it.?portfolio|technology.?portfolio|it.?manager|it.?director|head of it|head of technology|head of digital|head of engineering|vp.?it|vp.?technology|chief.?information|cio\b|cto\b|chief.?technology|it.?governance|tech.?governance|technology.?governance|it.?strategy|tech.?strategy|technology.?strategy|digital.?strategy|it.?architecture|technology.?architecture|enterprise.?architecture|it.?operations|it.?service|it.?support|systems.?admin|system.?administrator|network.?engineer|cloud.?engineer|solutions.?architect|enterprise.?architect|scrum.?master|delivery.?manager|release.?manager|qa.?engineer|quality.?assurance|test.?engineer|site.?reliability|platform.?engineer|security.?architect|info.?sec|information.?security|cyber.?security|application.?security|devsecops|agile.?coach|change.?manager.?it|it.?change|technology.?risk)\b/i;
+  /\b(engineer|engineering|software|developer|devops|sre|platform.?engineer|platform.?engineering|tech.?platform|data.?platform|cloud.?platform|infra|infrastructure|backend|frontend|full[- ]?stack|machine.?learning|data.?scien|data.?engineer|mlops|security.?engineer|architect|engineering.?manager|technical.?lead|staff|principal|product.?manager|product.?owner|product.?lead|product.?director|head of product|vp.?product|chief.?product|project.?manager|program.?manager|portfolio.?manager|technical.?program|\btpm\b|it.?project.?manager|technology.?project.?manager|digital.?project.?manager|it.?program.?manager|technology.?program.?manager|it.?portfolio|technology.?portfolio|it.?manager|it.?director|head of it|head of technology|head of digital|head of engineering|vp.?it|vp.?technology|chief.?information|cio\b|cto\b|chief.?technology|it.?governance|tech.?governance|technology.?governance|it.?strategy|tech.?strategy|technology.?strategy|digital.?strategy|it.?architecture|technology.?architecture|enterprise.?architecture|it.?operations|it.?service|it.?support|systems.?admin|system.?administrator|network.?engineer|cloud.?engineer|solutions.?architect|enterprise.?architect|scrum.?master|delivery.?manager|release.?manager|qa.?engineer|quality.?assurance|test.?engineer|site.?reliability|platform.?engineer|security.?architect|info.?sec|information.?security|cyber.?security|application.?security|devsecops|agile.?coach|change.?manager.?it|it.?change|technology.?risk)\b/i;
 
 const LEVEL_RE =
   /\b(mid[- ]?level|mid[- ]?senior|senior|staff|principal|lead|manager|director|head of|vp|vice president|head,|analyst|specialist|officer)\b/i;
@@ -419,10 +419,13 @@ async function fetchArbeitnow() {
 function isNonItSupport(title) {
   const t = title || "";
   if (isComplianceTitle(t)) return false;
+  // Customer support / service is not Tech (even if title says "Platform")
+  if (/\b(customer support|customer service|enterprise support|support specialist|support team lead|partner support|client support|helpdesk|help desk|call center|contact center)\b/i.test(t))
+    return true;
   // Pure commercial/HR without tech signal
   if (/\b(sales program|marketing services program|marketing program|account executive|recruiter|people partner|hr generalist|customer success manager|brand manager)\b/i.test(t))
     return true;
-  if (/\b(sales|marketing)\b/i.test(t) && !/\b(engineer|software|product manager|technical|data|platform|security|engineer)\b/i.test(t))
+  if (/\b(sales|marketing)\b/i.test(t) && !/\b(engineer|software|product manager|technical|data|platform.?engineer|security|developer)\b/i.test(t))
     return true;
   return false;
 }
@@ -939,13 +942,19 @@ async function fetchSmartRecruiters(slug, company) {
         if (!isTargetLevel(title)) continue;
         if (!(isComplianceTitle(title) || isTechTitle(title))) continue;
         if (isNonItSupport(title)) continue;
-        const applyUrl =
-          j.ref ||
+        // Never use api.smartrecruiters.com (returns raw JSON). Prefer careers board URL.
+        let applyUrl =
+          j.postingUrl ||
           j.applyUrl ||
-          (j.id
-            ? `https://jobs.smartrecruiters.com/${slug}/${j.id}`
-            : "");
-        if (!applyUrl || !/^https?:\/\//i.test(applyUrl)) continue;
+          (j.id ? `https://jobs.smartrecruiters.com/${slug}/${j.id}` : "");
+        if (applyUrl && /api\.smartrecruiters\.com/i.test(applyUrl) && j.id) {
+          applyUrl = `https://jobs.smartrecruiters.com/${slug}/${j.id}`;
+        }
+        if (j.ref && /^https?:\/\//i.test(j.ref) && !/api\.smartrecruiters\.com/i.test(j.ref)) {
+          applyUrl = j.ref;
+        }
+        if (!applyUrl || !/^https?:\/\//i.test(applyUrl) || /api\.smartrecruiters\.com/i.test(applyUrl))
+          continue;
         const loc =
           j.location?.fullLocation ||
           j.location?.city ||
@@ -1173,7 +1182,7 @@ function isDirectJobUrl(url) {
     /greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
     /boards\.greenhouse\.io\/.+\/jobs\/\d+/i.test(url) ||
-    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url) || /smartrecruiters\.com/i.test(url) || /workable\.com/i.test(url) || /mycareersfuture\.gov\.sg/i.test(url)
+    /gh_jid=\d+/i.test(url) || /myworkdayjobs\.com/i.test(url) || /ashbyhq\.com/i.test(url) || /smartrecruiters\.com/i.test(url) && !/api\.smartrecruiters\.com/i.test(url) || /workable\.com/i.test(url) || /mycareersfuture\.gov\.sg/i.test(url)
   );
 }
 
