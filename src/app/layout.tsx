@@ -13,16 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 // GitHub Pages serves under /Hirehired
-const BASE = process.env.NODE_ENV === "production" ? "/Hirehired" : "";
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const metadata: Metadata = {
   title: "Hirehired — Find the job before everyone else",
   description:
     "Jobs sourced directly from company career pages. Less noise. Higher signal. Apply earlier with fewer applicants.",
   metadataBase: new URL(
-    process.env.NODE_ENV === "production"
-      ? "https://ohkariku-boop.github.io/Hirehired"
-      : "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://ohkariku-boop.github.io/Hirehired"
+        : "http://localhost:3000")
   ),
   icons: {
     icon: [

@@ -30,7 +30,7 @@ export default function SignupPage() {
         setLoading(false);
         return;
       }
-      if (data.session) window.location.href = (process.env.NODE_ENV === "production" ? "/Hirehired" : "") + "/dashboard/";
+      if (data.session) window.location.href = (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/dashboard/";
       else {
         setMessage("Check your email to confirm.");
         setLoading(false);
