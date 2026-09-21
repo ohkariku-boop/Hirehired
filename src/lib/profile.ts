@@ -1,4 +1,4 @@
-/** Strategy A portable profile — local + future Supabase */
+/** Strategy A portable profile  -  local + future Supabase */
 
 export type ClaimStatus = "self_reported" | "linked" | "issuer_signed" | "revoked";
 

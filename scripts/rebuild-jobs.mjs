@@ -1,5 +1,5 @@
 /**
- * Rebuild jobs from LIVE sources — Tech + Compliance only.
+ * Rebuild jobs from LIVE sources - Tech + Compliance only.
  * Target: 100+ compliance/KYC/KYB/CDD/AML roles + strong tech inventory.
  */
 import { writeFileSync } from "fs";
@@ -276,7 +276,7 @@ async function fetchRemoteOK() {
           level: levelFromTitle(j.position),
           salary:
             j.salary_min && j.salary_max
-              ? `$${Math.round(j.salary_min / 1000)}k – $${Math.round(j.salary_max / 1000)}k`
+              ? `$${Math.round(j.salary_min / 1000)}k - $${Math.round(j.salary_max / 1000)}k`
               : "Competitive",
           posted: j.date
             ? new Date(j.date).toISOString().slice(0, 10)
@@ -660,7 +660,7 @@ async function fetchAdzuna() {
             level: levelFromTitle(title),
             salary:
               j.salary_min && j.salary_max
-                ? `$${Math.round(j.salary_min / 1000)}k – $${Math.round(j.salary_max / 1000)}k`
+                ? `$${Math.round(j.salary_min / 1000)}k - $${Math.round(j.salary_max / 1000)}k`
                 : "Competitive",
             posted: (j.created || "").slice(0, 10) || new Date().toISOString().slice(0, 10),
             tags: tagsFromTitle(title),
@@ -756,7 +756,7 @@ async function fetchAshby(slug, company) {
   }
 }
 
-/** Reed.co.uk — set REED_API_KEY (free at reed.co.uk/developers) */
+/** Reed.co.uk - set REED_API_KEY (free at reed.co.uk/developers) */
 async function fetchReed() {
   const key = process.env.REED_API_KEY;
   if (!key) {
@@ -819,7 +819,7 @@ async function fetchReed() {
           level: levelFromTitle(title),
           salary:
             j.minimumSalary && j.maximumSalary
-              ? `£${Math.round(j.minimumSalary / 1000)}k – £${Math.round(j.maximumSalary / 1000)}k`
+              ? `£${Math.round(j.minimumSalary / 1000)}k - £${Math.round(j.maximumSalary / 1000)}k`
               : "Competitive",
           posted: (j.date || "").slice(0, 10) || new Date().toISOString().slice(0, 10),
           tags: tagsFromTitle(title),
@@ -840,11 +840,11 @@ async function fetchReed() {
   return out;
 }
 
-/** JobsPipe — set JOBSPIPE_API_KEY (free tier ~1k jobs/mo at jobspipe.dev) */
+/** JobsPipe - set JOBSPIPE_API_KEY (free tier ~1k jobs/mo at jobspipe.dev) */
 async function fetchJobsPipe() {
   const key = process.env.JOBSPIPE_API_KEY;
   if (!key) {
-    console.log("JobsPipe: skipped (no JOBSPIPE_API_KEY) — evaluate free tier at jobspipe.dev");
+    console.log("JobsPipe: skipped (no JOBSPIPE_API_KEY) - evaluate free tier at jobspipe.dev");
     return [];
   }
   const queries = [
@@ -893,7 +893,7 @@ async function fetchJobsPipe() {
           level: levelFromTitle(title),
           salary:
             j.min_annual_salary_usd && j.max_annual_salary_usd
-              ? `$${Math.round(j.min_annual_salary_usd / 1000)}k – $${Math.round(j.max_annual_salary_usd / 1000)}k`
+              ? `$${Math.round(j.min_annual_salary_usd / 1000)}k - $${Math.round(j.max_annual_salary_usd / 1000)}k`
               : "Competitive",
           posted: (j.date_posted || j.discovered_at || "").slice(0, 10) || new Date().toISOString().slice(0, 10),
           tags: tagsFromTitle(title),
@@ -1070,7 +1070,7 @@ async function fetchWorkable(slug, company) {
 }
 
 
-/** MyCareersFuture (Singapore government) — public POST search, no key */
+/** MyCareersFuture (Singapore government) - public POST search, no key */
 async function fetchMyCareersFuture() {
   const queries = [
     "compliance AML KYC CDD",
@@ -1140,7 +1140,7 @@ async function fetchMyCareersFuture() {
           const compliance = isComplianceTitle(title);
           const sal =
             j.salary?.minimum && j.salary?.maximum
-              ? `S$${Math.round(j.salary.minimum / 1000)}k – S$${Math.round(j.salary.maximum / 1000)}k`
+              ? `S$${Math.round(j.salary.minimum / 1000)}k - S$${Math.round(j.salary.maximum / 1000)}k`
               : "Competitive";
           out.push({
             id: `mcf-${j.uuid || j.metadata?.jobPostId}`,
@@ -1305,7 +1305,7 @@ async function main() {
     }
   };
 
-  // No company cap for compliance — we need volume
+  // No company cap for compliance - we need volume
   for (const j of compliance) final.push(j);
   add(tech, 25);
 

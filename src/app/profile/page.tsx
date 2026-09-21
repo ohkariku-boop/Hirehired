@@ -93,12 +93,12 @@ export default function ProfilePage() {
       <main className="flex-1 w-full">
         <div className="max-w-[800px] mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <p className="text-sm font-medium text-blue-700 uppercase tracking-wide mb-2">
-            Strategy A · portable profile
+            Your profile
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your profile</h1>
           <p className="mt-3 text-lg text-neutral-600 leading-relaxed">
-            Keep a profile you can export and take with you. Proofs are labeled honestly —
-            self-reported or linked evidence — not fake platform verification. Discovery stays
+            Keep a profile you can export and take with you. Proofs are labeled honestly  - 
+            self-reported or linked evidence  -  not fake platform verification. Discovery stays
             the core of Hirehired; identity travels with you over time.
           </p>
 
@@ -181,8 +181,7 @@ export default function ProfilePage() {
             <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-4">
               <h2 className="text-lg font-semibold">Claims & evidence</h2>
               <p className="text-sm text-neutral-500">
-                Optional. Status is honest: self-reported, or linked when you add a URL. Issuer-signed
-                credentials come later when real issuers exist.
+                Optional. Self-reported means you typed it. Linked means you added a URL.
               </p>
 
               {profile.claims.length === 0 ? (
@@ -301,9 +300,7 @@ export default function ProfilePage() {
             </div>
 
             <p className="text-xs text-neutral-400 leading-relaxed">
-              Profile is stored in this browser for now (and can sync to Supabase when signed in).
-              Export downloads a portable <code className="text-neutral-600">hirehired.profile.v1</code>{" "}
-              package you can keep offline or use elsewhere.
+              Saved in this browser for now. Export downloads a JSON file you can keep offline.
             </p>
           </div>
         </div>

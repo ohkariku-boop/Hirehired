@@ -37,16 +37,16 @@ export default function CookiesPage() {
             <p className="mt-2">Hirehired uses cookies and similar technologies for:</p>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>
-                <strong className="text-foreground/90">Essential</strong> —
+                <strong className="text-foreground/90">Essential</strong>  - 
                 authentication, security, and core functionality. These are
                 required for the service to work.
               </li>
               <li>
-                <strong className="text-foreground/90">Preferences</strong> —
+                <strong className="text-foreground/90">Preferences</strong>  - 
                 remembering settings such as theme or saved filters.
               </li>
               <li>
-                <strong className="text-foreground/90">Analytics</strong> —
+                <strong className="text-foreground/90">Analytics</strong>  - 
                 understanding traffic and feature usage so we can improve the
                 product (aggregated and where possible anonymized).
               </li>

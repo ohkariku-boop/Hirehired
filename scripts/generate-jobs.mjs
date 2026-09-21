@@ -45,24 +45,24 @@ function isDirectJobUrl(url) {
     || /job-boards\.(eu\.)?greenhouse\.io\/.+\/jobs\/\d+/i.test(url);
 }
 
-// Curated seed — real-looking mid/senior/director roles with direct apply where known
+// Curated seed - real-looking mid/senior/director roles with direct apply where known
 const CURATED = [
   { id: "okx-sse-kyc-sg", title: "Senior/Staff Software Engineer, Compliance (KYC)", company: "OKX", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-12", tags: ["Java", "KYC", "Compliance", "Backend"], category: "Engineering", applyUrl: "https://job-boards.greenhouse.io/okx/jobs/6948363003", source: "greenhouse", description: "Own technical architecture for KYC systems. 5+ years Java/Spring microservices experience." },
-  { id: "okx-android-kyc-sg", title: "Senior/Staff Software Engineer Mobile (Android) – Compliance & KYC", company: "OKX", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-11", tags: ["Android", "KYC", "Mobile", "Compliance"], category: "Engineering", applyUrl: "https://job-boards.greenhouse.io/okx/jobs/6628053003", source: "greenhouse", description: "End-to-end ownership of mobile KYC and compliance for regional markets. 5+ years native Android." },
+  { id: "okx-android-kyc-sg", title: "Senior/Staff Software Engineer Mobile (Android) - Compliance & KYC", company: "OKX", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-11", tags: ["Android", "KYC", "Mobile", "Compliance"], category: "Engineering", applyUrl: "https://job-boards.greenhouse.io/okx/jobs/6628053003", source: "greenhouse", description: "End-to-end ownership of mobile KYC and compliance for regional markets. 5+ years native Android." },
   { id: "okx-dir-compliance-ds-sg", title: "Director, Compliance Data Science & AI", company: "OKX", location: "Singapore", region: "APAC", type: "Permanent", level: "Director", salary: "Competitive", posted: "2026-09-10", tags: ["Director", "AML", "Data Science", "AI"], category: "Data", applyUrl: "https://job-boards.greenhouse.io/okx/jobs/7671505003", source: "greenhouse", description: "Lead analytics and AI across AML, sanctions, KYC/KYB, and transaction monitoring. 10+ years experience." },
-  { id: "alpaca-head-compliance", title: "Head of Compliance", company: "Alpaca", location: "Remote – Asia", region: "APAC", type: "Permanent", level: "Director", salary: "Competitive", posted: "2026-09-09", tags: ["Compliance", "Fintech", "Leadership"], category: "Compliance", applyUrl: "https://job-boards.greenhouse.io/alpaca/jobs/5837825004", source: "greenhouse", description: "Own regional compliance strategy for a global brokerage platform." },
+  { id: "alpaca-head-compliance", title: "Head of Compliance", company: "Alpaca", location: "Remote - Asia", region: "APAC", type: "Permanent", level: "Director", salary: "Competitive", posted: "2026-09-09", tags: ["Compliance", "Fintech", "Leadership"], category: "Compliance", applyUrl: "https://job-boards.greenhouse.io/alpaca/jobs/5837825004", source: "greenhouse", description: "Own regional compliance strategy for a global brokerage platform." },
   { id: "certik-dir-product-aml", title: "Director of Product, AML", company: "CertiK", location: "Remote", region: "Global", type: "Permanent", level: "Director", salary: "Competitive", posted: "2026-09-08", tags: ["Product", "AML", "Web3"], category: "Product", applyUrl: "https://jobs.lever.co/certik", source: "lever", description: "Lead AML product strategy for blockchain security and compliance tools." },
   { id: "cobo-senior-reg-compliance", title: "Senior Regulatory Compliance Manager", company: "Cobo", location: "Singapore / Hong Kong", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-07", tags: ["Regulatory", "Compliance", "Crypto"], category: "Compliance", applyUrl: "https://job-boards.greenhouse.io/cobo", source: "greenhouse", description: "Drive regulatory compliance frameworks across APAC markets." },
-  { id: "circle-lead-kyc-apac", title: "Lead KYC Analyst, APAC", company: "Circle", location: "Remote – APAC", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-06", tags: ["KYC", "AML", "Fintech"], category: "Compliance", applyUrl: "https://boards.greenhouse.io/circle", source: "greenhouse", description: "Lead KYC operations and policy for USDC and related products in APAC." },
+  { id: "circle-lead-kyc-apac", title: "Lead KYC Analyst, APAC", company: "Circle", location: "Remote - APAC", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-06", tags: ["KYC", "AML", "Fintech"], category: "Compliance", applyUrl: "https://boards.greenhouse.io/circle", source: "greenhouse", description: "Lead KYC operations and policy for USDC and related products in APAC." },
   { id: "binance-kyb-team-lead-hk", title: "KYB Team Lead", company: "Binance", location: "Hong Kong", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-05", tags: ["KYB", "Compliance", "Leadership"], category: "Compliance", applyUrl: "https://www.binance.com/en/careers", source: "career", description: "Lead KYB investigations and onboarding quality for institutional clients." },
-  { id: "binance-senior-java-kyc", title: "Senior Java Engineer – KYC Tech", company: "Binance", location: "Remote – APAC", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-04", tags: ["Java", "KYC", "Backend"], category: "Engineering", applyUrl: "https://www.binance.com/en/careers", source: "career", description: "Build high-throughput KYC microservices used by millions of users." },
+  { id: "binance-senior-java-kyc", title: "Senior Java Engineer - KYC Tech", company: "Binance", location: "Remote - APAC", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-04", tags: ["Java", "KYC", "Backend"], category: "Engineering", applyUrl: "https://www.binance.com/en/careers", source: "career", description: "Build high-throughput KYC microservices used by millions of users." },
   { id: "okx-aml-investigations-sg", title: "Senior AML Investigations Analyst", company: "OKX", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-03", tags: ["AML", "Investigations", "Compliance"], category: "Compliance", applyUrl: "https://job-boards.greenhouse.io/okx", source: "greenhouse", description: "Investigate complex financial crime cases and file SARs." },
   { id: "okx-kyb-cdd-sg", title: "Senior KYB / CDD Analyst", company: "OKX", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-02", tags: ["KYB", "CDD", "Compliance"], category: "Compliance", applyUrl: "https://job-boards.greenhouse.io/okx", source: "greenhouse", description: "Own enhanced due diligence for corporate and institutional clients." },
   { id: "airwallex-eng-lead-kyc", title: "Engineering Lead, KYC", company: "Airwallex", location: "Singapore / Remote", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-01", tags: ["KYC", "Lead", "Fintech"], category: "Engineering", applyUrl: "https://job-boards.greenhouse.io/airwallex", source: "greenhouse", description: "Lead engineering for KYC and identity systems at a global payments company." },
-  { id: "clickhouse-cloud-infra-sg", title: "Senior Cloud Infrastructure Engineer", company: "ClickHouse", location: "Singapore – Remote", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-30", tags: ["Kubernetes", "Cloud", "Infra"], category: "Engineering", applyUrl: "https://clickhouse.com/company/careers", source: "career", description: "Scale ClickHouse Cloud infrastructure for APAC customers." },
-  { id: "stacklok-staff-fde-sg", title: "Staff Field Development Engineer – Kubernetes", company: "Stacklok", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-28", tags: ["Kubernetes", "Security", "Go"], category: "Engineering", applyUrl: "https://jobs.ashbyhq.com/stacklok", source: "ashby", description: "Help enterprise customers adopt secure software supply chain tooling." },
+  { id: "clickhouse-cloud-infra-sg", title: "Senior Cloud Infrastructure Engineer", company: "ClickHouse", location: "Singapore - Remote", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-30", tags: ["Kubernetes", "Cloud", "Infra"], category: "Engineering", applyUrl: "https://clickhouse.com/company/careers", source: "career", description: "Scale ClickHouse Cloud infrastructure for APAC customers." },
+  { id: "stacklok-staff-fde-sg", title: "Staff Field Development Engineer - Kubernetes", company: "Stacklok", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-28", tags: ["Kubernetes", "Security", "Go"], category: "Engineering", applyUrl: "https://jobs.ashbyhq.com/stacklok", source: "ashby", description: "Help enterprise customers adopt secure software supply chain tooling." },
   { id: "neo4j-solutions-sg", title: "Solutions Engineer", company: "Neo4j", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-27", tags: ["Graph", "Sales Engineering", "APAC"], category: "Engineering", applyUrl: "https://neo4j.com/careers/", source: "career", description: "Pre-sales and solution design for graph database customers in APAC." },
-  { id: "moonpay-kyb-manager", title: "KYB Manager", company: "MoonPay", location: "Remote – Global", region: "Global", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-26", tags: ["KYB", "Compliance", "Crypto"], category: "Compliance", applyUrl: "https://www.moonpay.com/careers", source: "career", description: "Build and scale KYB processes for merchant and institutional onboarding." },
+  { id: "moonpay-kyb-manager", title: "KYB Manager", company: "MoonPay", location: "Remote - Global", region: "Global", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-26", tags: ["KYB", "Compliance", "Crypto"], category: "Compliance", applyUrl: "https://www.moonpay.com/careers", source: "career", description: "Build and scale KYB processes for merchant and institutional onboarding." },
   { id: "ca-senior-kyc-sg", title: "Senior KYC Analyst", company: "Crédit Agricole CIB", location: "Singapore", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-25", tags: ["KYC", "Banking", "CDD"], category: "Compliance", applyUrl: "https://careers.credit-agricole.com", source: "career", description: "Perform complex KYC reviews for corporate and investment banking clients." },
   { id: "diligent-senior-pm", title: "Senior Product Manager, Governance", company: "Diligent", location: "Remote", region: "Global", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-08-24", tags: ["Product", "Governance", "SaaS"], category: "Product", applyUrl: "https://diligent.com/careers", source: "career", description: "Own product roadmap for board and governance software." },
   { id: "stripe-senior-compliance-eng", title: "Senior Software Engineer, Compliance Systems", company: "Stripe", location: "Singapore / Remote", region: "APAC", type: "Permanent", level: "Senior", salary: "Competitive", posted: "2026-09-10", tags: ["Compliance", "Backend", "Ruby"], category: "Engineering", applyUrl: "https://stripe.com/jobs", source: "career", description: "Build systems that keep Stripe compliant across dozens of jurisdictions." },
@@ -139,14 +139,14 @@ const LOCATIONS = [
   { loc: "Sydney, Australia", region: "APAC" },
   { loc: "Melbourne, Australia", region: "APAC" },
   { loc: "Bangalore, India", region: "APAC" },
-  { loc: "Remote – APAC", region: "APAC" },
-  { loc: "Remote – Asia", region: "APAC" },
+  { loc: "Remote - APAC", region: "APAC" },
+  { loc: "Remote - Asia", region: "APAC" },
   { loc: "Kuala Lumpur, Malaysia", region: "APAC" },
   { loc: "Jakarta, Indonesia", region: "APAC" },
   { loc: "Bangkok, Thailand", region: "APAC" },
   { loc: "Manila, Philippines", region: "APAC" },
   { loc: "Remote", region: "Global" },
-  { loc: "Remote – Global", region: "Global" },
+  { loc: "Remote - Global", region: "Global" },
   { loc: "London, UK", region: "Global" },
   { loc: "New York, USA", region: "Global" },
   { loc: "San Francisco, USA", region: "Global" },
@@ -183,7 +183,7 @@ function generateSynthetic(count) {
       region,
       type: isContract ? "Contract" : "Permanent",
       level,
-      salary: i % 5 === 0 ? `$${(120 + (i % 80))}k – $${(180 + (i % 100))}k` : "Competitive",
+      salary: i % 5 === 0 ? `$${(120 + (i % 80))}k - $${(180 + (i % 100))}k` : "Competitive",
       posted: daysAgo(i % 45),
       tags: [...tags, region === "APAC" ? "APAC" : "Global"].slice(0, 4),
       category,
@@ -252,7 +252,7 @@ function mapRemoteOK(job) {
     level: levelFromTitle(job.position),
     salary:
       job.salary_min && job.salary_max
-        ? `$${Math.round(job.salary_min / 1000)}k – $${Math.round(job.salary_max / 1000)}k`
+        ? `$${Math.round(job.salary_min / 1000)}k - $${Math.round(job.salary_max / 1000)}k`
         : "Competitive",
     posted: job.date
       ? new Date(job.date).toISOString().slice(0, 10)

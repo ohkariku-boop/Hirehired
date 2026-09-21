@@ -69,7 +69,7 @@ function companySearchSlug(name: string) {
   return encodeURIComponent(name.trim());
 }
 
-/** Outbound company research links (no scraping — search pages only). */
+/** Outbound company research links (no scraping  -  search pages only). */
 function glassdoorSearchUrl(company: string) {
   const entry = getCompanyRating(company);
   if (entry?.glassdoorId) {
@@ -450,7 +450,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
       <div className="border border-neutral-200 rounded overflow-hidden divide-y divide-neutral-200">
         {pageJobs.length === 0 ? (
           <p className="px-4 py-8 text-center text-neutral-500 text-base">
-            No roles match this filter.
+            No jobs match these filters.
           </p>
         ) : (
           pageJobs.map((job) => (

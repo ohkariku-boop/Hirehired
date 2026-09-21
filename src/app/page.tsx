@@ -32,16 +32,16 @@ export default function Home() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
               <div className="lg:col-span-7 flex flex-col justify-center">
                 <p className="text-base sm:text-lg font-medium text-blue-700 mb-3 tracking-wide uppercase">
-                  Direct from company career pages
+                  From company career pages
                 </p>
                 <h1 className="text-[2.35rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.1]">
-                  Find roles before
+                  Jobs listed on employer sites,
                   <br className="hidden sm:block" />{" "}
-                  they hit the big boards.
+                  in one place.
                 </h1>
                 <p className="mt-4 text-lg sm:text-xl text-neutral-600 leading-relaxed max-w-xl">
-                  Openings sourced from employer career sites—often earlier than
-                  LinkedIn or Indeed. Apply with less noise and fewer applicants.
+                  We pull openings from career pages and public ATS boards.
+                  You apply on the employer site, not through another job board form.
                 </p>
 
                 <form action={withBase("/jobs/")} className="mt-6 flex gap-2 max-w-lg">
@@ -83,11 +83,11 @@ export default function Home() {
               <div className="lg:col-span-5 grid grid-cols-2 grid-rows-3 gap-3 sm:gap-4 h-full min-h-[280px] lg:min-h-0">
                 {[
                   { k: "Source", v: "Career pages" },
-                  { k: "Timing", v: "Earlier signal" },
-                  { k: "Apply", v: "Employer direct" },
-                  { k: "Noise", v: "Less crowded" },
-                  { k: "Refresh", v: "Updated daily" },
-                  { k: "Reach", v: "Global · APAC focused" },
+                  { k: "Apply", v: "On their site" },
+                  { k: "Focus", v: "Tech and compliance" },
+                  { k: "Update", v: "Daily refresh" },
+                  { k: "Regions", v: "Global and APAC" },
+                  { k: "Age", v: "Last 7 to 30 days" },
                 ].map((s) => (
                   <div
                     key={s.k}
@@ -109,12 +109,12 @@ export default function Home() {
         <section className="w-full border-b border-neutral-200">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-10">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Latest openings</h2>
+              <h2 className="text-lg font-semibold">Recent jobs</h2>
               <Link
                 href="/jobs/"
                 className="text-base font-medium text-blue-700 hover:text-blue-800"
               >
-                View all →
+                View all
               </Link>
             </div>
 
@@ -160,18 +160,18 @@ export default function Home() {
               {[
                 {
                   n: "1",
-                  t: "Source monitoring",
-                  d: "We track employer career pages and ATS feeds for new openings as they go live.",
+                  t: "We collect listings",
+                  d: "Open roles from company career pages and public ATS feeds, updated regularly.",
                 },
                 {
                   n: "2",
-                  t: "Direct apply",
-                  d: "Every link goes to the company’s own form—not a third-party black hole.",
+                  t: "You filter and search",
+                  d: "Tech or compliance, location, permanent or contract, and how recent the post is.",
                 },
                 {
                   n: "3",
-                  t: "Less noise",
-                  d: "See roles earlier, often before they attract hundreds of applicants on big boards.",
+                  t: "You apply on their site",
+                  d: "Apply opens the employer page. Hirehired does not take the application for them.",
                 },
               ].map((s) => (
                 <div key={s.n} className="bg-white border border-neutral-200 rounded p-4">

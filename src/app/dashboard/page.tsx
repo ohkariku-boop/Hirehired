@@ -11,8 +11,7 @@ export default function DashboardPage() {
           Dashboard
         </h1>
         <p className="mt-3 text-neutral-600 max-w-lg text-base leading-relaxed">
-          Strategy A: discovery first. Build an exportable profile with honest
-          claims, then browse direct employer roles.
+          Edit your profile, export it if you need a copy, then browse open roles.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link

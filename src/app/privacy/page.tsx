@@ -37,21 +37,21 @@ export default function PrivacyPage() {
             <p className="mt-2">We may collect:</p>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>
-                <strong className="text-foreground/90">Account data</strong> —
+                <strong className="text-foreground/90">Account data</strong>  - 
                 name, email address, password (hashed), and profile details you
                 provide.
               </li>
               <li>
-                <strong className="text-foreground/90">Usage data</strong> —
+                <strong className="text-foreground/90">Usage data</strong>  - 
                 pages viewed, searches, jobs saved or applied to, and approximate
                 location derived from IP.
               </li>
               <li>
-                <strong className="text-foreground/90">Device data</strong> —
+                <strong className="text-foreground/90">Device data</strong>  - 
                 browser type, operating system, and similar technical information.
               </li>
               <li>
-                <strong className="text-foreground/90">Communications</strong> —
+                <strong className="text-foreground/90">Communications</strong>  - 
                 messages you send us (support, feedback).
               </li>
             </ul>
