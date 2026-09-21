@@ -43,7 +43,7 @@ export default function LoginPage() {
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full h-11 rounded border border-neutral-300 px-3 text-[17px] focus:outline-none focus:border-blue-600" />
             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full h-11 rounded border border-neutral-300 px-3 text-[17px] focus:outline-none focus:border-blue-600" />
             <button type="submit" disabled={loading} className="w-full h-11 rounded bg-blue-700 text-base font-semibold text-white hover:bg-blue-800 disabled:opacity-50">
-              {loading ? "Signing in…" : "Sign in"}
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
           <p className="mt-4 text-base text-neutral-500">

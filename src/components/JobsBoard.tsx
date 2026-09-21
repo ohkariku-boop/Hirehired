@@ -327,17 +327,17 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
   }
 
   const pageNumbers = useMemo(() => {
-    const pages: (number | "…")[] = [];
+    const pages: (number | "...")[] = [];
     if (totalPages <= 7) {
       for (let i = 1; i <= totalPages; i++) pages.push(i);
       return pages;
     }
     pages.push(1);
-    if (currentPage > 3) pages.push("…");
+    if (currentPage > 3) pages.push("...");
     const start = Math.max(2, currentPage - 1);
     const end = Math.min(totalPages - 1, currentPage + 1);
     for (let i = start; i <= end; i++) pages.push(i);
-    if (currentPage < totalPages - 2) pages.push("…");
+    if (currentPage < totalPages - 2) pages.push("...");
     pages.push(totalPages);
     return pages;
   }, [currentPage, totalPages]);
@@ -366,7 +366,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search title, company…"
+          placeholder="Search title, company..."
           className="h-11 w-full sm:w-56 rounded border border-neutral-300 px-3 text-base focus:outline-none focus:border-blue-600"
         />
       </div>
@@ -550,9 +550,9 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
             Previous
           </button>
           {pageNumbers.map((p, i) =>
-            p === "…" ? (
+            p === "..." ? (
               <span key={`e-${i}`} className="px-2 text-neutral-400">
-                …
+                ...
               </span>
             ) : (
               <button

@@ -138,7 +138,7 @@ export default function ProfilePage() {
                   className="w-full min-h-[100px] rounded border border-neutral-300 px-3 py-2 text-base focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   value={profile.summary}
                   onChange={(e) => setProfile({ ...profile, summary: e.target.value })}
-                  placeholder="Short professional summary…"
+                  placeholder="Short professional summary..."
                 />
               </div>
               <div>
@@ -262,7 +262,7 @@ export default function ProfilePage() {
                     className={field}
                     value={claimDraft.evidence_url}
                     onChange={(e) => setClaimDraft({ ...claimDraft, evidence_url: e.target.value })}
-                    placeholder="https://…"
+                    placeholder="https://..."
                   />
                 </div>
               </div>
