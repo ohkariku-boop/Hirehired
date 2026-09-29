@@ -3,6 +3,15 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ratingsData from "@/data/company-ratings.json";
+import { loadProfile, saveProfile, type HirehiredProfile } from "@/lib/profile";
+import { SAMPLE_PROFILE_EU_JOE_SEE } from "@/data/sample-profile-eu-joe-see";
+import {
+  scoreJobMatch,
+  hasMatchableProfile,
+  tierLabel,
+  type JobMatch,
+  type MatchTier,
+} from "@/lib/job-match";
 
 type RatingEntry = { rating: number; reviews?: number; glassdoorId?: string };
 
@@ -172,6 +181,19 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
   const [query, setQuery] = useState(initialQ);
   const [ageDays, setAgeDays] = useState<AgeDays>(initialAge);
   const [page, setPage] = useState(1);
+  const [profile, setProfile] = useState<HirehiredProfile | null>(null);
+  const [matchBand, setMatchBand] = useState<"all" | MatchTier | "top80">("all");
+  const [sortByMatch, setSortByMatch] = useState(true);
+
+  useEffect(() => {
+    let p = loadProfile();
+    if (!hasMatchableProfile(p)) {
+      // Demo paid customer: seed Eu Joe See so match % works immediately
+      p = { ...SAMPLE_PROFILE_EU_JOE_SEE };
+      saveProfile(p);
+    }
+    setProfile(p);
+  }, []);
 
   useEffect(() => {
     const t = (searchParams.get("track") as TrackId) ||
@@ -247,6 +269,15 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
     };
   }, [byTrack]);
 
+  const matchMap = useMemo(() => {
+    const map = new Map<string, JobMatch>();
+    if (!profile || !hasMatchableProfile(profile)) return map;
+    for (const j of jobs) {
+      map.set(j.id, scoreJobMatch(profile, j));
+    }
+    return map;
+  }, [jobs, profile]);
+
   const filtered = useMemo(() => {
     let list = [...byTrack];
     switch (sub) {
@@ -288,10 +319,34 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
           j.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
-    return list.sort(
-      (a, b) => new Date(b.posted).getTime() - new Date(a.posted).getTime()
-    );
-  }, [byTrack, sub, query]);
+    if (matchBand === "top80") {
+      list = list.filter((j) => (matchMap.get(j.id)?.percent ?? 0) >= 80);
+    } else if (matchBand !== "all") {
+      list = list.filter((j) => matchMap.get(j.id)?.tier === matchBand);
+    }
+    return list.sort((a, b) => {
+      if (sortByMatch && matchMap.size > 0) {
+        const mb = matchMap.get(b.id)?.percent ?? 0;
+        const ma = matchMap.get(a.id)?.percent ?? 0;
+        if (mb !== ma) return mb - ma;
+      }
+      return new Date(b.posted).getTime() - new Date(a.posted).getTime();
+    });
+  }, [byTrack, sub, query, matchMap, matchBand, sortByMatch]);
+
+  const matchCounts = useMemo(() => {
+    const base = byTrack;
+    let top80 = 0, top = 0, strong = 0, possible = 0;
+    for (const j of base) {
+      const m = matchMap.get(j.id);
+      if (!m) continue;
+      if (m.percent >= 80) top80++;
+      if (m.tier === "top") top++;
+      else if (m.tier === "strong") strong++;
+      else if (m.tier === "possible") possible++;
+    }
+    return { top80, top, strong, possible };
+  }, [byTrack, matchMap]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -357,6 +412,7 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
             {track !== "all" || sub !== "all" || query
               ? ` · ${trackLabel}${sub !== "all" ? ` · ${sub}` : ""}`
               : ""}
+            {profile?.full_name ? ` · match for ${profile.full_name}` : ""}
             {filtered.length > PAGE_SIZE
               ? ` · page ${currentPage} of ${totalPages}`
               : ""}
@@ -447,6 +503,72 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
         </div>
       </div>
 
+      {profile && hasMatchableProfile(profile) ? (
+        <div className="mb-5">
+          <p className="text-sm font-medium text-neutral-500 mb-2">
+            Profile match (paid demo)
+          </p>
+          <div className="flex flex-wrap gap-2 items-center">
+            <button
+              type="button"
+              onClick={() => setMatchBand("all")}
+              className={`rounded px-3 py-1.5 text-sm font-medium ${
+                matchBand === "all"
+                  ? "bg-neutral-900 text-white"
+                  : "border border-neutral-200 text-neutral-600"
+              }`}
+            >
+              All matches
+            </button>
+            <button
+              type="button"
+              onClick={() => setMatchBand("top80")}
+              className={`rounded px-3 py-1.5 text-sm font-medium ${
+                matchBand === "top80"
+                  ? "bg-emerald-700 text-white"
+                  : "border border-neutral-200 text-neutral-600"
+              }`}
+            >
+              Top 80%+ ({matchCounts.top80})
+            </button>
+            <button
+              type="button"
+              onClick={() => setMatchBand("strong")}
+              className={`rounded px-3 py-1.5 text-sm font-medium ${
+                matchBand === "strong"
+                  ? "bg-neutral-900 text-white"
+                  : "border border-neutral-200 text-neutral-600"
+              }`}
+            >
+              Strong 60-79% ({matchCounts.strong})
+            </button>
+            <button
+              type="button"
+              onClick={() => setMatchBand("possible")}
+              className={`rounded px-3 py-1.5 text-sm font-medium ${
+                matchBand === "possible"
+                  ? "bg-neutral-900 text-white"
+                  : "border border-neutral-200 text-neutral-600"
+              }`}
+            >
+              Possible 40-59% ({matchCounts.possible})
+            </button>
+            <label className="ml-auto flex items-center gap-2 text-sm text-neutral-600">
+              <input
+                type="checkbox"
+                checked={sortByMatch}
+                onChange={(e) => setSortByMatch(e.target.checked)}
+                className="rounded border-neutral-300"
+              />
+              Sort by match %
+            </label>
+          </div>
+          <p className="mt-2 text-xs text-neutral-400">
+            Profile match is a rules-based score from your skills and experience vs the job title and tags. Not a guarantee of interview.
+          </p>
+        </div>
+      ) : null}
+
       <div className="border border-neutral-200 rounded overflow-hidden divide-y divide-neutral-200">
         {pageJobs.length === 0 ? (
           <p className="px-4 py-8 text-center text-neutral-500 text-base">
@@ -461,6 +583,30 @@ export function JobsBoard({ jobs }: { jobs: Job[] }) {
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-1.5">
                   <h2 className="text-[17px] font-medium">{job.title}</h2>
+                  {(() => {
+                    const m = matchMap.get(job.id);
+                    if (!m || m.percent < 1) return null;
+                    const cls =
+                      m.percent >= 80
+                        ? "text-emerald-800 bg-emerald-50"
+                        : m.percent >= 60
+                          ? "text-blue-800 bg-blue-50"
+                          : m.percent >= 40
+                            ? "text-neutral-700 bg-neutral-100"
+                            : "text-neutral-500 bg-neutral-50";
+                    return (
+                      <span
+                        className={`text-xs font-semibold px-1.5 py-0.5 rounded ${cls}`}
+                        title={
+                          m.reasons.length
+                            ? `Matched: ${m.reasons.join(", ")}`
+                            : tierLabel(m.tier)
+                        }
+                      >
+                        {m.percent}% · {tierLabel(m.tier)}
+                      </span>
+                    );
+                  })()}
                   {job.region === "APAC" && (
                     <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded">
                       APAC

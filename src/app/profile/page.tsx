@@ -17,6 +17,7 @@ import {
   profileToPublicCard,
 } from "@/lib/profile";
 import { extractResumeText, parseResumeText } from "@/lib/resume-parse";
+import { SAMPLE_PROFILE_EU_JOE_SEE } from "@/data/sample-profile-eu-joe-see";
 import {
   publishCard,
   unpublishCard,
@@ -231,6 +232,21 @@ export default function ProfilePage() {
               {resumeStatus ? (
                 <p className="text-sm text-neutral-600">{resumeStatus}</p>
               ) : null}
+              <button
+                type="button"
+                onClick={() => {
+                  const sample = { ...SAMPLE_PROFILE_EU_JOE_SEE };
+                  setProfile(sample);
+                  setSkillsInput(sample.skills.join(", "));
+                  saveProfile(sample);
+                  setResumeStatus(
+                    "Loaded sample paid profile: Eu Joe See (from resume). Open Jobs to see match %."
+                  );
+                }}
+                className="h-10 px-4 rounded border border-neutral-300 text-sm font-semibold hover:border-neutral-500"
+              >
+                Load sample paid profile (Eu Joe See)
+              </button>
             </section>
 
             <section className="border border-neutral-200 rounded-lg p-4 sm:p-6 space-y-4">
